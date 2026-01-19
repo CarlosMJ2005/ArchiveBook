@@ -1,9 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
-
-// No utilizando knex para hacer la petición a base de datos, utilizamos mysql2
-const mysql2 = require('mysql2/promise');
  
 
 function createWindow() {
@@ -28,8 +25,13 @@ app.whenReady().then(() => {
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0){
+      createWindow()
+      console.log("he entrado")
+    } 
   })
+
+  createWindow()
 
 
   // methods to be exported from the main process
@@ -47,19 +49,6 @@ app.whenReady().then(() => {
 
     });
   });
-
-  /*
-  ipcMain.handle('get-usuarios', async () => {
-    try {
-      const [results] = await connection.query('SELECT * FROM usuarios');
-      return results;
-    } catch (err) {
-      throw new Error("Error al obtener usuarios: " + err.message);
-    }
-  });
-  */
-
-
 
 
   ipcMain.handle('add-usuario', async (event, usuario) => {
