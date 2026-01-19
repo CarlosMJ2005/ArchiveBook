@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             ArchiveBookTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Hola putos",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
