@@ -6,7 +6,7 @@ window.onload = () => {
          
   // addEventListeners de la aplicacion
 
-  // document.getElementById("logo").addEventListener('click', () => controller.promptWindow());
+  document.getElementById("logo").addEventListener('click', () => controller.promptWindow());
   
   controller.init();
 }
