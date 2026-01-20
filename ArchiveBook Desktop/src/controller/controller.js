@@ -1,12 +1,12 @@
 // Hacer los import de las clases del modelo
 //
 //
-import { Model } from './src/controller/model.js';
+import { Model } from '../model/model.js';
 
 // Hacer los imports de las clases de la vista
 //
 //
-import { View } from './src/controller/view.js';
+import { View } from '../view/view.js';
 
 export class Controller {
 
