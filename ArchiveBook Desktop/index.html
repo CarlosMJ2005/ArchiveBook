@@ -12,20 +12,26 @@
         }
 
         .login-card {
-            background-color: #E6D8C3;
+            background-color: #fce8cc;
+            border: none;
+            border-radius: 1rem;
+        }
+
+        .signin-card{
+            background-color: #fff3e2;
             border: none;
             border-radius: 1rem;
         }
 
         .btn-beige {
-            background-color: #CBB89D;
-            color: #5A4A3F;
+            background-color: #c9a97c;
+            color: #5c483a;
             font-weight: 600;
         }
 
         .btn-beige:hover {
-            background-color: #B8A27E;
-            color: #5A4A3F;
+            background-color: #a85521;
+            color: #f8d5a5;
         }
 
         .form-control {
@@ -39,14 +45,14 @@
         }
 
         .text-beige {
-            color: #5A4A3F;
+            color: #4e250a;
         }
     </style>
 </head>
 
 <body class="d-flex align-items-center justify-content-center vh-100">
 
-    <div class="log card login-card p-4 shadow" style="width: 22rem;">
+    <div class="card login-card p-4 shadow" id="log" style="width: 22rem;">
         <div class="card-body">
 
             <h3 class="text-center text-beige mb-4">Log in</h3>
@@ -64,7 +70,7 @@
 
                 <div class="d-grid mb-3">
                     <button type="submit" class="btn btn-beige">
-                        Enter
+                        Log in
                     </button>
                 </div>
             </form>
@@ -77,20 +83,20 @@
             </p>
         </div>
     </div>
-    <div class="sign card signin-card p-4 shadow d-none" style="width: 24rem;">
+    <div class="card signin-card p-4 shadow d-none" id="sign" style="width: 24rem;">
         <div class="card-body">
 
-            <h3 class="text-center text-beige mb-4">Crear cuenta</h3>
+            <h3 class="text-center text-beige mb-4">Sign in</h3>
 
             <form>
                 <div class="mb-3">
                     <label class="form-label text-beige">username</label>
-                    <input type="text" class="form-control" placeholder="Tu nombre" required>
+                    <input type="text" class="form-control" placeholder="Your username" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label text-beige">Email</label>
-                    <input type="email" class="form-control" placeholder="ejemplo@email.com" required>
+                    <input type="email" class="form-control" placeholder="example@email.com" required>
                 </div>
 
                 <div class="mb-3">
@@ -103,17 +109,19 @@
                     <input type="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
+            </br>
+
                 <div class="d-grid mb-3">
                     <button type="submit" class="btn btn-beige">
-                        Log in
+                        Sign in
                     </button>
                 </div>
             </form>
 
             <p class="text-center text-beige mb-0">
-                ¿Ya tienes cuenta?
+                Do you already have an account?
                 <a href="#" onclick="visibilidad(event)" class="fw-semibold text-beige text-decoration-none">
-                    Inicia sesión
+                    Log in
                 </a>
             </p>
 
