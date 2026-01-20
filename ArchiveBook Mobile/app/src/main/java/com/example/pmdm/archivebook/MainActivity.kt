@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             ArchiveBookTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Hola putos",
+                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -42,6 +42,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     ArchiveBookTheme {
-        Greeting("Android")
+        Greeting("patata")
     }
 }
