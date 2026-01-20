@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "bibliotecas")
+@Table(name = "biblioteca")
 public class Archivebook {
     
     @Id
@@ -30,6 +30,8 @@ public class Archivebook {
     
     @Column(name = "Estado del libro esto mejor ponlo en libros")
     private String estado; // Ejemplo: "Disponible", "Prestado", "Reservado"
+    
+    @Column (name = "Usuario")
     private String usuarioNombre; // Que usuario tiene el libro
     
 }
