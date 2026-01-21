@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -51,10 +50,13 @@ fun LoginScreen(
             //Log in text
             Text(
                 text = "Log in",
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.displayMedium
             )
             // Email Section
-            Text(text = "Email", modifier = Modifier.align(Alignment.Start))
+            Text(text = "Email",
+                modifier = Modifier.align(Alignment.Start),
+                style = MaterialTheme.typography.titleLarge
+            )
             TextField(
                 value = email,
                 onValueChange = { email = it },
@@ -65,7 +67,10 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             // Password Section
-            Text(text = "Password", modifier = Modifier.align(Alignment.Start))
+            Text(text = "Password",
+                modifier = Modifier.align(Alignment.Start),
+                style = MaterialTheme.typography.titleLarge
+            )
             TextField(
                 value = password,
                 onValueChange = { password = it },
