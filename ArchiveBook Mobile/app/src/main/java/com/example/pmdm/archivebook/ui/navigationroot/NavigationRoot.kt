@@ -1,4 +1,4 @@
-package com.example.pmdm.archivebook.screens
+package com.example.pmdm.archivebook.ui.navigationroot
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +25,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
         modifier = modifier,
         entryProvider = entryProvider {
             entry<LoginScreenKey> { navElement ->
-                LoginScreen(
+                _root_ide_package_.com.example.pmdm.archivebook.ui.screens.LoginScreen(
                     onLoginSuccess = {
                         backStack.clear()
                         backStack.add(HomeScreenKey())
@@ -34,7 +34,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
             }
 
             entry<HomeScreenKey> { navElement ->
-                HomeScreen()
+                _root_ide_package_.com.example.pmdm.archivebook.ui.screens.HomeScreen()
             }
         }
     )
