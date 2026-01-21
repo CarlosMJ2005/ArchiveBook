@@ -16,31 +16,35 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
     
-    @Column(name = "nombreUsuario")
+    @Column(name = "dni")
+    private String dni;
+    
+    @Column(name = "nombre")
     private String nombre;
     
-    @Column(name = "primerApellido")
-    private String apellido1;
-    
-    @Column(name = "segundoApellido")
-    private String apellido2;
+    @Column(name = "apellidos")
+    private String apellidos;
     
     @Column(name = "telefono")
     private int telefono;
     
     @Column(name = "direccion")
     private String direccion;
+    
+    @Column(name = "correo")
+    private String correo;
 
     public Usuario() {
     }
 
-    public Usuario(Long idUsuario, String nombre, String apellido1, String apellido2, int telefono, String direccion) {
+    public Usuario(Long idUsuario, String dni, String nombre, String apellidos, int telefono, String direccion, String correo) {
         this.idUsuario = idUsuario;
+        this.dni = dni;
         this.nombre = nombre;
-        this.apellido1 = apellido1;
-        this.apellido2 = apellido2;
+        this.apellidos = apellidos;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.correo = correo;
     }
 
     public Long getIdUsuario() {
@@ -51,6 +55,14 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -59,20 +71,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellido1() {
-        return apellido1;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
-    }
-
-    public String getApellido2() {
-        return apellido2;
-    }
-
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public int getTelefono() {
@@ -90,8 +94,16 @@ public class Usuario {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
-    
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+   
     
     
     
