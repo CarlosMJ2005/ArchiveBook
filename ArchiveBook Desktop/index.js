@@ -1,16 +1,38 @@
 // 1.
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+
+const path = require('path')
 
 // 2.
-let window;
+let logwindow;
+let appwindow;
 
 // 3.
 app.on('ready', () => {
   // 4.
-  window = new BrowserWindow({
+  logwindow = new BrowserWindow({
     resizable : false,
-    width: 1360 ,
+    width: 1920 ,
+    height: 890,
+    webPreferences: {
+          preload: path.join(__dirname, 'preload.js')
+        }
+  });
+  logwindow.loadFile('login.html');
+
+  appwindow = new BrowserWindow({
+    resizable : false,
+    width: 1920 ,
     height: 890
   });
-  window.loadFile('index.html');
-});
+  appwindow.loadFile('app.html');
+  appwindow.hide()
+
+
+  ipcMain.on('open-window', () => {
+    console.log("entro en open window")
+    appwindow.show()
+    logwindow.hide()
+  })
+    
+})

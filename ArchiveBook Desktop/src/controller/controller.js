@@ -27,5 +27,28 @@ export class Controller {
     }
 
     // Controller methods...
-
+    login() {
+        console.log("he hecho click a log")
+        app.windowopen()
+    }
+    signin() {
+        console.log("he hecho click a sign")
+    }
+    change(bool = false, event) {
+        console.log("cambio entre tipos")
+        if (event){
+            console.log("entro al event")
+            event.preventDefault()
+        }
+        if (bool) {
+            console.log("muestro sign")
+            document.getElementById('sign').classList.remove("d-none")
+            document.getElementById('log').classList.add("d-none")
+        }
+        else {
+            console.log("muestro log")
+            document.getElementById('log').classList.remove("d-none")
+            document.getElementById('sign').classList.add("d-none")
+        }
+    }
 }
