@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,19 +15,24 @@ import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 
 @Composable
 fun LoginScreen(
-    // Parametros
+    onLoginSuccess: () -> Unit, // Callback para hacer el Log in una vez esté verificado (de momento no hay verificación)
+    modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = Modifier) { innerPadding ->
-        // Usamos una Columna para poder alinear su contenido
+    Scaffold(
+        modifier = modifier.fillMaxSize()
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(innerPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // El contenido de tu pantalla va aquí.
-            Text("Contenido del Login")
+            Text("Log in")
+            //Botón para hacer el Log in
+            Button(onClick = onLoginSuccess) {
+                Text("Login")
+            }
         }
     }
 }
@@ -35,6 +41,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     ArchiveBookTheme {
-        LoginScreen()
+        LoginScreen(onLoginSuccess = {})
     }
 }

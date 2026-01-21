@@ -1,38 +1,47 @@
-com.example.pmdm.archivebook.app-lifecycle-viewmodel-ktx-2.10.0-0 C:\Users\7N\.gradle\caches\8.13\transforms\08752362021484758812e1ee0f35b9da\transformed\lifecycle-viewmodel-ktx-2.10.0\res
-com.example.pmdm.archivebook.app-tracing-1.2.0-1 C:\Users\7N\.gradle\caches\8.13\transforms\0a90caef6bd1ded03bb6784ee56427dc\transformed\tracing-1.2.0\res
-com.example.pmdm.archivebook.app-foundation-release-2 C:\Users\7N\.gradle\caches\8.13\transforms\16e1e89f6c9604a0f69bba9541f1463c\transformed\foundation-release\res
-com.example.pmdm.archivebook.app-ui-graphics-release-3 C:\Users\7N\.gradle\caches\8.13\transforms\1fcfa12bba13ed6d0aa393c81444a9f5\transformed\ui-graphics-release\res
-com.example.pmdm.archivebook.app-core-1.17.0-4 C:\Users\7N\.gradle\caches\8.13\transforms\2915ac4a79e79f07bf53eedf72d0e7fb\transformed\core-1.17.0\res
-com.example.pmdm.archivebook.app-core-ktx-1.17.0-5 C:\Users\7N\.gradle\caches\8.13\transforms\2cd0fa48b5823650b2d4c6739880aab7\transformed\core-ktx-1.17.0\res
-com.example.pmdm.archivebook.app-material-release-6 C:\Users\7N\.gradle\caches\8.13\transforms\32b3724df40bf7b15aa2a7aceba7b6b9\transformed\material-release\res
-com.example.pmdm.archivebook.app-ui-test-manifest-1.9.2-7 C:\Users\7N\.gradle\caches\8.13\transforms\355ed3fe73ef2513f4d9071774827ac0\transformed\ui-test-manifest-1.9.2\res
-com.example.pmdm.archivebook.app-core-viewtree-1.0.0-8 C:\Users\7N\.gradle\caches\8.13\transforms\3ab06ea22eb3bbcc6d64961ecd2c32f9\transformed\core-viewtree-1.0.0\res
-com.example.pmdm.archivebook.app-annotation-experimental-1.4.1-9 C:\Users\7N\.gradle\caches\8.13\transforms\3ac89a9f10f17d0eb4493ca1433f158b\transformed\annotation-experimental-1.4.1\res
-com.example.pmdm.archivebook.app-savedstate-ktx-1.4.0-10 C:\Users\7N\.gradle\caches\8.13\transforms\49bb983b87151ba9f81d4d27c2215803\transformed\savedstate-ktx-1.4.0\res
-com.example.pmdm.archivebook.app-lifecycle-runtime-11 C:\Users\7N\.gradle\caches\8.13\transforms\508aa0068a777aa040792c34916943a4\transformed\lifecycle-runtime\res
-com.example.pmdm.archivebook.app-ui-release-12 C:\Users\7N\.gradle\caches\8.13\transforms\596b6ac8f9b10f42d23be45d1f032b53\transformed\ui-release\res
-com.example.pmdm.archivebook.app-graphics-path-1.0.1-13 C:\Users\7N\.gradle\caches\8.13\transforms\60278bd07b5d3cab3e770b86f9311986\transformed\graphics-path-1.0.1\res
-com.example.pmdm.archivebook.app-material-icons-core-release-14 C:\Users\7N\.gradle\caches\8.13\transforms\6319107257e824b1f0b44d5efaa49004\transformed\material-icons-core-release\res
-com.example.pmdm.archivebook.app-activity-1.12.1-15 C:\Users\7N\.gradle\caches\8.13\transforms\787df4a6e936e6c2912b441a89c4c83e\transformed\activity-1.12.1\res
-com.example.pmdm.archivebook.app-lifecycle-livedata-core-2.10.0-16 C:\Users\7N\.gradle\caches\8.13\transforms\8034287fe34577f8a790cac14d8c6a3f\transformed\lifecycle-livedata-core-2.10.0\res
-com.example.pmdm.archivebook.app-activity-compose-1.12.1-17 C:\Users\7N\.gradle\caches\8.13\transforms\83b7664677ca5a436c08fe514b66a369\transformed\activity-compose-1.12.1\res
-com.example.pmdm.archivebook.app-lifecycle-process-2.10.0-18 C:\Users\7N\.gradle\caches\8.13\transforms\8bc406895b0b97bedd8f8b9fe003a56d\transformed\lifecycle-process-2.10.0\res
-com.example.pmdm.archivebook.app-material3-release-19 C:\Users\7N\.gradle\caches\8.13\transforms\8e78493df7fda4d7a98d4864ec1c3e90\transformed\material3-release\res
-com.example.pmdm.archivebook.app-activity-ktx-1.12.1-20 C:\Users\7N\.gradle\caches\8.13\transforms\901c42c8a5d07acd5b9184927a146f7f\transformed\activity-ktx-1.12.1\res
-com.example.pmdm.archivebook.app-emoji2-1.4.0-21 C:\Users\7N\.gradle\caches\8.13\transforms\a1569444ea2168a42ab7a42caee4958c\transformed\emoji2-1.4.0\res
-com.example.pmdm.archivebook.app-material-ripple-release-22 C:\Users\7N\.gradle\caches\8.13\transforms\af4c94821fd28d31167d5fb0b3fe7c6d\transformed\material-ripple-release\res
-com.example.pmdm.archivebook.app-savedstate-23 C:\Users\7N\.gradle\caches\8.13\transforms\b863b0ea920560372cfc2f3b62d6f54e\transformed\savedstate\res
-com.example.pmdm.archivebook.app-navigationevent-24 C:\Users\7N\.gradle\caches\8.13\transforms\bab6f2fad61488e20559d72150051567\transformed\navigationevent\res
-com.example.pmdm.archivebook.app-profileinstaller-1.4.0-25 C:\Users\7N\.gradle\caches\8.13\transforms\d287d99f76a2b244a1c1e11d803c1e5e\transformed\profileinstaller-1.4.0\res
-com.example.pmdm.archivebook.app-lifecycle-viewmodel-26 C:\Users\7N\.gradle\caches\8.13\transforms\d8a6646ece4a442b0bf8e336c0aae2d9\transformed\lifecycle-viewmodel\res
-com.example.pmdm.archivebook.app-core-runtime-2.2.0-27 C:\Users\7N\.gradle\caches\8.13\transforms\e6fcfd22e7cc9aa0cd5e4a2d03de7838\transformed\core-runtime-2.2.0\res
-com.example.pmdm.archivebook.app-customview-poolingcontainer-1.0.0-28 C:\Users\7N\.gradle\caches\8.13\transforms\ed2ad6d78adf7840fbbcd49121b7e7a1\transformed\customview-poolingcontainer-1.0.0\res
-com.example.pmdm.archivebook.app-startup-runtime-1.1.1-29 C:\Users\7N\.gradle\caches\8.13\transforms\fce409279337a4e7f88165e5b4905a3a\transformed\startup-runtime-1.1.1\res
-com.example.pmdm.archivebook.app-pngs-30 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\res\pngs\debug
-com.example.pmdm.archivebook.app-resValues-31 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\res\resValues\debug
-com.example.pmdm.archivebook.app-updated_navigation_xml-32 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\updated_navigation_xml\debug
-com.example.pmdm.archivebook.app-packageDebugResources-33 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.pmdm.archivebook.app-packageDebugResources-34 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.pmdm.archivebook.app-debug-35 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\merged_res\debug\mergeDebugResources
-com.example.pmdm.archivebook.app-debug-36 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\debug\res
-com.example.pmdm.archivebook.app-main-37 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\res
+com.example.pmdm.archivebook.app-emoji2-1.4.0-0 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\154e7d6a067373c7517f0d7540e55063\transformed\emoji2-1.4.0\res
+com.example.pmdm.archivebook.app-navigationevent-1 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\194615e5a6e51057b1977d779a936e6a\transformed\navigationevent\res
+com.example.pmdm.archivebook.app-activity-1.12.1-2 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\19acda3dcfba4fd37323b66ca2e71ac2\transformed\activity-1.12.1\res
+com.example.pmdm.archivebook.app-savedstate-ktx-1.4.0-3 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\347b62acdf512209de5efab9bebb474e\transformed\savedstate-ktx-1.4.0\res
+com.example.pmdm.archivebook.app-annotation-experimental-1.4.1-4 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\45db752d1de99489ceb4310f883a94b7\transformed\annotation-experimental-1.4.1\res
+com.example.pmdm.archivebook.app-core-ktx-1.17.0-5 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\477346a3c068f685050c6df2c579b4ba\transformed\core-ktx-1.17.0\res
+com.example.pmdm.archivebook.app-ui-tooling-6 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\55460436d504555c05690aae18058e7a\transformed\ui-tooling\res
+com.example.pmdm.archivebook.app-core-runtime-2.2.0-7 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\5ddef4058ff747b7e04ea8c2c721a5c3\transformed\core-runtime-2.2.0\res
+com.example.pmdm.archivebook.app-lifecycle-viewmodel-ktx-2.10.0-8 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\6158827ab668d999b05d923e77f872e3\transformed\lifecycle-viewmodel-ktx-2.10.0\res
+com.example.pmdm.archivebook.app-graphics-path-1.0.1-9 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\688e8459ed70ad57c6cbf3ba8279115d\transformed\graphics-path-1.0.1\res
+com.example.pmdm.archivebook.app-startup-runtime-1.1.1-10 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\6dec3935a5fcacf7253bff1e631a4517\transformed\startup-runtime-1.1.1\res
+com.example.pmdm.archivebook.app-tracing-1.2.0-11 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\73b7110ccc3599b9b6e57db8dafa2888\transformed\tracing-1.2.0\res
+com.example.pmdm.archivebook.app-lifecycle-runtime-12 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\75970da0da66222296c9134c0b6402f3\transformed\lifecycle-runtime\res
+com.example.pmdm.archivebook.app-savedstate-13 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\7646d8a50403079bfeb18e87dfbcc75e\transformed\savedstate\res
+com.example.pmdm.archivebook.app-profileinstaller-1.4.0-14 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\773d06deb308b9a3e68c100bd36ddbe2\transformed\profileinstaller-1.4.0\res
+com.example.pmdm.archivebook.app-activity-ktx-1.12.1-15 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\78f7edfdab2b2d7c06407313e90c818d\transformed\activity-ktx-1.12.1\res
+com.example.pmdm.archivebook.app-material3-release-16 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\7dcde4a711fbbe94e415d5efe4f005c4\transformed\material3-release\res
+com.example.pmdm.archivebook.app-material-release-17 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\89b01acdbb68740dfdb2b7383a5a2511\transformed\material-release\res
+com.example.pmdm.archivebook.app-material-ripple-release-18 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\968934f112860a33e6cea759b35d6211\transformed\material-ripple-release\res
+com.example.pmdm.archivebook.app-customview-poolingcontainer-1.0.0-19 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\9a2cabe564289147f6c76eacba8c2548\transformed\customview-poolingcontainer-1.0.0\res
+com.example.pmdm.archivebook.app-window-1.5.0-20 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\a002e3d4c035982f43c9a38bc9dfad36\transformed\window-1.5.0\res
+com.example.pmdm.archivebook.app-lifecycle-process-2.10.0-21 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\a1e33344f5f5cd866b16efdc9b1d42a9\transformed\lifecycle-process-2.10.0\res
+com.example.pmdm.archivebook.app-lifecycle-livedata-core-ktx-2.10.0-22 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\a5efa437afe85bff5333fc8d961ae634\transformed\lifecycle-livedata-core-ktx-2.10.0\res
+com.example.pmdm.archivebook.app-activity-compose-1.12.1-23 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\ae6bd292e7459e4f413d956ba9bb7975\transformed\activity-compose-1.12.1\res
+com.example.pmdm.archivebook.app-navigation3-runtime-24 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\b69d6d3cc67121cdc0d90b981be4a1ff\transformed\navigation3-runtime\res
+com.example.pmdm.archivebook.app-navigation3-ui-25 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\b8a356cdc6c787df454ae51bf26e5ee3\transformed\navigation3-ui\res
+com.example.pmdm.archivebook.app-runtime-saveable-26 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\bb8669d8fe7078508aef8bd8a691b364\transformed\runtime-saveable\res
+com.example.pmdm.archivebook.app-core-1.17.0-27 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\be8c64e99c75d7ad734d5ff6d05dcc1e\transformed\core-1.17.0\res
+com.example.pmdm.archivebook.app-lifecycle-livedata-2.10.0-28 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\c27aba69fc4a3f9965a7031b63710194\transformed\lifecycle-livedata-2.10.0\res
+com.example.pmdm.archivebook.app-ui-graphics-29 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\c3eae8629926385d435924770ce1a352\transformed\ui-graphics\res
+com.example.pmdm.archivebook.app-transition-1.6.0-30 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\d06b603a955bbecefe22a5fdf96c0978\transformed\transition-1.6.0\res
+com.example.pmdm.archivebook.app-lifecycle-viewmodel-31 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\d326cd6383f3c6dc65c58d25ae5cfc63\transformed\lifecycle-viewmodel\res
+com.example.pmdm.archivebook.app-material-icons-core-release-32 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\d775533eee76544448e0ab7a6d2ea593\transformed\material-icons-core-release\res
+com.example.pmdm.archivebook.app-ui-test-manifest-1.10.0-beta02-33 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\dd41da0fe7891ed377fdb70fd286888c\transformed\ui-test-manifest-1.10.0-beta02\res
+com.example.pmdm.archivebook.app-ui-34 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\e0a07b2e2c486d9e19902bdcab8fc6cc\transformed\ui\res
+com.example.pmdm.archivebook.app-core-viewtree-1.0.0-35 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\e1a6d8a581f3de2dfeb9c62220608989\transformed\core-viewtree-1.0.0\res
+com.example.pmdm.archivebook.app-lifecycle-livedata-core-2.10.0-36 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\e59630ca0517c4aae24fb5468fd983f5\transformed\lifecycle-livedata-core-2.10.0\res
+com.example.pmdm.archivebook.app-ui-text-37 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\e5b5345dfaa44f9d2bd0a719ff1bf6c4\transformed\ui-text\res
+com.example.pmdm.archivebook.app-foundation-38 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\8.13\transforms\f2c8a09d78af07d290186cf185e2f745\transformed\foundation\res
+com.example.pmdm.archivebook.app-pngs-39 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\res\pngs\debug
+com.example.pmdm.archivebook.app-resValues-40 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\res\resValues\debug
+com.example.pmdm.archivebook.app-updated_navigation_xml-41 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\generated\updated_navigation_xml\debug
+com.example.pmdm.archivebook.app-packageDebugResources-42 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.pmdm.archivebook.app-packageDebugResources-43 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.pmdm.archivebook.app-debug-44 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.example.pmdm.archivebook.app-debug-45 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\debug\res
+com.example.pmdm.archivebook.app-main-46 D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\res
