@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -42,17 +44,15 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 32.dp), // Extra side padding for a better look
+                .padding(horizontal = 16.dp), // Extra side padding for a better look
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //Log in text
             Text(
                 text = "Log in",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineLarge
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
             // Email Section
             Text(text = "Email", modifier = Modifier.align(Alignment.Start))
             TextField(
@@ -63,9 +63,7 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true
             )
-
             Spacer(modifier = Modifier.height(16.dp))
-
             // Password Section
             Text(text = "Password", modifier = Modifier.align(Alignment.Start))
             TextField(
@@ -77,15 +75,32 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true
             )
-
             Spacer(modifier = Modifier.height(32.dp))
-
             // Login Button
             Button(
                 onClick = onLoginSuccess,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Text("Login")
+                Text("Login",
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+            Spacer(modifier = Modifier.height(48.dp))
+            //  Sign in text
+            Text(
+                text = "Don't have an account yet?",
+                style = MaterialTheme.typography.titleLarge,
+            )
+            //  Sign in Buttom
+            Button(
+                onClick = {},
+                modifier = Modifier.padding(8.dp),
+                shape = RoundedCornerShape(0.dp)
+            ) {
+                Text("Sign in",
+                    style = MaterialTheme.typography.titleLarge
+                )
             }
         }
     }
