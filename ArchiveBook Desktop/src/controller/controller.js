@@ -6,19 +6,23 @@ import { Model } from '../model/model.js';
 // Hacer los imports de las clases de la vista
 //
 //
-import { View } from '../view/view.js';
+import { loginView } from '../view/loginView.js';
+
+import { appView } from '../view/appView.js';
 
 export class Controller {
 
     // Access to view and model classes as private fields
     #model
-    #view
+    #loginView
+    #appView
 
 
     // Instantiating classes
     constructor() {
         this.#model = new Model();
-        this.#view = new View();
+        this.#loginView = new loginView();
+        this.#appView = new appView();
     }
 
 
@@ -31,8 +35,19 @@ export class Controller {
         console.log("he hecho click a log")
         app.windowopen()
     }
-    signin() {
-        console.log("he hecho click a sign")
+    /*async*/ signin(email, password, confirmation) {
+        try {
+            if(password.value != confirmation.value){
+                this.#loginView.showError()
+            }
+            else{
+                console.log("obtenido correctamente: " + email.value)
+                app.windowopen()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
     change(bool = false, event) {
         console.log("cambio entre tipos")

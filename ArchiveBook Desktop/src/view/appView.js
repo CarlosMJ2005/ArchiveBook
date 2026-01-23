@@ -1,4 +1,4 @@
-export class View {
+export class appView {
 
     constructor() {
     }

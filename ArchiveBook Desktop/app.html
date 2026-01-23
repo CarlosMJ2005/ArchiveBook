@@ -1,70 +1,486 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Archivebook app</title>
     <meta charset="UTF-8">
+    <title>Archivebook app</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f5f0e6;
-        }
-        h1{
-            margin-left: 30px;
-            margin-top: 20px;
+            padding-top: 60px;
         }
 
-        .login-card {
+        #navbar{
+            background-color: #fcdcaf;
+        }
+        
+        .sidebar {
+            width: 260px;
             background-color: #fce8cc;
-            border: none;
-            border-radius: 1rem;
+            height: 100vh;
+            padding-top: 90px;
+            padding-left: 20px;
+            padding-right: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
         }
 
-        .signin-card {
-            background-color: #fff3e2;
-            border: none;
-            border-radius: 1rem;
+        h1{
+            color: #501f09;
         }
 
-        .btn-beige {
-            background-color: #c9a97c;
-            color: #5c483a;
-            font-weight: 600;
+        .sidebar a {
+            display: block;
+            color: #4e250a;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-weight: 500;
         }
 
-        .btn-beige:hover {
+        .sidebar a:hover {
             background-color: #84240c;
-            color: #f8d5a5;
+            color: #fce8cc;
             transition: 0.2s ease;
         }
 
-        .form-control {
-            background-color: #F5F0E6;
-            border-color: #CBB89D;
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
         }
 
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #A8926E;
-        }
-
-        .text-beige {
+        h2 {
             color: #4e250a;
         }
 
-        #change:hover {
-            background-color: #84240c;
-            color: #fce8cc;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: 0.2s ease;
+        section {
+            background-color: #fff3e2;
+            padding: 20px;
+            border-radius: 1rem;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 
-<body class="d-flex justify-content-left vh-100">
-    <h1 class="text-left text-beige">ArchiveBook</h1>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-archive fixed-top" id="navbar">
+        <div class="container-fluid">
+            <h1 class="text-beige">ArchiveBook</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#archiveNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="archiveNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li>
+                        <img src="./images/menu.png" style="max-height: 35px;">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="sidebar">
+        <nav>
+            <h3><a href="#best-sellers">Best sellers</a></h3>
+            <p>Most pupular</p>
+            <h3><a href="#favourites">Favourites</a></h3>
+            <p>Your favourite books</p>
+            <h3><a href="#to-read">To read</a></h3>
+            <p>Your books marked to read</p>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <section class="mb-4">
+            <h2>Best sellers:</h2>
+            <div class="d-flex flex-wrap gap-4" id="best-sellers">
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <h2>Favourites:</h2>
+            <div class="d-flex flex-wrap gap-4" id="favourites">
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <h2>To read:</h2>
+            <div class="d-flex flex-wrap gap-4" id="to-read">
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+        <section class="mb-4">
+            <h2>All:</h2>
+            <div class="d-flex flex-wrap gap-4" id="all">
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+                <div>
+                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="mainApp.js"></script>
 </body>

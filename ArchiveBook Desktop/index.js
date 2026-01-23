@@ -6,6 +6,7 @@ const path = require('path')
 // 2.
 let logwindow;
 let appwindow;
+let cerrar = true;
 
 // 3.
 app.on('ready', () => {
@@ -20,6 +21,13 @@ app.on('ready', () => {
   });
   logwindow.loadFile('login.html');
 
+  logwindow.on('close', function () {
+    if(cerrar){
+      cerrar = false;
+      appwindow.close()
+    }
+  })
+
   appwindow = new BrowserWindow({
     resizable : false,
     width: 1920 ,
@@ -27,6 +35,13 @@ app.on('ready', () => {
   });
   appwindow.loadFile('app.html');
   appwindow.hide()
+
+  appwindow.on('close', function () {
+    if(cerrar){
+      cerrar = false;
+      logwindow.close()
+    }
+  })
 
 
   ipcMain.on('open-window', () => {
