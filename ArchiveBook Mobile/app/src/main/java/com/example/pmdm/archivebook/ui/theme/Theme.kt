@@ -1,58 +1,44 @@
 package com.example.pmdm.archivebook.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// Use the variables we defined in Color.kt
+private val LightColorScheme = lightColorScheme(
+    primary = LightPrimary,        // Brown Buttons
+    onPrimary = LightOnPrimary,    // Cream text on Brown buttons
+    secondary = LightSecondary,
+    background = LightBackground,  // Cream Screen background
+    surface = LightBackground,     // Matches background for seamless TextFields
+    onBackground = LightPrimary,   // Brown text on the Cream background
+    onSurface = LightPrimary       // Brown text inside fields
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val DarkColorScheme = darkColorScheme(
+    primary = DarkPrimary,         // Cream Buttons
+    onPrimary = DarkOnPrimary,     // Brown text on Cream buttons
+    secondary = DarkSecondary,
+    background = DarkBackground,   // Brown Screen background
+    surface = DarkBackground,      // Matches background for seamless TextFields
+    onBackground = DarkPrimary,    // Cream text on the Brown background
+    onSurface = DarkPrimary,       // Cream text inside fields
+    error = Color(0xFFF2B8B5)      // Light pinkish-red for errors on dark brown
 )
 
 @Composable
 fun ArchiveBookTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        // If Typography causes errors, leave it out for now
         content = content
     )
 }

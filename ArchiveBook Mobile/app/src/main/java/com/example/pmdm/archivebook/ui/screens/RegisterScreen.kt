@@ -36,22 +36,22 @@ import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     onLoginSuccess: () -> Unit,
-    onRegisterClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // State for the input fields
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
-    // 1. Snackbar state and Coroutine Scope
+    // State for Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        // 2. Attach the SnackbarHost to the Scaffold
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -62,9 +62,9 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Log in title
+            // Title
             Text(
-                text = "Log In",
+                text = "Sign Up",
                 style = MaterialTheme.typography.displayMedium,
                 // This makes the text Brown in Light Mode and Cream in Dark Mode
                 color = MaterialTheme.colorScheme.onBackground
@@ -76,8 +76,7 @@ fun LoginScreen(
             Text(
                 text = "Email",
                 modifier = Modifier.align(Alignment.Start),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.titleLarge
             )
             TextField(
                 value = email,
@@ -95,7 +94,6 @@ fun LoginScreen(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
 
-                    //
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
 
@@ -111,8 +109,7 @@ fun LoginScreen(
             Text(
                 text = "Password",
                 modifier = Modifier.align(Alignment.Start),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.titleLarge
             )
             TextField(
                 value = password,
@@ -131,7 +128,6 @@ fun LoginScreen(
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
 
-                    //
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
 
@@ -141,17 +137,62 @@ fun LoginScreen(
                 )
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Confirm Password Section
+            Text(
+                text = "Confirm Password",
+                modifier = Modifier.align(Alignment.Start),
+                style = MaterialTheme.typography.titleLarge
+            )
+            TextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                placeholder = { Text("Repeat your password") },
+                modifier = Modifier.fillMaxWidth(),
+                isError = password != confirmPassword && confirmPassword.isNotEmpty(),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    // CHANGE THIS to Transparent to match the background
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+
+                    // Keep your text colors consistent
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+
+
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+
+                    // Indicator colors
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+
+                    // Error colors (since this field uses isError)
+                    errorContainerColor = Color.Transparent,
+                    errorIndicatorColor = MaterialTheme.colorScheme.error
+                )
+            )
+
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Login Button with Validation
+            // Register Button
             Button(
                 onClick = {
-                    // 3. Verify all fields are done
-                    if (email.isBlank() || password.isBlank()) {
+                    // Validation Logic
+                    if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
                         scope.launch {
-                            snackbarHostState.showSnackbar("Please enter both email and password")
+                            snackbarHostState.showSnackbar("Please fill in all fields")
+                        }
+                    } else if (password != confirmPassword) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Passwords do not match")
                         }
                     } else {
+                        // Success: Logs in directly
                         onLoginSuccess()
                     }
                 },
@@ -164,21 +205,21 @@ fun LoginScreen(
                 )
             ) {
                 Text(
-                    text = "Log In",
+                    text = "Sign Up",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Sign Up redirection section
+            // Back to Login section
             Text(
-                text = "Don't have an account yet?",
+                text = "Already have an account?",
                 style = MaterialTheme.typography.titleLarge,
             )
 
             Button(
-                onClick = onRegisterClick,
+                onClick = onNavigateToLogin,
                 modifier = Modifier.size(116.dp, 60.dp),
                 shape = RoundedCornerShape(8.dp),
                 // This makes the button look the same on both screens
@@ -188,7 +229,7 @@ fun LoginScreen(
                 )
             ) {
                 Text(
-                    text = "Sign In",
+                    text = "Log In",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -198,11 +239,11 @@ fun LoginScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun RegisterScreenPreview() {
     ArchiveBookTheme {
-        LoginScreen(
+        RegisterScreen(
             onLoginSuccess = {},
-            onRegisterClick = {}
+            onNavigateToLogin = {}
         )
     }
 }
