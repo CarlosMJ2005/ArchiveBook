@@ -4,10 +4,10 @@
  */
 package com.archivebook.archivebook.repository;
 
-/**
- *
- * @author 7N
- */
-public interface AutorRepository {
+import com.archivebook.archivebook.entities.Autor;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public interface AutorRepository extends JpaRepository<Autor, Long>{
     
 }

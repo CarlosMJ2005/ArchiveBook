@@ -45,7 +45,7 @@ public class Prestamo {
         this.estado = "ACTIVO";
     }
 
-    public Prestamo(Long id, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
@@ -53,7 +53,7 @@ public class Prestamo {
         this.estado = estado;
     }
 
-    public Prestamo(Long id, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, String estado, Libro libro, Usuario usuario) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, String estado, Libro libro, Usuario usuario) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
@@ -62,7 +62,7 @@ public class Prestamo {
         this.usuario = usuario;
     }
 
-    public Prestamo(Long id, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado, Libro libro, Usuario usuario) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado, Libro libro, Usuario usuario) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
@@ -77,7 +77,7 @@ public class Prestamo {
         return idPrestamo;
     }
 
-    public void setId(Long id) {
+    public void setId(Long idPrestamo) {
         this.idPrestamo = idPrestamo;
     }
 

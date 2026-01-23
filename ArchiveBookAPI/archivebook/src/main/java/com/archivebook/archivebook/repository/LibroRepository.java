@@ -4,10 +4,13 @@
  */
 package com.archivebook.archivebook.repository;
 
+import com.archivebook.archivebook.entities.Libro;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author 7N
  */
-public interface LibroRepository {
+public interface LibroRepository extends JpaRepository<Libro, Long>{
     
 }

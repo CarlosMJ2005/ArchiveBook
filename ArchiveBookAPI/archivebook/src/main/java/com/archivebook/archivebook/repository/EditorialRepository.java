@@ -4,10 +4,13 @@
  */
 package com.archivebook.archivebook.repository;
 
+import com.archivebook.archivebook.entities.Editorial;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author 7N
  */
-public interface EditorialRepository {
+public interface EditorialRepository extends JpaRepository<Editorial, Long>{
     
 }

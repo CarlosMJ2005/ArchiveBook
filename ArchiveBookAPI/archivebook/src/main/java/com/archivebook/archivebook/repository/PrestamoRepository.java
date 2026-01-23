@@ -1,14 +1,10 @@
 package com.archivebook.archivebook.repository;
 
 import com.archivebook.archivebook.entities.Prestamo;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface PrestamoRepository {
+public interface PrestamoRepository extends JpaRepository<Prestamo, Long>{
     
-    //Buscar prestamos de un usuario
-    List<Prestamo> findByUsuarioIdAndEstado(Long usuarioId, String estado);
     
-    // Buscar si un libro específico está prestado actualmente
-    List<Prestamo> findByLibroIdAndEstado(Long libroId, String estado);
 }
