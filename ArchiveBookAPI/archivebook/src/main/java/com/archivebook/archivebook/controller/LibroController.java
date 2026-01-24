@@ -22,6 +22,7 @@ public class LibroController {
         this.repository = repository;
     }
     
+    @GetMapping("/api/libros")
     public List<Libro> verLibros() {
         return repository.findAll();
     }

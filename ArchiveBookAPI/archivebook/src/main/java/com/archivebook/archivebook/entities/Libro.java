@@ -40,7 +40,7 @@ public class Libro {
     private Editorial editorial; // Relación con Editorial
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "idCategoria")
+    @Column(name = "categoria")
     private CategoriaLibro categoria;
     
     @Column(name="prestado")
