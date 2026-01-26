@@ -4,6 +4,7 @@
  */
 package com.archivebook.archivebook.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ public class Autor {
     private String nacionalidad;
     
     @OneToMany(mappedBy = "autor")//Debe tener el mismo nombre que el atributo que hay en libros
+    @JsonIgnore
     private List<Libro> libros;
 
     public Autor() {

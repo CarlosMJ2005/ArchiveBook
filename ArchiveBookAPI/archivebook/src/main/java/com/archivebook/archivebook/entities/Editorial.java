@@ -1,6 +1,7 @@
 
 package com.archivebook.archivebook.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Editorial {
     private String sitioWeb;
     
     @OneToMany(mappedBy = "editorial")
-    //@JsonIgnore // Evita bucles infinitos al serializar a JSON
+    @JsonIgnore 
     private List<Libro> libros;
 
     public Editorial() {

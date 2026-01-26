@@ -22,7 +22,11 @@ public class LibroController {
         this.repository = repository;
     }
     
+<<<<<<< HEAD
      @GetMapping("/api/libros")
+=======
+    @GetMapping("/api/libros")
+>>>>>>> origin/main
     public List<Libro> verLibros() {
         return repository.findAll();
     }
