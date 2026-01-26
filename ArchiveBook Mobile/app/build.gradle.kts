@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.navigation3.ui)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.androidx.material3)
-
+    implementation(libs.androidx.compose.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
