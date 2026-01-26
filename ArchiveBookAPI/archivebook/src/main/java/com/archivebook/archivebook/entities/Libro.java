@@ -163,10 +163,7 @@ public class Libro {
     public void setFavorito(boolean favorito) {
         this.favorito = favorito;
     }
-
-  
-    
-    }
+}
     
     
     
