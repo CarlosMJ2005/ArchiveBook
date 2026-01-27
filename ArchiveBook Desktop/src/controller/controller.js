@@ -23,6 +23,7 @@ export class Controller {
         this.#model = new Model();
         this.#loginView = new loginView();
         this.#appView = new appView();
+        this.loadUser()
     }
 
 
@@ -31,29 +32,29 @@ export class Controller {
     }
 
     // Controller methods...
-    login() {
-        console.log("he hecho click a log")
-        app.windowopen()
+    async login(email, password) {
+        console.log(email.value, password.value)
+        app.saveUser(email.value, password.value)
+        //app.windowOpen()
     }
     /*async*/ signin(email, password, confirmation) {
         try {
-            if(password.value != confirmation.value){
+            if (password.value != confirmation.value) {
                 this.#loginView.showError()
             }
-            else{
+            else {
                 console.log("obtenido correctamente: " + email.value)
-                app.windowopen()
+                app.windowOpen()
             }
         } catch (error) {
             console.log(error)
         }
-        
+
     }
     change(bool = false, event) {
         console.log("cambio entre tipos")
-        if (event){
+        if (event) {
             console.log("entro al event")
-            event.preventDefault()
         }
         if (bool) {
             console.log("muestro sign")
@@ -65,5 +66,9 @@ export class Controller {
             document.getElementById('log').classList.remove("d-none")
             document.getElementById('sign').classList.add("d-none")
         }
+    }
+
+    loadUser(){
+        
     }
 }

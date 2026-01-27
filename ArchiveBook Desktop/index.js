@@ -1,6 +1,10 @@
 // 1.
 const { app, BrowserWindow, ipcMain } = require('electron');
 
+const fs = require('fs')
+import { readFile } from "fs/promises";
+const ficheroUsuario = "./usuario.json"
+
 const path = require('path')
 
 // 2.
@@ -49,5 +53,18 @@ app.on('ready', () => {
     appwindow.show()
     logwindow.hide()
   })
-    
+
+  ipcMain.handle('save-user', (event, email,password) => {
+    fs.writeFileSync(ficheroUsuario, JSON.stringify({email,password}), null, 2)
+  })
+
+  ipcMain.handle('load-user', async () => {
+    try {
+    const results = JSON.parse(await readFile("user.json", "utf8"));
+    return results;
+  } catch (err) {
+    throw new Error("Error loading user file");
+  }
+  });
+
 })
