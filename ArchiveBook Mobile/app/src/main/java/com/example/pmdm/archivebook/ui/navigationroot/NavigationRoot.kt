@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.pmdm.archivebook.ui.screens.HomeScreen
+import com.example.pmdm.archivebook.ui.screens.LibraryScreen
 import com.example.pmdm.archivebook.ui.screens.LoginScreen
 import com.example.pmdm.archivebook.ui.screens.RegisterScreen
 
@@ -25,7 +25,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                 LoginScreen(
                     onLoginSuccess = {
                         backStack.clear()
-                        backStack.add(HomeKey)
+                        backStack.add(LibraryKey)
                     },
                     onRegisterClick = {
                         backStack.add(RegisterKey)
@@ -36,20 +36,25 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
             // Caso: PANTALLA DE REGISTRO
             entry<RegisterKey> {
                 RegisterScreen(
-                    onRegisterSuccess = { // Ahora el nombre coincide
+                    onRegisterSuccess = {
                         backStack.clear()
-                        backStack.add(HomeKey)
+                        backStack.add(LibraryKey)
                     },
                     onNavigateToLogin = {
-                        backStack.clear() // O backStack.pop() si prefieres volver atrás
+                        backStack.clear()
                         backStack.add(LoginKey)
                     }
                 )
             }
 
-            // Caso: PANTALLA PRINCIPAL (Tu Home con Drawer y buscador)
-            entry<HomeKey> {
-                HomeScreen()
+            // Caso: PANTALLA PRINCIPAL (Biblioteca, buscador y menú lateral)
+            entry<LibraryKey> {
+                LibraryScreen(
+                    onLogout = {
+                        backStack.clear()
+                        backStack.add(LoginKey)
+                    }
+                )
             }
         }
     )

@@ -15,4 +15,4 @@ object LoginKey : NavKey
 object RegisterKey : NavKey
 
 @Serializable
-object HomeKey : NavKey
+object LibraryKey : NavKey

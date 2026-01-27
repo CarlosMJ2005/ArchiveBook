@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Close
@@ -28,10 +29,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -72,8 +73,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun LibraryScreen(
     books: List<Book>? = null,
+    onLogout: () -> Unit,
     errorMessage: String? = null
 ) {
     // ESTADOS
@@ -157,6 +159,25 @@ fun HomeScreen(
                     colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = contentColor.copy(alpha = 0.2f)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Log Out") },
+                    selected = false,
+                    icon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
+                    onClick = {
+                        coroutineScope.launch {
+                            onLogout()
+                        }
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                    colors = drawerItemColors
+                )
+                Spacer(modifier = Modifier.height(16.dp)) // Margen final inferior
             }
         }
     ) {
@@ -224,8 +245,8 @@ fun HomeScreen(
                             )
                         )
 
-                        IconButton(onClick = { /* Ajustes */ }) {
-                            Icon(Icons.Default.Settings, contentDescription = null, tint = contentColor)
+                        IconButton(onClick = { /* Filtros */ }) {
+                            Icon(Icons.Default.MoreVert, contentDescription = null, tint = contentColor)
                         }
                     }
                 }
