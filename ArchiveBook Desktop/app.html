@@ -13,12 +13,12 @@
             padding-top: 60px;
         }
 
-        #navbar{
+        #navbar {
             background-color: #fcdcaf;
         }
-        
+
         .sidebar {
-            width: 260px;
+            width: 275px;
             background-color: #fce8cc;
             height: 100vh;
             padding-top: 90px;
@@ -29,7 +29,7 @@
             top: 0;
         }
 
-        h1{
+        h1 {
             color: #501f09;
         }
 
@@ -56,12 +56,29 @@
         h2 {
             color: #4e250a;
         }
-        li{
-            padding-right: 40px;
+
+        li {
+            padding-right: 20px;
         }
-        #menu:hover, #search:hover{
-            padding: 4px 8px;
-            background-color: aqua;
+
+        .icon-btn {
+            background: none;
+            border-radius: 1rem;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .icon{
+            max-height: 45px;
+        }
+
+        #menu:hover,
+        #search:hover {
+            border-radius: 1rem;
+            border: none;
+            background-color: #fcf0e3;
         }
 
         section {
@@ -70,6 +87,12 @@
             border-radius: 1rem;
             margin-bottom: 20px;
         }
+        #libro{
+            max-width: 150px;
+        }
+        #libro img{
+            max-width: 150px;
+        }
     </style>
 </head>
 
@@ -77,19 +100,26 @@
     <nav class="navbar navbar-expand-lg navbar-archive fixed-top" id="navbar">
         <div class="container-fluid">
             <h1 class="text-beige">ArchiveBook</h1>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#archiveNavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#archiveNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="archiveNavbar">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li style="padding-right: 300px;">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="me-3">
                         <input type="text" id="searcher">
-                        <img src="./images/lupa.png" style="height: 25px;" id="search">
                     </li>
+
+                    <li class="me-3" style="padding-right: 300px;">
+                        <button class="icon-btn">
+                            <img src="./images/lupa.png" class="icon" id="search">
+                        </button>
+                    </li>
+
                     <li>
-                        <img src="./images/menu.png" style="height: 35px;" id="menu">
+                        <button class="icon-btn">
+                            <img src="./images/menu.png" class="icon" id="menu">
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -98,245 +128,335 @@
 
     <aside class="sidebar">
         <nav>
-            <h3><a href="#best-sellers">Best sellers</a></h3>
+            <h3 class="d-flex flex-wrap gap-4"><img src="./images/star.png" class="icon"><a href="#best-sellers">Best sellers</a></h3>
             <p>Most pupular</p>
-            <h3><a href="#favourites">Favourites</a></h3>
+            <h3 class="d-flex flex-wrap gap-4"><img src="./images/heart.png" class="icon"><a href="#favourites-list">Favourites</a></h3>
             <p>Your favourite books</p>
-            <h3><a href="#to-read">To read</a></h3>
+            <h3 class="d-flex flex-wrap gap-4"><img src="./images/bookmark.png" class="icon"><a href="#to-read-list">Yet to read</a></h3>
             <p>Your books marked to read</p>
+            <h3 class="d-flex flex-wrap gap-4"><img src="./images/ringing.png" class="icon"><a href="#to-return-list">To return</a></h3>
+            <p>Your books to return</p>
         </nav>
     </aside>
 
     <main class="main-content">
         <section class="mb-4">
-            <h2>Best sellers:</h2>
+            <h2><img src="./images/star.png" class="icon">Best sellers:</h2>
             <div class="d-flex flex-wrap gap-4" id="best-sellers">
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>La guia del club de lectura...</h3>
+                    <div class="d-flex flex-wrap gap-1">
+                        <button class="icon-btn">
+                            <img src="./images/heart.png" class="icon" id="favourite">
+                        </button>
+                        <button class="icon-btn">
+                            <img src="./images/bookmark.png" class="icon" id="to-read">
+                        </button>
+                        <button class="icon-btn">
+                            <img src="./images/ringing.png" class="icon" id="to-return">
+                        </button>
+                    </div>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-4">
-            <h2>Favourites:</h2>
-            <div class="d-flex flex-wrap gap-4" id="favourites">
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
-                    <h3>pepito</h3>
-                </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
             </div>
         </section>
 
         <section class="mb-4">
-            <h2>To read:</h2>
-            <div class="d-flex flex-wrap gap-4" id="to-read">
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+            <h2><img src="./images/heart.png" class="icon">Favourites:</h2>
+            <div class="d-flex flex-wrap gap-4" id="favourites-list">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <h2><img src="./images/bookmark.png" class="icon">Yet to read:</h2>
+            <div class="d-flex flex-wrap gap-4" id="to-read-list">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+            </div>
+        </section>
+        <section class="mb-4">
+            <h2><img src="./images/ringing.png" class="icon"> To return:</h2>
+            <div class="d-flex flex-wrap gap-4" id="to-return-list">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
+                    <h3>pepito</h3>
+                </div>
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
             </div>
@@ -344,148 +464,148 @@
         <section class="mb-4">
             <h2>All:</h2>
             <div class="d-flex flex-wrap gap-4" id="all">
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div>
-                    <img src="./images/camara_.jpg" style="max-height: 360px;">
+                <div id="libro">
+                    <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
             </div>

@@ -32,18 +32,28 @@ export class Controller {
     }
 
     // Controller methods...
-    async login(email, password) {
-        console.log(email.value, password.value)
-        app.saveUser(email.value, password.value)
-        //app.windowOpen()
+    async login() {
+        const email =this.#loginView.getEmailLog()
+        const password =this.#loginView.getPasswordLog()
+        const state = this.#loginView.getStateCheckbox()
+        
+        app.saveUser(email, password, state)
+
+        console.log(email, password)
+        app.windowOpen()
     }
-    /*async*/ signin(email, password, confirmation) {
+    /*async*/ signin() {
         try {
-            if (password.value != confirmation.value) {
+            const email =this.#loginView.getEmailSign()
+            const password =this.#loginView.getPasswordSign()
+            const confirmation =this.#loginView.getConfirmationSign()
+
+            if (password != confirmation) {
                 this.#loginView.showError()
             }
             else {
-                console.log("obtenido correctamente: " + email.value)
+                console.log("obtenido correctamente: " + email)
+                app.saveUser(email, password, false)
                 app.windowOpen()
             }
         } catch (error) {
@@ -51,24 +61,25 @@ export class Controller {
         }
 
     }
-    change(bool = false, event) {
-        console.log("cambio entre tipos")
-        if (event) {
-            console.log("entro al event")
-        }
-        if (bool) {
-            console.log("muestro sign")
-            document.getElementById('sign').classList.remove("d-none")
-            document.getElementById('log').classList.add("d-none")
-        }
-        else {
-            console.log("muestro log")
-            document.getElementById('log').classList.remove("d-none")
-            document.getElementById('sign').classList.add("d-none")
-        }
+    change(bool = false) {
+        this.#loginView.change(bool)
     }
 
     loadUser(){
-        
+        app.loadUser()
+            .then((lista) => {
+                try {
+                    console.log(state)
+                    if(lista.state == true){
+                    this.#loginView.fulfill(lista.email, lista.password, lista.state)
+                }
+                } catch (error) {
+                    console.log("la estructra del archivo no es correcta")
+                }
+                
+            })
+            .catch((err) => {
+                console.log("no hay un usuario guardado")
+            })
     }
 }
