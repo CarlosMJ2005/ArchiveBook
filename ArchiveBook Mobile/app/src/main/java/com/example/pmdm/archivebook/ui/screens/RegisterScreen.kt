@@ -101,10 +101,19 @@ fun RegisterScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
+                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
+
+                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+
+                    //
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+
+                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
@@ -134,14 +143,21 @@ fun RegisterScreen(
                     }
                 },
                 colors = TextFieldDefaults.colors(
+                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
+
+                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+
+                    //
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+
+                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
             )
 
@@ -170,16 +186,21 @@ fun RegisterScreen(
                     }
                 },
                 colors = TextFieldDefaults.colors(
+                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
+
+                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+
+                    //
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+
+                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                    errorContainerColor = Color.Transparent,
-                    errorIndicatorColor = MaterialTheme.colorScheme.error,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
             )
 
