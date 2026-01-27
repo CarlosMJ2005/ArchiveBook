@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -74,9 +75,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
-    books: List<Book>? = null,
-    onLogout: () -> Unit,
-    errorMessage: String? = null
+    books: List<Book>? = null, onLogout: () -> Unit, errorMessage: String? = null
 ) {
     // ESTADOS
     var searchText by remember { mutableStateOf("") }
@@ -95,8 +94,7 @@ fun LibraryScreen(
     }
 
     ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
+        drawerState = drawerState, drawerContent = {
             ModalDrawerSheet(
                 drawerContainerColor = MaterialTheme.colorScheme.background,
             ) {
@@ -129,6 +127,15 @@ fun LibraryScreen(
                     selected = true,
                     icon = { Icon(Icons.Default.Menu, contentDescription = null) },
                     onClick = { coroutineScope.launch { drawerState.close() } },
+                    colors = drawerItemColors,
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Best Sellers") },
+                    selected = false,
+                    icon = { Icon(Icons.Default.Star, contentDescription = null) },
+                    onClick = { /* Acción */ },
                     colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
@@ -178,94 +185,113 @@ fun LibraryScreen(
                     colors = drawerItemColors
                 )
                 Spacer(modifier = Modifier.height(16.dp)) // Margen final inferior
+                }
             }
-        }
-    ) {
+        ) {
+
         Scaffold(
             topBar = {
-                Surface(
-                    color = MaterialTheme.colorScheme.background,
-                    shadowElevation = 2.dp
+            Surface(
+                color = MaterialTheme.colorScheme.background, shadowElevation = 2.dp
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Abrir menú", tint = contentColor)
+                    IconButton(onClick = {
+                            coroutineScope.launch { drawerState.open() }
                         }
-
-                        TextField(
-                            value = searchText,
-                            onValueChange = { searchText = it },
-                            placeholder = {
-                                Text(
-                                    "Search",
-                                    fontSize = 15.sp,
-                                    modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Sentences,
-                                keyboardType = KeyboardType.Text
-                            ),
-                            leadingIcon = {
-                                Icon(Icons.Default.Search, null, modifier = Modifier.size(20.dp))
-                            },
-                            trailingIcon = {
-                                if (searchText.isNotEmpty()) {
-                                    IconButton(onClick = { searchText = "" }) {
-                                        Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp))
-                                    }
-                                }
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(54.dp)
-                                .padding(horizontal = 4.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            singleLine = true,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = MaterialTheme.colorScheme.onSurface,
-                                unfocusedContainerColor = MaterialTheme.colorScheme.onSurface,
-                                focusedTextColor = MaterialTheme.colorScheme.surface,
-                                unfocusedTextColor = MaterialTheme.colorScheme.surface,
-                                focusedLeadingIconColor = MaterialTheme.colorScheme.surface,
-                                unfocusedLeadingIconColor = MaterialTheme.colorScheme.surface,
-                                focusedTrailingIconColor = MaterialTheme.colorScheme.surface,
-                                unfocusedTrailingIconColor = MaterialTheme.colorScheme.surface,
-                                cursorColor = MaterialTheme.colorScheme.surface,
-                                focusedPlaceholderColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                                unfocusedPlaceholderColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            )
+                    ) {
+                        Icon(
+                            Icons.Default.Menu,
+                            contentDescription = "Abrir menú",
+                            tint = contentColor
                         )
+                    }
 
-                        IconButton(onClick = { /* Filtros */ }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = null, tint = contentColor)
-                        }
-                    }
-                }
-            },
-            floatingActionButton = {
-                if (showButton) {
-                    FloatingActionButton(
-                        onClick = {
-                            coroutineScope.launch { listState.animateScrollToItem(0) }
+                    TextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        placeholder = {
+                            Text(
+                                "Search",
+                                fontSize = 15.sp,
+                                modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
+                            )
                         },
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        shape = RoundedCornerShape(50.dp)
-                    ) {
-                        Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            keyboardType = KeyboardType.Text
+                        ),
+                        leadingIcon = {
+                            Icon(Icons.Default.Search,
+                                null,
+                                modifier = Modifier.size(20.dp))
+                        },
+                        trailingIcon = {
+                            if (searchText.isNotEmpty()) {
+                                IconButton(onClick = { searchText = "" }) {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        null,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(54.dp)
+                            .padding(horizontal = 4.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.onSurface,
+                            focusedTextColor = MaterialTheme.colorScheme.surface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.surface,
+                            focusedLeadingIconColor = MaterialTheme.colorScheme.surface,
+                            unfocusedLeadingIconColor = MaterialTheme.colorScheme.surface,
+                            focusedTrailingIconColor = MaterialTheme.colorScheme.surface,
+                            unfocusedTrailingIconColor = MaterialTheme.colorScheme.surface,
+                            cursorColor = MaterialTheme.colorScheme.surface,
+                            focusedPlaceholderColor = MaterialTheme.colorScheme.surface.copy(
+                                alpha = 0.7f
+                            ),
+                            unfocusedPlaceholderColor = MaterialTheme.colorScheme.surface.copy(
+                                alpha = 0.7f
+                            ),
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
+                    )
+
+                    IconButton(onClick = { /* Filtros */ }) {
+                        Icon(
+                            Icons.Default.MoreVert,
+                            contentDescription = null,
+                            tint = contentColor
+                        )
                     }
                 }
-            },
-            floatingActionButtonPosition = FabPosition.Center
+            }
+        }, floatingActionButton = {
+            if (showButton) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch { listState.animateScrollToItem(0) }
+                    },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = RoundedCornerShape(50.dp)
+                ) {
+                    Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)
+                }
+            }
+        }, floatingActionButtonPosition = FabPosition.Center
         ) { innerPadding ->
             Box(
                 modifier = Modifier
@@ -277,10 +303,13 @@ fun LibraryScreen(
                     errorMessage != null -> {
                         Text(
                             text = errorMessage,
-                            modifier = Modifier.align(Alignment.Center).padding(16.dp),
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp),
                             color = MaterialTheme.colorScheme.error
                         )
                     }
+
                     books.isNullOrEmpty() -> {
                         Text(
                             text = "There are no books available.",
@@ -288,6 +317,7 @@ fun LibraryScreen(
                             color = contentColor
                         )
                     }
+
                     else -> {
                         LazyColumn(
                             state = listState,
@@ -316,6 +346,7 @@ fun BookCard(book: Book) {
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+            //Portada del libro
             Box(
                 modifier = Modifier
                     .weight(0.35f)
@@ -352,7 +383,7 @@ fun BookCard(book: Book) {
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val iconTint = MaterialTheme.colorScheme.onSurfaceVariant
