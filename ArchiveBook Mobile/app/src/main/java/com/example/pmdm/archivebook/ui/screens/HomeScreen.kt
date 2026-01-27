@@ -80,20 +80,23 @@ fun HomeScreen(
     var searchText by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val isDarkTheme = androidx.compose.foundation.isSystemInDarkTheme()
 
     // Estado para el Drawer
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    val selectedBg = if (isDarkTheme) Color(0xFF390A02) else Color(0xFFF8F2E4)
+    val contentColor = if (isDarkTheme) Color(0xFFF5E6CC) else Color(0xFF7B241C)
 
     val showButton by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
 
-    // CONTENEDOR DEL MENÚ LATERAL (DRAWER)
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                drawerContainerColor = MaterialTheme.colorScheme.surface,
+                drawerContainerColor = MaterialTheme.colorScheme.background,
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -101,16 +104,30 @@ fun HomeScreen(
                     modifier = Modifier.padding(24.dp),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = contentColor
                 )
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = contentColor.copy(alpha = 0.2f)
+                )
                 Spacer(modifier = Modifier.height(8.dp))
+
+                // Definimos una función local para no repetir el bloque de colores
+                val drawerItemColors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = selectedBg,
+                    unselectedContainerColor = Color.Transparent,
+                    selectedIconColor = contentColor,
+                    unselectedIconColor = contentColor,
+                    selectedTextColor = contentColor,
+                    unselectedTextColor = contentColor
+                )
 
                 NavigationDrawerItem(
                     label = { Text("Library") },
                     selected = true,
                     icon = { Icon(Icons.Default.Menu, contentDescription = null) },
                     onClick = { coroutineScope.launch { drawerState.close() } },
+                    colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
 
@@ -119,6 +136,7 @@ fun HomeScreen(
                     selected = false,
                     icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
                     onClick = { /* Acción */ },
+                    colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
 
@@ -127,6 +145,7 @@ fun HomeScreen(
                     selected = false,
                     icon = { Icon(Icons.Default.Bookmark, contentDescription = null) },
                     onClick = { /* Acción */ },
+                    colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
 
@@ -135,13 +154,12 @@ fun HomeScreen(
                     selected = false,
                     icon = { Icon(Icons.Default.NotificationsActive, contentDescription = null) },
                     onClick = { /* Acción */ },
+                    colors = drawerItemColors,
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
-
             }
         }
     ) {
-        // EL SCAFFOLD VA DENTRO DEL DRAWER
         Scaffold(
             topBar = {
                 Surface(
@@ -155,12 +173,10 @@ fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Icono que abre el Drawer
                         IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Abrir menú")
+                            Icon(Icons.Default.Menu, contentDescription = "Abrir menú", tint = contentColor)
                         }
 
-                        // Barra de búsqueda con colores invertidos
                         TextField(
                             value = searchText,
                             onValueChange = { searchText = it },
@@ -209,7 +225,7 @@ fun HomeScreen(
                         )
 
                         IconButton(onClick = { /* Ajustes */ }) {
-                            Icon(Icons.Default.Settings, contentDescription = null)
+                            Icon(Icons.Default.Settings, contentDescription = null, tint = contentColor)
                         }
                     }
                 }
@@ -247,7 +263,8 @@ fun HomeScreen(
                     books.isNullOrEmpty() -> {
                         Text(
                             text = "There are no books available.",
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center),
+                            color = contentColor
                         )
                     }
                     else -> {
