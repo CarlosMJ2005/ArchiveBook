@@ -2,61 +2,53 @@ package com.example.pmdm.archivebook.ui.navigationroot
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.pmdm.archivebook.ui.screens.HomeScreen
 import com.example.pmdm.archivebook.ui.screens.LoginScreen
 import com.example.pmdm.archivebook.ui.screens.RegisterScreen
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class LoginScreenKey(val id: String = "Login") : NavKey
-
-@Serializable
-data class RegisterScreenKey(val id: String = "Register") : NavKey
-
-@Serializable
-data class HomeScreenKey(val id: String = "Home") : NavKey
-
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
 
-    val backStack = rememberNavBackStack(LoginScreenKey())
+    // Definimos LoginKey como la pantalla de inicio
+    val backStack = rememberNavBackStack(LoginKey)
 
     NavDisplay(
         backStack = backStack,
         modifier = modifier,
         entryProvider = entryProvider {
-            entry<LoginScreenKey> { navElement ->
+
+            // Caso: PANTALLA DE LOGIN
+            entry<LoginKey> {
                 LoginScreen(
                     onLoginSuccess = {
                         backStack.clear()
-                        backStack.add(HomeScreenKey())
+                        backStack.add(HomeKey)
                     },
-                    onRegisterClick ={
-                        backStack.clear()
-                        backStack.add(RegisterScreenKey())
+                    onRegisterClick = {
+                        backStack.add(RegisterKey)
                     }
                 )
             }
 
-            entry<RegisterScreenKey> { navElement ->
+            // Caso: PANTALLA DE REGISTRO
+            entry<RegisterKey> {
                 RegisterScreen(
-                    onLoginSuccess = {
+                    onRegisterSuccess = { // Ahora el nombre coincide
                         backStack.clear()
-                        backStack.add(HomeScreenKey())
+                        backStack.add(HomeKey)
                     },
                     onNavigateToLogin = {
-                        backStack.clear()
-                        backStack.add(LoginScreenKey())
+                        backStack.clear() // O backStack.pop() si prefieres volver atrás
+                        backStack.add(LoginKey)
                     }
                 )
             }
 
-            entry<HomeScreenKey> { navElement ->
+            // Caso: PANTALLA PRINCIPAL (Tu Home con Drawer y buscador)
+            entry<HomeKey> {
                 HomeScreen()
             }
         }

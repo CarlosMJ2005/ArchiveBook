@@ -47,21 +47,18 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
-    onLoginSuccess: () -> Unit,
+    onRegisterSuccess: () -> Unit,
     onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // 1. Estados de los campos
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    // 2. Estados de visibilidad y sesión
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
     var keepSessionActive by remember { mutableStateOf(false) }
 
-    // Snackbar y Scope
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -77,7 +74,6 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título
             Text(
                 text = "Sign Up",
                 style = MaterialTheme.typography.displayMedium,
@@ -86,7 +82,7 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Sección Email
+            // Email Field
             Text(
                 text = "Email",
                 modifier = Modifier.align(Alignment.Start),
@@ -101,27 +97,22 @@ fun RegisterScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-
-                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-
-                    //
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
-
-                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
                 )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Sección Contraseña
+            // Password Field
             Text(
                 text = "Password",
                 modifier = Modifier.align(Alignment.Start),
@@ -139,31 +130,30 @@ fun RegisterScreen(
                 trailingIcon = {
                     val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = image, contentDescription = null)
+                        Icon(
+                            imageVector = image,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 },
                 colors = TextFieldDefaults.colors(
-                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-
-                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-
-                    //
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
-
-                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
                 )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Sección Confirmar Contraseña
+            // Confirm Password Field
             Text(
                 text = "Confirm Password",
                 modifier = Modifier.align(Alignment.Start),
@@ -182,31 +172,36 @@ fun RegisterScreen(
                 trailingIcon = {
                     val image = if (confirmPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                     IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
-                        Icon(imageVector = image, contentDescription = null)
+                        Icon(
+                            imageVector = image,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 },
                 colors = TextFieldDefaults.colors(
-                    // Makes the box background match the app background
+                    // Fondos (Todos transparentes)
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent, // <--- ESTO QUITA EL GRIS DE LA IMAGEN
+                    disabledContainerColor = Color.Transparent,
 
-                    // Colors for the text you type
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-
-                    //
+                    // Texto
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    errorTextColor = MaterialTheme.colorScheme.onBackground,
 
-                    // Colors for the line underneath
+                    // Indicador (La línea de abajo)
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    errorIndicatorColor = MaterialTheme.colorScheme.error // La línea se pondrá roja en error
                 )
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Botón de Registro
             Button(
                 onClick = {
                     if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
@@ -214,8 +209,7 @@ fun RegisterScreen(
                     } else if (password != confirmPassword) {
                         scope.launch { snackbarHostState.showSnackbar("Passwords do not match") }
                     } else {
-                        // Aquí podrías guardar el estado de 'keepSessionActive'
-                        onLoginSuccess()
+                        onRegisterSuccess()
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -230,7 +224,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- FILA DEL SWITCH CENTRADA ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -238,28 +231,22 @@ fun RegisterScreen(
             ) {
                 Text(
                     text = "Keep session active?",
-                    style = MaterialTheme.typography.titleLarge, // Consistencia con Login
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-
                 Spacer(modifier = Modifier.width(12.dp))
-
                 Switch(
                     checked = keepSessionActive,
                     onCheckedChange = { keepSessionActive = it },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.primary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                        uncheckedBorderColor = MaterialTheme.colorScheme.primary
+                        checkedTrackColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Redirección a Login
             Text(
                 text = "Already have an account?",
                 style = MaterialTheme.typography.titleLarge,
@@ -288,7 +275,7 @@ fun RegisterScreen(
 fun RegisterScreenPreview() {
     ArchiveBookTheme {
         RegisterScreen(
-            onLoginSuccess = {},
+            onRegisterSuccess = {},
             onNavigateToLogin = {}
         )
     }
