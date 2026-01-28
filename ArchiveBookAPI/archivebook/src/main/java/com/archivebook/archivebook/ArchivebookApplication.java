@@ -4,13 +4,16 @@ import com.archivebook.archivebook.entities.Autor;
 import com.archivebook.archivebook.entities.CategoriaLibro;
 import com.archivebook.archivebook.entities.Editorial;
 import com.archivebook.archivebook.entities.Libro;
+import com.archivebook.archivebook.entities.Usuario;
 import com.archivebook.archivebook.repository.AutorRepository;
 import com.archivebook.archivebook.repository.EditorialRepository;
 import com.archivebook.archivebook.repository.LibroRepository;
+import com.archivebook.archivebook.repository.UsuarioRepository;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ArchivebookApplication {
@@ -23,6 +26,7 @@ public class ArchivebookApplication {
         AutorRepository autorRepository = context.getBean(AutorRepository.class);
         EditorialRepository editorialRepository = context.getBean(EditorialRepository.class);
         LibroRepository libroRepository = context.getBean(LibroRepository.class);
+        UsuarioRepository usuarioRepository = context.getBean(UsuarioRepository.class);
 
         // 1. Crear y guardar Autores
         Autor autor1 = new Autor(null, "Miguel", "de Cervantes", "Española");
@@ -74,5 +78,10 @@ public class ArchivebookApplication {
                                " | Categoria: " + l.getCategoria());
         }
         System.out.println("--------------------------------\n");
+        
+        // cifrar password
+        PasswordEncoder encoder = context.getBean(PasswordEncoder.class); // hay que crear bean, hecho en WebSecurityConfig
+        //Usuario user1 = new Usuario(null, "daw", encoder.encode("1234"), "USER");
+        //usuarioRepository.save(user1);
     }
 }

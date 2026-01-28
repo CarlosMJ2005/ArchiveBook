@@ -19,17 +19,23 @@ public class Usuario {
     @Column(name = "correo")
     private String correo;
     
-    @Column(name = "contraseña")
-    private String contraseña;
+    @Column(name = "contrasena")
+    private String contrasena;
+    
+    @Column(name = "role")
+    private String role;
 
     public Usuario() {
     }
 
-    public Usuario(Long idUsuario, String correo, String contraseña) {
+    public Usuario(Long idUsuario, String correo, String contrasena, String role) {
         this.idUsuario = idUsuario;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
+        this.role = role;
     }
+
+    
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -47,13 +53,20 @@ public class Usuario {
         this.correo = correo;
     } 
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
     }
-      
-    
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+     
 }
