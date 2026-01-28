@@ -351,7 +351,7 @@ fun BookCard(book: Book) {
                 modifier = Modifier
                     .weight(0.35f)
                     .fillMaxHeight()
-                    .background(Color(0xFFD32F2F))
+                    .background(Color(0xFFD32F2F)) //Imagen
             )
 
             Column(

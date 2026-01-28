@@ -81,7 +81,7 @@ public class ArchivebookApplication {
         
         // cifrar password
         PasswordEncoder encoder = context.getBean(PasswordEncoder.class); // hay que crear bean, hecho en WebSecurityConfig
-        Usuario user1 = new Usuario(null, "daw", encoder.encode("1234"), "USER");
-        usuarioRepository.save(user1);
+        //Usuario user1 = new Usuario(null, "daw", encoder.encode("1234"), "USER");
+        //usuarioRepository.save(user1);
     }
 }
