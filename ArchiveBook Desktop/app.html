@@ -74,6 +74,10 @@
             max-height: 45px;
         }
 
+        .minibutton{
+            max-height: 30px;
+        }
+
         #menu:hover,
         #search:hover {
             border-radius: 1rem;
@@ -92,6 +96,9 @@
         }
         #libro img{
             max-width: 150px;
+        }
+        #justified{
+            justify-content: end;
         }
     </style>
 </head>
@@ -128,20 +135,20 @@
 
     <aside class="sidebar">
         <nav>
-            <h3 class="d-flex flex-wrap gap-4"><img src="./images/star.png" class="icon"><a href="#best-sellers">Best sellers</a></h3>
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/star-bold.png" class="icon"><a href="#best-sellers">Best sellers</a></h3>
             <p>Most pupular</p>
-            <h3 class="d-flex flex-wrap gap-4"><img src="./images/heart.png" class="icon"><a href="#favourites-list">Favourites</a></h3>
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/heart-bold.png" class="icon"><a href="#favourites-list">Favourites</a></h3>
             <p>Your favourite books</p>
-            <h3 class="d-flex flex-wrap gap-4"><img src="./images/bookmark.png" class="icon"><a href="#to-read-list">Yet to read</a></h3>
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/bookmark-bold.png" class="icon"><a href="#to-read-list">Yet to read</a></h3>
             <p>Your books marked to read</p>
-            <h3 class="d-flex flex-wrap gap-4"><img src="./images/ringing.png" class="icon"><a href="#to-return-list">To return</a></h3>
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/notification-bold.png" class="icon"><a href="#to-return-list">To return</a></h3>
             <p>Your books to return</p>
         </nav>
     </aside>
 
     <main class="main-content">
         <section class="mb-4">
-            <h2><img src="./images/star.png" class="icon">Best sellers:</h2>
+            <h2 class="gap-4 d-flex"><img src="./images/star-bold.png" class="icon"><p>Best sellers:</p></h2>
             <div class="d-flex flex-wrap gap-4" id="best-sellers">
                 <div id="libro">
                     <img src="./images/camara_.jpg">
@@ -150,15 +157,15 @@
                 <div id="libro">
                     <img src="./images/camara_.jpg">
                     <h3>La guia del club de lectura...</h3>
-                    <div class="d-flex flex-wrap gap-1">
+                    <div class="d-flex gap-2" id="justified">
                         <button class="icon-btn">
-                            <img src="./images/heart.png" class="icon" id="favourite">
+                            <img src="./images/heart.png" class="minibutton" id="favourite">
                         </button>
                         <button class="icon-btn">
-                            <img src="./images/bookmark.png" class="icon" id="to-read">
+                            <img src="./images/bookmark.png" class="minibutton" id="to-read">
                         </button>
                         <button class="icon-btn">
-                            <img src="./images/ringing.png" class="icon" id="to-return">
+                            <img src="./images/notification.png" class="minibutton" id="to-return">
                         </button>
                     </div>
                 </div>
@@ -230,7 +237,7 @@
         </section>
 
         <section class="mb-4">
-            <h2><img src="./images/heart.png" class="icon">Favourites:</h2>
+            <h2 class="gap-4 d-flex"><img src="./images/heart-bold.png" class="icon"><p>Favourites:</p></h2>
             <div class="d-flex flex-wrap gap-4" id="favourites-list">
                 <div id="libro">
                     <img src="./images/camara_.jpg">
@@ -308,7 +315,7 @@
         </section>
 
         <section class="mb-4">
-            <h2><img src="./images/bookmark.png" class="icon">Yet to read:</h2>
+            <h2 class="gap-4 d-flex"><img src="./images/bookmark-bold.png" class="icon"><p>Yet to read:</p></h2>
             <div class="d-flex flex-wrap gap-4" id="to-read-list">
                 <div id="libro">
                     <img src="./images/camara_.jpg">
@@ -385,7 +392,7 @@
             </div>
         </section>
         <section class="mb-4">
-            <h2><img src="./images/ringing.png" class="icon"> To return:</h2>
+            <h2 class="gap-4 d-flex"><img src="./images/notification-bold.png" class="icon"><p>To return:</p></h2>
             <div class="d-flex flex-wrap gap-4" id="to-return-list">
                 <div id="libro">
                     <img src="./images/camara_.jpg">

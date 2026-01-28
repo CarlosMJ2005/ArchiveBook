@@ -34,10 +34,14 @@ app.on('ready', () => {
   appwindow = new BrowserWindow({
     resizable : false,
     width: 1920 ,
-    height: 890
+    height: 890,
+    webPreferences: {
+          preload: path.join(__dirname, 'preload.js')
+        }
   });
   appwindow.loadFile('app.html');
   appwindow.hide()
+  
 
   appwindow.on('close', function () {
     if(cerrar){

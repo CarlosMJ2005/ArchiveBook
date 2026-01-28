@@ -16,6 +16,7 @@ export class Controller {
     #model
     #loginView
     #appView
+    #token = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiZGFtIiwiZXhwIjoxNzY5NjYzNDUzLCJpYXQiOjE3Njk2Mjc0NTMsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.ogy3EMEkhZzasHynD_sSY8QD7LRiYUmfO9WoMDeWLnY8pyzfqpi-YQSvcHf92reTar-TGduMj9ZKWgPjsE0xrdv7fxmZWFd6C9XcdXCyUDs3m_AmfsPHrw_9ACnKOLEshDOVj-Q5CzcqvZCmdtWQmteYLq4SW1uiQalYEkbgFFIbRP1K0PlC1cFqg_RV3GJqyvqKxwY7mV8ZcLVXiV0R-27klFIToGL_yx8CDU4062RideEsjb_9sAnVboSanaZOEFgW8Q1HA9wxETVPzZp03tHj8cCOpRqeNIshbwsEvB2xTiCwrEY__sXS7CqWB26EqgIRvPG7fBFC8ArO0iDcYw"
 
 
     // Instantiating classes
@@ -24,6 +25,11 @@ export class Controller {
         this.#loginView = new loginView();
         this.#appView = new appView();
         this.loadUser()
+        this.loadBest()
+        this.loadFavourite()
+        this.loadToRead()
+        this.loadToReturn()
+        this.loadAll()
     }
 
 
@@ -33,10 +39,10 @@ export class Controller {
 
     // Controller methods...
     async login() {
-        const email =this.#loginView.getEmailLog()
-        const password =this.#loginView.getPasswordLog()
+        const email = this.#loginView.getEmailLog()
+        const password = this.#loginView.getPasswordLog()
         const state = this.#loginView.getStateCheckbox()
-        
+
         app.saveUser(email, password, state)
 
         console.log(email, password)
@@ -44,9 +50,9 @@ export class Controller {
     }
     /*async*/ signin() {
         try {
-            const email =this.#loginView.getEmailSign()
-            const password =this.#loginView.getPasswordSign()
-            const confirmation =this.#loginView.getConfirmationSign()
+            const email = this.#loginView.getEmailSign()
+            const password = this.#loginView.getPasswordSign()
+            const confirmation = this.#loginView.getConfirmationSign()
 
             if (password != confirmation) {
                 this.#loginView.showError()
@@ -64,19 +70,48 @@ export class Controller {
     change(bool = false) {
         this.#loginView.change(bool)
     }
+    loadBest() {
+        
+    }
+    loadFavourite() {
 
-    loadUser(){
+    }
+    loadToRead() {
+
+    }
+    loadToReturn() {
+
+    }
+    loadAll() {
+        let url = "http://192.168.207.38:8080/api/libros";
+
+        fetch(url, {
+            method: 'GET', // 'POST', 'PUT', 'DELETE', etc.
+            headers: {
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${this.#token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                JSON.parse(JSON.stringify(data)).forEach(element => {
+                    console.log(element.titulo)
+                });
+            })
+            .catch(error => console.error(error));
+    }
+
+    loadUser() {
         app.loadUser()
             .then((lista) => {
                 try {
                     console.log(state)
-                    if(lista.state == true){
-                    this.#loginView.fulfill(lista.email, lista.password, lista.state)
-                }
+                    if (lista.state == true) {
+                        this.#loginView.fulfill(lista.email, lista.password, lista.state)
+                    }
                 } catch (error) {
                     console.log("la estructra del archivo no es correcta")
                 }
-                
             })
             .catch((err) => {
                 console.log("no hay un usuario guardado")
