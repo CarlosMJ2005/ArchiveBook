@@ -54,7 +54,7 @@ app.on('ready', () => {
   ipcMain.on('open-window', () => {
     console.log("entro en open window")
     appwindow.show()
-    logwindow.hide()
+    //logwindow.hide()
   })
 
   ipcMain.handle('save-user', (event, email, password, state) => {
@@ -69,5 +69,4 @@ app.on('ready', () => {
     throw new Error("Error loading user file: " + err);
   }
   });
-
 })

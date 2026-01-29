@@ -9,6 +9,8 @@ window.onload = () => {
   document.getElementById("signin").addEventListener('click', () => controller.signin());
   document.getElementById("log-to-sign").addEventListener('click', () => controller.change(true));
   document.getElementById("sign-to-log").addEventListener('click', () => controller.change());
+
+  controller.loadUser();
   
   controller.init();
 }
