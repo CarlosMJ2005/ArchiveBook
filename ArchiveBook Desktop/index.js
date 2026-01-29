@@ -34,10 +34,14 @@ app.on('ready', () => {
   appwindow = new BrowserWindow({
     resizable : false,
     width: 1920 ,
-    height: 890
+    height: 890,
+    webPreferences: {
+          preload: path.join(__dirname, 'preload.js')
+        }
   });
   appwindow.loadFile('app.html');
   appwindow.hide()
+  
 
   appwindow.on('close', function () {
     if(cerrar){
@@ -50,7 +54,7 @@ app.on('ready', () => {
   ipcMain.on('open-window', () => {
     console.log("entro en open window")
     appwindow.show()
-    logwindow.hide()
+    //logwindow.hide()
   })
 
   ipcMain.handle('save-user', (event, email, password, state) => {
@@ -65,5 +69,4 @@ app.on('ready', () => {
     throw new Error("Error loading user file: " + err);
   }
   });
-
 })
