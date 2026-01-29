@@ -6,7 +6,10 @@ import com.archivebook.archivebook.entities.Libro;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
 public class LibroDAOImpl implements LibroDAO {
 
     private Session session;

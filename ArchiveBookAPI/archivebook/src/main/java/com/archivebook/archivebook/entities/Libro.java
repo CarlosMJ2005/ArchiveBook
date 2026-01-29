@@ -19,10 +19,10 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLibro;
     
-    @Column(name = "titulo")
+    @Column(name = "titulo", unique= true)
     private String titulo;
     
-    @Column(name = "isbn")
+    @Column(name = "isbn", unique= true)
     private String isbn;
     
     @Column(name = "agnoPublicacion")
