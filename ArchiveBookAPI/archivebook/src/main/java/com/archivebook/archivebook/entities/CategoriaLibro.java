@@ -2,12 +2,12 @@ package com.archivebook.archivebook.entities;
 
 
 public enum CategoriaLibro {
-    FICCION, 
-    CIENCIA, 
+    FICCION,
+    CIENCIA,
     MISTERIO,
     DIVULGACION,
-    BIOGRAFIA, 
-    AUTOAYUDA, 
-    INFANTILES, 
+    BIOGRAFIA,
+    AUTOAYUDA,
+    INFANTILES,
     CONSULTA
 }
