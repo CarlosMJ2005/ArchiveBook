@@ -57,7 +57,7 @@ public class Usuario {
         return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
+    public void setContraseña(String contrasena) {
         this.contrasena = contrasena;
     }
 

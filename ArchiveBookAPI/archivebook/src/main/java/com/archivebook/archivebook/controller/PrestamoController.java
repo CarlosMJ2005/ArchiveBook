@@ -52,7 +52,7 @@ public class PrestamoController {
         }
     }
 
-    @PostMapping
+@PostMapping("/api/prestamos")
     public ResponseEntity<?> crearPrestamo(@RequestBody Prestamo prestamo) {
         // 1. Validar que el préstamo traiga un libro asociado
         if (prestamo.getLibro() == null || prestamo.getLibro().getIdLibro() == null) {
@@ -75,7 +75,10 @@ public class PrestamoController {
 
         // 4. Actualizar el estado del libro a prestado
         libro.setPrestado(true);
-        libroRepository.save(libro); // Guardamos el cambio en la tabla de libros
+        libroRepository.save(libro); 
+
+        // --- CAMBIO AQUÍ: Inicializar el estado del préstamo como NO devuelto ---
+        prestamo.setDevuelto(false); 
 
         // 5. Guardar el nuevo préstamo
         Prestamo prestamoGuardado = repository.save(prestamo);
@@ -112,7 +115,7 @@ public class PrestamoController {
     }
 
 
-    @PutMapping("/api/prestamos/{id}/devolver")
+@PutMapping("/api/prestamos/{id}/devolver")
     public ResponseEntity<?> devolverLibro(@PathVariable Long id) {
         // 1. Verificar si el préstamo existe
         Optional<Prestamo> prestamoOpt = repository.findById(id);
@@ -121,19 +124,25 @@ public class PrestamoController {
         }
 
         Prestamo prestamo = prestamoOpt.get();
+        
+        // --- CAMBIO AQUÍ: Verificar si ya estaba devuelto usando el booleano ---
+        if (prestamo.getDevuelto()) {
+            return ResponseEntity.badRequest().body("Este libro ya ha sido devuelto anteriormente.");
+        }
+
         Libro libro = prestamo.getLibro();
 
         // 2. Cambiar el estado del libro a disponible
         if (libro != null) {
             libro.setPrestado(false);
-            libroRepository.save(libro); // El libro vuelve a estar disponible para otros préstamos
+            libroRepository.save(libro); 
         }
 
-        // 3. Opcional: Actualizar datos del préstamo (ej. poner fecha de devolución real o cambiar estado)
-        // prestamo.setEstado("Devuelto"); 
+        // --- CAMBIO AQUÍ: Usar booleano en lugar de String "DEVUELTO" ---
+        prestamo.setDevuelto(true); 
+        prestamo.setFechaDevolucionReal(LocalDate.now());
         repository.save(prestamo);
 
-        return ResponseEntity.ok("El libro '" + libro.getTitulo() + "' ha sido devuelto correctamente.");
+        return ResponseEntity.ok("El libro '" + (libro != null ? libro.getTitulo() : "desconocido") + "' ha sido devuelto correctamente.");
     }
-
 }

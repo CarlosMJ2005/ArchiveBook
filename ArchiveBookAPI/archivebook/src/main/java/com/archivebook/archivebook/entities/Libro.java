@@ -49,12 +49,6 @@ public class Libro {
     @Column(name="bestSeller")
     private boolean bestSeller = false;
     
-    @Column(name="porLeer")
-    private boolean porLeer = false;
-    
-    @Column(name="favorito")
-    private boolean favorito = false;
-
     public Libro() {
     }
 
@@ -146,21 +140,6 @@ public class Libro {
         this.bestSeller = bestSeller;
     }
 
-    public boolean isPorLeer() {
-        return porLeer;
-    }
-
-    public void setPorLeer(boolean porLeer) {
-        this.porLeer = porLeer;
-    }
-
-    public boolean isFavorito() {
-        return favorito;
-    }
-
-    public void setFavorito(boolean favorito) {
-        this.favorito = favorito;
-    }
 }
     
     

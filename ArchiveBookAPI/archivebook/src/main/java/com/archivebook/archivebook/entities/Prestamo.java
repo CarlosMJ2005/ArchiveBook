@@ -29,8 +29,8 @@ public class Prestamo {
     @Column(name="fechaDevolucionReal")
     private LocalDate fechaDevolucionReal;
 
-    @Column(nullable = false,name="estado")
-    private String estado; // "ACTIVO", "DEVUELTO", "RETRASADO"
+    @Column(nullable = false,name="devuelto")
+    private boolean devuelto; 
 
     @ManyToOne
     @JoinColumn(name = "idLibro")
@@ -42,32 +42,32 @@ public class Prestamo {
     
     public Prestamo() {
         this.fechaPrestamo = LocalDate.now();
-        this.estado = "ACTIVO";
+        this.devuelto = true;
     }
 
-    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, boolean devuelto) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
         this.fechaDevolucionReal = fechaDevolucionReal;
-        this.estado = estado;
+        this.devuelto = devuelto;
     }
 
-    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, String estado, Libro libro, Usuario usuario) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, boolean devuelto, Libro libro, Usuario usuario) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
-        this.estado = estado;
+        this.devuelto = devuelto;
         this.libro = libro;
         this.usuario = usuario;
     }
 
-    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, String estado, Libro libro, Usuario usuario) {
+    public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, boolean devuelto, Libro libro, Usuario usuario) {
         this.idPrestamo = idPrestamo;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucionPrevista = fechaDevolucionPrevista;
         this.fechaDevolucionReal = fechaDevolucionReal;
-        this.estado = estado;
+        this.devuelto = devuelto;
         this.libro = libro;
         this.usuario = usuario;
     }
@@ -105,12 +105,12 @@ public class Prestamo {
         this.fechaDevolucionReal = fechaDevolucionReal;
     }
 
-    public String getEstado() {
-        return estado;
+    public boolean getDevuelto() {
+        return devuelto;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setDevuelto(boolean devuelto) {
+        this.devuelto = devuelto;
     }
 
     public Libro getLibro() {
