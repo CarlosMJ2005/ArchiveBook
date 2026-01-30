@@ -16,7 +16,7 @@ export class Controller {
     #model
     #loginView
     #appView
-    #token = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoiZGFtIiwiZXhwIjoxNzY5NzM1Njk1LCJpYXQiOjE3Njk2OTk2OTUsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.J23LX3uGXHR_dzcc9qE8gCQ4KxkEv4ETu6EU8m4EC9FYTPDKobU7aJPSa4cbR86lLQo88xtRg5RwvtlpUFmkw-UIZS-3HV8Q8v1Vj4iruH3HakQ-D3aG10kSWXibaVLUsu98dsXEb-PigCv-4IHV2nuzHAdrt5izUMKMxEUIHR6GJXiv2UMFWRKpt8BG3ak5h1Eg6Xeci80ti0GsycWUmDyLrAy48FQueMlcSWVEbwfOC7A4H1OSbukNrwq4sCDwSjX32uA5I1S097uRjiCmgrXgAwUBjkzg3LUTA_hYXG9Fox96_gch0Cxk5JJOrymkAHzOtXyuEYe_azUVB7kwig"
+    #token 
 
 
     // Instantiating classes
@@ -24,11 +24,14 @@ export class Controller {
         this.#model = new Model();
         this.#loginView = new loginView();
         this.#appView = new appView();
-        
-        window.app.getToken((token) => { 
-            console.log("entro a recivir producto porque se me ha inviado un send")
+
+        /*
+        window.app.getToken((token) => {
+            console.log("actualizo el tocken se me ha inviado un send")
             this.#token = token
-            })
+            this.startLoad()
+        })
+        */
     }
 
     // Initializing classes
@@ -41,27 +44,14 @@ export class Controller {
         const password = this.#loginView.getPasswordLog()
         const state = this.#loginView.getStateCheckbox()
 
-        let url = "http://192.168.207.38:8080/token"; // Carlos
-
-        fetch(url, {
-            method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
-            headers: {
-                'Content-Type': 'application/json', 
-                'Authorization': 'Basic ' + btoa("dam:1234") //cambiar cuando podamos crear usuarios
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                }
-                this.#token = response
-                console.log(this.#token)
-                app.saveUser(email, password, state)
-                app.windowOpen()
+        app.verify(email,password,state)
+            .then((data) => {
+                console.log(data)
+                this.loadAll()
             })
-            .catch(error => {
-                console.log(error)
-                this.#loginView.showError()
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+                this.#loginView.reset()
             })
     }
     /*async*/ signin() {
@@ -86,7 +76,7 @@ export class Controller {
     change(bool = false) {
         this.#loginView.change(bool)
     }
-    startLoad(){
+    startLoad() {
         this.loadBest()
         this.loadFavourite()
         this.loadToRead()
@@ -94,7 +84,7 @@ export class Controller {
         this.loadAll()
     }
     loadBest() {
-        
+
     }
     loadFavourite() {
 
@@ -107,27 +97,17 @@ export class Controller {
     }
     loadAll() {
         //let url = "http://192.168.207.76:8080/api/libros"; // Steven
-        let url = "http://192.168.207.38:8080/api/libro"; // Carlos
 
-        fetch(url, {
-            method: 'GET', // 'POST', 'PUT', 'DELETE', etc.
-            headers: {
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${this.#token}`
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                }
-                return response.json()
-            })
-            .then(data => {
+        app.getAllBooks()
+            .then((data) => {
                 JSON.parse(JSON.stringify(data)).forEach(element => {
                     console.log(element.titulo)
                 });
             })
-            .catch(error => console.log(error))
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+                
+            })
     }
 
     loadUser() {
