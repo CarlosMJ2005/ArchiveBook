@@ -54,8 +54,6 @@ public class Libro {
     
     @Column(name="favorito")
     private boolean favorito = false;
-    
-
 
     public Libro() {
     }
