@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.pmdm.archivebook.ui.navigationroot.NavigationRoot
+import com.example.pmdm.archivebook.presentation.navigationroot.NavigationRoot
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 
 class MainActivity : ComponentActivity() {
