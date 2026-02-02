@@ -73,6 +73,17 @@ export class Controller {
         }
 
     }
+
+    tapFavourite(button){
+        this.#appView.tapFavourite(button)
+    }
+    tapToReturn(button){
+        this.#appView.tapToReturn(button)
+    }
+    tapToRead(button){
+        this.#appView.tapToRead(button)
+    }
+
     change(bool = false) {
         this.#loginView.change(bool)
     }
@@ -106,7 +117,7 @@ export class Controller {
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))
-                
+
             })
     }
 

@@ -1,4 +1,4 @@
-package com.example.pmdm.archivebook.ui.screens
+package com.example.pmdm.archivebook.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +43,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pmdm.archivebook.data.LoginRepositoryImpl
+import com.example.pmdm.archivebook.di.LoginViewModelFactory
+import com.example.pmdm.archivebook.presentation.LoginViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 import kotlinx.coroutines.launch
 
@@ -50,20 +55,19 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
-    // State for the input fields
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    var keepSessionActive by remember { mutableStateOf(false) }
+){
+    val repository = remember { LoginRepositoryImpl() } // Idealmente esto se inyecta con Hilt
+    val factory = remember { LoginViewModelFactory(repository) }
+    val viewModel: LoginViewModel = viewModel(factory = factory)
 
-    // 1. Snackbar state and Coroutine Scope
+    // El estado de la contraseña suele quedarse en la UI porque es puramente visual
+    var passwordVisible by remember { mutableStateOf(false) }
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        // 2. Attach the SnackbarHost to the Scaffold
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -74,17 +78,15 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Log in title
             Text(
                 text = "Log In",
                 style = MaterialTheme.typography.displayMedium,
-                // This makes the text Brown in Light Mode and Cream in Dark Mode
                 color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Email Section
+            // --- SECCIÓN EMAIL ---
             Text(
                 text = "Email",
                 modifier = Modifier.align(Alignment.Start),
@@ -92,34 +94,29 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = viewModel.email, // Conectado al VM
+                onValueChange = { viewModel.email = it },
                 placeholder = { Text("example@mail.com") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    // Makes the box background match the app background
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-
-                    // Colors for the text you type
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
-
-                    //
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
-
-                    // Colors for the line underneath
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
                 )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Password Section
+            // --- SECCIÓN PASSWORD ---
             Text(
                 text = "Password",
                 modifier = Modifier.align(Alignment.Start),
@@ -127,22 +124,19 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             TextField(
-                value = password,
-                onValueChange = { password = it },
+                value = viewModel.password, // Conectado al VM
+                onValueChange = { viewModel.password = it },
                 placeholder = { Text("Enter your password") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
                 trailingIcon = {
-                    val image = if (passwordVisible)
-                        Icons.Filled.Visibility
-                    else Icons.Filled.VisibilityOff
-
-                    val description = if (passwordVisible) "Hide password" else "Show password"
-
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = image, contentDescription = description)
+                        Icon(
+                            imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = null
+                        )
                     }
                 },
                 colors = TextFieldDefaults.colors(
@@ -161,34 +155,41 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Login Button with Validation
+            // --- BOTÓN LOGIN ---
             Button(
                 onClick = {
-                    // 3. Verify all fields are done
-                    if (email.isBlank() || password.isBlank()) {
+                    // Delegamos la validación y ejecución al ViewModel
+                    if (viewModel.email.isBlank() || viewModel.password.isBlank()) {
                         scope.launch {
                             snackbarHostState.showSnackbar("Please enter both email and password")
                         }
                     } else {
-                        onLoginSuccess()
+                        viewModel.onLoginClicked(
+                            onSuccess = onLoginSuccess,
+                            onError = { error ->
+                                scope.launch { snackbarHostState.showSnackbar(error) }
+                            }
+                        )
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                // This makes the button look the same on both screens
+                enabled = !viewModel.isLoading, // Desactivar si está cargando
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary, // Button Background
-                    contentColor = MaterialTheme.colorScheme.onPrimary  // Text Color
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                Text(
-                    text = "Log In",
-                    style = MaterialTheme.typography.titleLarge
-                )
+                if (viewModel.isLoading) {
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
+                } else {
+                    Text(text = "Log In", style = MaterialTheme.typography.titleLarge)
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // --- KEEP SESSION SWITCH ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -199,47 +200,27 @@ fun LoginScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-
                 Spacer(modifier = Modifier.width(8.dp))
-
                 Switch(
-                    checked = keepSessionActive,
-                    onCheckedChange = { keepSessionActive = it },
+                    checked = viewModel.keepSession, // Conectado al VM
+                    onCheckedChange = { viewModel.keepSession = it },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-
-                        uncheckedThumbColor = MaterialTheme.colorScheme.primary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                        uncheckedBorderColor = MaterialTheme.colorScheme.primary
+                        checkedTrackColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Sign Up redirection section
-            Text(
-                text = "Don't have an account yet?",
-                style = MaterialTheme.typography.titleLarge,
-            )
-
+            Text(text = "Don't have an account yet?", style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(
                 onClick = onRegisterClick,
                 modifier = Modifier.size(116.dp, 60.dp),
-                shape = RoundedCornerShape(8.dp),
-                // This makes the button look the same on both screens
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary, // Button Background
-                    contentColor = MaterialTheme.colorScheme.onPrimary  // Text Color
-                )
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Text(
-                    text = "Sign In",
-                    style = MaterialTheme.typography.titleLarge
-                )
+                Text(text = "Sign In", style = MaterialTheme.typography.titleLarge)
             }
         }
     }

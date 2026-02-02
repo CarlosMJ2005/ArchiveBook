@@ -1,13 +1,14 @@
 package com.example.pmdm.archivebook.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Book(
-    val id: String,
+    val id: Int,
     val title: String,
     val author: String,
     val publisher: String,
-    val genre: String,
-    val description: String,
-    val imageUrl: String? = null, // Para las portadas
+    val genres: List<String>,
     val isFavorite: Boolean = false,
     val isBookmarked: Boolean = false,
     val isToReturn: Boolean = false

@@ -1,4 +1,4 @@
-package com.example.pmdm.archivebook.ui.navigationroot
+package com.example.pmdm.archivebook.presentation.navigationroot
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable

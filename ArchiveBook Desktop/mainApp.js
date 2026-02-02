@@ -6,7 +6,9 @@ window.onload = () => {
          
   // addEventListeners de la aplicacion
 
-  //document.getElementById("login").addEventListener('click', () => controller.login());
+  document.getElementById("favourite").addEventListener('click', () => controller.tapFavourite(document.getElementById("favourite")));
+  document.getElementById("to-read").addEventListener('click', () => controller.tapToRead(document.getElementById("to-read")));
+  document.getElementById("to-return").addEventListener('click', () => controller.tapToReturn(document.getElementById("to-return")));
   
   controller.init();
 }

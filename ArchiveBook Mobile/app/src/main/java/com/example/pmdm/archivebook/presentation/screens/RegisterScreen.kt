@@ -1,4 +1,4 @@
-package com.example.pmdm.archivebook.ui.screens
+package com.example.pmdm.archivebook.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +43,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pmdm.archivebook.data.LoginRepositoryImpl
+import com.example.pmdm.archivebook.di.RegisterViewModelFactory
+import com.example.pmdm.archivebook.presentation.RegisterViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 import kotlinx.coroutines.launch
 
@@ -49,15 +54,15 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     onRegisterSuccess: () -> Unit,
     onNavigateToLogin: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    // Definimos el ViewModel aquí con su factory por defecto
+    viewModel: RegisterViewModel = viewModel(
+        factory = RegisterViewModelFactory(LoginRepositoryImpl())
+    )
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
+    // Los estados visuales de los iconos se quedan aquí
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
-    var keepSessionActive by remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -90,8 +95,8 @@ fun RegisterScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = viewModel.email, // <--- CAMBIADO
+                onValueChange = { viewModel.email = it }, // <--- CAMBIADO
                 placeholder = { Text("example@mail.com") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -120,8 +125,8 @@ fun RegisterScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             TextField(
-                value = password,
-                onValueChange = { password = it },
+                value = viewModel.password, // <--- CAMBIADO
+                onValueChange = { viewModel.password = it }, // <--- CAMBIADO
                 placeholder = { Text("Enter your password") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -161,11 +166,11 @@ fun RegisterScreen(
                 color = MaterialTheme.colorScheme.onBackground
             )
             TextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
+                value = viewModel.confirmPassword, // <--- CAMBIADO
+                onValueChange = { viewModel.confirmPassword = it }, // <--- CAMBIADO
                 placeholder = { Text("Repeat your password") },
                 modifier = Modifier.fillMaxWidth(),
-                isError = password != confirmPassword && confirmPassword.isNotEmpty(),
+                isError = viewModel.password != viewModel.confirmPassword && viewModel.confirmPassword.isNotEmpty(),
                 visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 singleLine = true,
@@ -180,23 +185,18 @@ fun RegisterScreen(
                     }
                 },
                 colors = TextFieldDefaults.colors(
-                    // Fondos (Todos transparentes)
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    errorContainerColor = Color.Transparent, // <--- ESTO QUITA EL GRIS DE LA IMAGEN
+                    errorContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
-
-                    // Texto
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground,
                     focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
                     errorTextColor = MaterialTheme.colorScheme.onBackground,
-
-                    // Indicador (La línea de abajo)
                     focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                    errorIndicatorColor = MaterialTheme.colorScheme.error // La línea se pondrá roja en error
+                    errorIndicatorColor = MaterialTheme.colorScheme.error
                 )
             )
 
@@ -204,22 +204,35 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
-                    if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+                    if (viewModel.email.isBlank() || viewModel.password.isBlank() || viewModel.confirmPassword.isBlank()) {
                         scope.launch { snackbarHostState.showSnackbar("Please fill in all fields") }
-                    } else if (password != confirmPassword) {
+                    } else if (viewModel.password != viewModel.confirmPassword) {
                         scope.launch { snackbarHostState.showSnackbar("Passwords do not match") }
                     } else {
-                        onRegisterSuccess()
+                        // Conectamos con el ViewModel
+                        viewModel.onRegisterClicked(
+                            onSuccess = onRegisterSuccess,
+                            onError = { error -> scope.launch { snackbarHostState.showSnackbar(error) } }
+                        )
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
+                enabled = !viewModel.isLoading, // <--- AÑADIDO
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                Text(text = "Sign Up", style = MaterialTheme.typography.titleLarge)
+                if (viewModel.isLoading) { // <--- AÑADIDO
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(text = "Sign Up", style = MaterialTheme.typography.titleLarge)
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -236,8 +249,8 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Switch(
-                    checked = keepSessionActive,
-                    onCheckedChange = { keepSessionActive = it },
+                    checked = viewModel.keepSession,
+                    onCheckedChange = { viewModel.keepSession = it }, 
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
                         checkedTrackColor = MaterialTheme.colorScheme.primary
@@ -276,7 +289,9 @@ fun RegisterScreenPreview() {
     ArchiveBookTheme {
         RegisterScreen(
             onRegisterSuccess = {},
-            onNavigateToLogin = {}
+            onNavigateToLogin = {},
+            viewModel = TODO(),
+            modifier = TODO()
         )
     }
 }

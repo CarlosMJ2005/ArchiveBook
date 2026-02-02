@@ -1,18 +1,21 @@
-package com.example.pmdm.archivebook.ui.navigationroot
+package com.example.pmdm.archivebook.presentation.navigationroot
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.pmdm.archivebook.ui.screens.LibraryScreen
-import com.example.pmdm.archivebook.ui.screens.LoginScreen
-import com.example.pmdm.archivebook.ui.screens.RegisterScreen
+import com.example.pmdm.archivebook.data.LoginRepositoryImpl
+import com.example.pmdm.archivebook.di.RegisterViewModelFactory
+import com.example.pmdm.archivebook.presentation.RegisterViewModel
+import com.example.pmdm.archivebook.presentation.screens.LibraryScreen
+import com.example.pmdm.archivebook.presentation.screens.LoginScreen
+import com.example.pmdm.archivebook.presentation.screens.RegisterScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-
-    // Definimos LoginKey como la pantalla de inicio
     val backStack = rememberNavBackStack(LoginKey)
 
     NavDisplay(
@@ -20,7 +23,6 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
         modifier = modifier,
         entryProvider = entryProvider {
 
-            // Caso: PANTALLA DE LOGIN
             entry<LoginKey> {
                 LoginScreen(
                     onLoginSuccess = {
