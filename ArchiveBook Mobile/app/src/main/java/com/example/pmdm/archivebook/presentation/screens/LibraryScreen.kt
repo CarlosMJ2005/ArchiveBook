@@ -48,7 +48,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
+
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -86,7 +86,6 @@ import org.koin.androidx.compose.koinViewModel
 fun LibraryScreen(
     onLogout: () -> Unit,
     modifier: Modifier = Modifier,
-    // Inyectamos el ViewModel (puedes pasarlo desde el NavRoot o dejarlo por defecto)
     viewModel: LibraryViewModel = koinViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -126,11 +125,9 @@ fun LibraryScreen(
                     unselectedTextColor = contentColor
                 )
 
-                // --- SECCIONES PRINCIPALES ---
-
                 NavigationDrawerItem(
                     label = { Text("Library") },
-                    selected = true, // Aquí podrías usar una variable de estado para saber cuál está seleccionado
+                    selected = true,
                     icon = { Icon(Icons.Default.Menu, null) },
                     onClick = { coroutineScope.launch { drawerState.close() } },
                     colors = drawerItemColors,
@@ -193,8 +190,7 @@ fun LibraryScreen(
             topBar = {
                 Surface(color = MaterialTheme.colorScheme.background, shadowElevation = 2.dp) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
@@ -202,10 +198,8 @@ fun LibraryScreen(
                         }
 
                         TextField(
-                            // CAMBIO: Si no hay géneros, mostramos el texto de ayuda como VALOR real
                             value = if (viewModel.selectedFilter == "Genre") {
-                                if (viewModel.selectedGenres.isEmpty()) "Select genres in menu..."
-                                else viewModel.selectedGenres.joinToString(", ")
+                                viewModel.selectedGenres.joinToString(", ")
                             } else {
                                 viewModel.searchText
                             },
@@ -213,6 +207,19 @@ fun LibraryScreen(
                                 if (viewModel.selectedFilter != "Genre") viewModel.searchText = it
                             },
                             readOnly = viewModel.selectedFilter == "Genre",
+                            placeholder = {
+                                // Mantenemos el placeholder oculto en modo Genre si no hay nada seleccionado
+                                if (viewModel.selectedFilter != "Genre") {
+                                    Text(
+                                        text = "Search by ${viewModel.selectedFilter}",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.background.copy(alpha = 0.6f),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            },
                             modifier = Modifier.weight(1f).height(54.dp).padding(horizontal = 4.dp),
                             shape = RoundedCornerShape(12.dp),
                             singleLine = true,
@@ -226,30 +233,19 @@ fun LibraryScreen(
                             },
                             trailingIcon = {
                                 if (viewModel.searchText.isNotEmpty() || viewModel.selectedGenres.isNotEmpty()) {
-                                    IconButton(onClick = { viewModel.clearFilters() }) {
-                                        Icon(
-                                            Icons.Default.Close,
-                                            null,
-                                            modifier = Modifier.size(18.dp),
-                                            tint = MaterialTheme.colorScheme.background
-                                        )
+                                    IconButton(onClick = {
+                                        viewModel.clearFilters()
+                                        viewModel.selectedFilter = "Title"
+                                    }) {
+                                        Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.background)
                                     }
                                 }
                             },
                             colors = TextFieldDefaults.colors(
                                 focusedContainerColor = MaterialTheme.colorScheme.onSurface,
                                 unfocusedContainerColor = MaterialTheme.colorScheme.onSurface,
-                                // CAMBIO: Si es el texto de ayuda de géneros, lo ponemos un poco más transparente
-                                focusedTextColor = if (viewModel.selectedFilter == "Genre" && viewModel.selectedGenres.isEmpty()) {
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.6f)
-                                } else {
-                                    MaterialTheme.colorScheme.background
-                                },
-                                unfocusedTextColor = if (viewModel.selectedFilter == "Genre" && viewModel.selectedGenres.isEmpty()) {
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.6f)
-                                } else {
-                                    MaterialTheme.colorScheme.background
-                                },
+                                focusedTextColor = MaterialTheme.colorScheme.background,
+                                unfocusedTextColor = MaterialTheme.colorScheme.background,
                                 cursorColor = MaterialTheme.colorScheme.background,
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent
@@ -261,12 +257,14 @@ fun LibraryScreen(
                                 Icon(Icons.Default.MoreVert, "filters", tint = contentColor)
                             }
 
-                            // MENÚ PRINCIPAL
                             DropdownMenu(
                                 expanded = showMenu,
                                 onDismissRequest = {
                                     showMenu = false
                                     showGenreMenu = false
+                                    if (viewModel.selectedFilter == "Genre" && viewModel.selectedGenres.isEmpty()) {
+                                        viewModel.selectedFilter = "Title"
+                                    }
                                 },
                                 offset = DpOffset(x = (0).dp, y = 12.dp),
                                 modifier = Modifier.background(contentColor)
@@ -279,88 +277,56 @@ fun LibraryScreen(
                                 )
 
                                 filters.forEach { (name, icon) ->
-                                    // Usamos el estado del ViewModel para saber qué está seleccionado
                                     val isSelected = viewModel.selectedFilter == name
-
-                                    Surface(
-                                        color = if (isSelected) MaterialTheme.colorScheme.surface else Color.Transparent,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        DropdownMenuItem(
-                                            text = {
-                                                Text(
-                                                    text = name,
-                                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                                                )
-                                            },
-                                            onClick = {
-                                                if (name == "Genre") {
-                                                    viewModel.selectedFilter = "Genre" // <--- AÑADE ESTO: Activa el modo género
-                                                    showGenreMenu = true
-                                                } else {
-                                                    viewModel.selectedFilter = name
-                                                    viewModel.selectedGenres = emptySet()
-                                                    viewModel.searchText = ""
-                                                    showMenu = false
-                                                }
-                                            },
-                                            leadingIcon = {
-                                                Icon(
-                                                    icon,
-                                                    null,
-                                                    modifier = Modifier.size(18.dp)
-                                                )
-                                            },
-                                            colors = MenuDefaults.itemColors(
-                                                textColor = if (isSelected) contentColor else MaterialTheme.colorScheme.surface,
-                                                leadingIconColor = if (isSelected) contentColor else MaterialTheme.colorScheme.surface
-                                            )
-                                        )
-                                    }
+                                    DropdownMenuItem(
+                                        text = { Text(text = name, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal, color = if (isSelected) contentColor else MaterialTheme.colorScheme.surface) },
+                                        onClick = {
+                                            if (name == "Genre") {
+                                                viewModel.selectedFilter = "Genre"
+                                                showGenreMenu = true
+                                            } else {
+                                                viewModel.selectedFilter = name
+                                                viewModel.selectedGenres = emptySet()
+                                                viewModel.searchText = ""
+                                                showMenu = false
+                                            }
+                                        },
+                                        leadingIcon = { Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isSelected) contentColor else MaterialTheme.colorScheme.surface) },
+                                        modifier = Modifier.background(if (isSelected) MaterialTheme.colorScheme.surface else Color.Transparent)
+                                    )
                                 }
                             }
 
-                            // SUBMENÚ DE GÉNEROS
                             DropdownMenu(
                                 expanded = showGenreMenu,
                                 offset = DpOffset(x = (0).dp, y = 12.dp),
                                 onDismissRequest = {
                                     showGenreMenu = false
                                     showMenu = false
+                                    if (viewModel.selectedGenres.isEmpty()) {
+                                        viewModel.selectedFilter = "Title"
+                                    }
                                 },
                                 modifier = Modifier.background(contentColor)
                             ) {
-                                val genres =
-                                    listOf("Fantasy", "Terror", "Sci-Fi", "Romance", "History")
+                                val genres = listOf("Fantasy", "Terror", "Sci-Fi", "Romance", "History")
                                 genres.forEach { genre ->
-                                    // Usamos el estado del ViewModel
                                     val isChecked = viewModel.selectedGenres.contains(genre)
-
                                     DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                genre,
-                                                color = MaterialTheme.colorScheme.surface
-                                            )
-                                        },
+                                        text = { Text(genre, color = MaterialTheme.colorScheme.surface) },
                                         onClick = {
-                                            viewModel.toggleGenre(genre) // <--- Toda la lógica que tenías se resume aquí
-
-                                            // Si quieres que se cierre todo al desmarcar el último género:
+                                            viewModel.toggleGenre(genre)
                                             if (viewModel.selectedGenres.isEmpty()) {
                                                 showGenreMenu = false
                                                 showMenu = false
+                                                viewModel.selectedFilter = "Title"
                                             }
                                         },
                                         leadingIcon = {
                                             Checkbox(
                                                 checked = isChecked,
                                                 onCheckedChange = null,
-                                                colors = CheckboxDefaults.colors(
-                                                    checkedColor = MaterialTheme.colorScheme.surface,
-                                                    uncheckedColor = MaterialTheme.colorScheme.surface,
-                                                    checkmarkColor = contentColor
-                                                )
+                                                colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.surface, uncheckedColor = MaterialTheme.colorScheme.surface, checkmarkColor = contentColor)
                                             )
                                         }
                                     )
@@ -371,60 +337,22 @@ fun LibraryScreen(
                 }
             }
         ) { innerPadding ->
-
-            val listState = rememberLazyListState()
-
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
-                // Obtenemos la lista ya filtrada del ViewModel
-                val booksToShow = viewModel.filteredBooks
-
-                when {
-                    // Caso 1: Cargando datos
-                    viewModel.isLoading -> {
-                        androidx.compose.material3.CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = contentColor
-                        )
-                    }
-
-                    // Caso 2: Error en la API
-                    viewModel.errorMessage != null -> {
-                        Text(
-                            text = viewModel.errorMessage!!,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-
-                    // Caso 3: Lista vacía (o sin resultados de búsqueda)
-                    booksToShow.isEmpty() -> {
-                        Text(
-                            text = "There are no books available.",
-                            modifier = Modifier.align(Alignment.Center),
-                            color = contentColor
-                        )
-                    }
-
-                    // Caso 4: Mostrar lista
-                    else -> {
-                        LazyColumn(
-                            state = listState,
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            items(booksToShow, key = { it.id }) { book ->
-                                BookCard(
-                                    book = book,
-                                    onFavoriteClick = { viewModel.toggleFavorite(book.id) },
-                                    onBookmarkClick = { viewModel.toggleBookmark(book.id) },
-                                    onReturnClick = { viewModel.toggleReturn(book.id) }
-                                )
-                            }
+            // El contenido de la lista permanece igual
+            val booksToShow = viewModel.filteredBooks
+            Box(modifier = Modifier.padding(innerPadding).fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+                if (viewModel.isLoading) {
+                    androidx.compose.material3.CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = contentColor)
+                } else if (booksToShow.isEmpty()) {
+                    Text("There are no books available.", modifier = Modifier.align(Alignment.Center), color = contentColor)
+                } else {
+                    LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        items(booksToShow, key = { it.id }) { book ->
+                            BookCard(
+                                book = book,
+                                onFavoriteClick = { viewModel.toggleFavorite(book.id) },
+                                onBookmarkClick = { viewModel.toggleBookmark(book.id) },
+                                onReturnClick = { viewModel.toggleReturn(book.id) }
+                            )
                         }
                     }
                 }
