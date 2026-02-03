@@ -16,7 +16,7 @@ export class Controller {
     #model
     #loginView
     #appView
-    #token 
+    #token
 
 
     // Instantiating classes
@@ -25,13 +25,12 @@ export class Controller {
         this.#loginView = new loginView();
         this.#appView = new appView();
 
-        /*
-        window.app.getToken((token) => {
-            console.log("actualizo el tocken se me ha inviado un send")
-            this.#token = token
-            this.startLoad()
-        })
-        */
+
+        window.app.load().then(() => {
+            console.log('backflip');
+            this.startLoad();
+        });
+
     }
 
     // Initializing classes
@@ -44,10 +43,9 @@ export class Controller {
         const password = this.#loginView.getPasswordLog()
         const state = this.#loginView.getStateCheckbox()
 
-        app.verify(email,password,state)
+        app.verify(email, password, state)
             .then((data) => {
                 console.log(data)
-                this.loadAll()
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))
@@ -74,52 +72,112 @@ export class Controller {
 
     }
 
-    tapFavourite(button){
+    //book buttons
+
+    tapFavourite(button) {
         this.#appView.tapFavourite(button)
     }
-    tapToReturn(button){
+    tapToReturn(button) {
         this.#appView.tapToReturn(button)
     }
-    tapToRead(button){
+    tapToRead(button) {
         this.#appView.tapToRead(button)
     }
+
+    //log-sign switch
 
     change(bool = false) {
         this.#loginView.change(bool)
     }
+
+    //pop ups
+
+    closePopUp(){
+        this.#appView.closePopUp()
+        
+    }
+    openFilterPopUp(){
+        this.#appView.openFilterPopUp()
+        
+    }
+    openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year){
+        this.#appView.openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year)
+        
+    }
+
+    // book loading
+
     startLoad() {
+        this.loadAll()
         this.loadBest()
         this.loadFavourite()
         this.loadToRead()
         this.loadToReturn()
-        this.loadAll()
     }
     loadBest() {
-
-    }
-    loadFavourite() {
-
-    }
-    loadToRead() {
-
-    }
-    loadToReturn() {
-
-    }
-    loadAll() {
-        //let url = "http://192.168.207.76:8080/api/libros"; // Steven
-
-        app.getAllBooks()
-            .then((data) => {
-                JSON.parse(JSON.stringify(data)).forEach(element => {
-                    console.log(element.titulo)
-                });
+        app.getBest()
+            .then((datos) => {
+                    JSON.parse(JSON.stringify(datos)).forEach(element => {
+                        console.log(element.titulo)
+                    });
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))
 
             })
     }
+    loadFavourite() {
+        app.getFavourites()
+            .then((datos) => {
+                    JSON.parse(JSON.stringify(datos)).forEach(element => {
+                        console.log(element.titulo)
+                    });
+            })
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+
+            })
+    }
+    loadToRead() {
+        app.getToRead()
+            .then((datos) => {
+                    JSON.parse(JSON.stringify(datos)).forEach(element => {
+                        console.log(element.titulo)
+                    });
+            })
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+
+            })
+    }
+    loadToReturn() {
+        app.getToReturn()
+            .then((datos) => {
+                    JSON.parse(JSON.stringify(datos)).forEach(element => {
+                        console.log(element.titulo)
+                    });
+            })
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+
+            })
+    }
+    loadAll() {
+        //let url = "http://192.168.207.76:8080/api/libros"; // Steven
+
+        app.getAllBooks()
+            .then((datos) => {
+                    JSON.parse(JSON.stringify(datos)).forEach(element => {
+                        console.log(element.titulo)
+                    });
+            })
+            .catch((error) => {
+                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+
+            })
+    }
+
+    //apply user data
 
     loadUser() {
         app.loadUser()

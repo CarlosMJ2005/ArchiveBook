@@ -1,9 +1,49 @@
 export class appView {
+    #filters
+    #detail
+    #detailCover
+    #detailTittle
+    #detailSynopsis
+    #detailAuthor
+    #detailYear
+    #detailIsbn
 
     constructor() {
+        this.#filters = document.getElementById("right-popup")
+        this.#detail = document.getElementById("center-popup")
+
+        this.#detailCover = document.getElementById("detailCover")
+        this.#detailTittle = document.getElementById("detailTittle")
+        this.#detailSynopsis = document.getElementById("detailSynopsis")
+        this.#detailAuthor = document.getElementById("detailAuthor")
+        this.#detailYear = document.getElementById("detailYear")
+        this.#detailIsbn = document.getElementById("detailIsbn")
     }
 
     init() {
+    }
+    closePopUp(){
+        console.log("cierro detalle")
+        this.#detail.classList.add('d-none')
+    }
+    openFilterPopUp(){
+        console.log("abro filtros")
+        if (this.#filters.classList.contains('d-none')) {
+            this.#filters.classList.remove('d-none')
+        }
+        else{
+            this.#filters.classList.remove('d-none')
+        }
+    }
+    openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year){
+        console.log("abro detalle")
+        this.#detail.classList.remove('d-none')
+        this.#detailCover.src = cover.src;
+        this.#detailTittle.value = tittle.value
+        this.#detailSynopsis.value = author.value
+        this.#detailAuthor.value = synopsis.value
+        this.#detailYear.value = isbn.value
+        this.#detailIsbn.value = year.value
     }
 
     tapFavourite(button){
