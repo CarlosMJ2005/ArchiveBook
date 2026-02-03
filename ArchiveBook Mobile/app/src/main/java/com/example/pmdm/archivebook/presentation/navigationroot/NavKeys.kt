@@ -9,10 +9,10 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-object LoginKey : NavKey
+object LoginScreenKey : NavKey
 
 @Serializable
-object RegisterKey : NavKey
+object RegisterScreenKey : NavKey
 
 @Serializable
-object LibraryKey : NavKey
+object LibraryScreenKey : NavKey

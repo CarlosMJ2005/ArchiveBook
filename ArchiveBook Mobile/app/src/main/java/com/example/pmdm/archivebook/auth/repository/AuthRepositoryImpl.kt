@@ -1,26 +1,41 @@
 package com.example.pmdm.archivebook.auth.repository
 
+import android.util.Log
 import com.example.pmdm.archivebook.auth.domain.model.User //
-import com.example.pmdm.archivebook.auth.data.remote.NetworkModule
+import com.example.pmdm.archivebook.data.local.AuthManager
+import com.example.pmdm.archivebook.data.remote.AuthApiService
 import java.lang.Exception
 import kotlin.Result // <-- ASEGÚRATE DE QUE SEA ESTE RESULT
 
-class AuthRepositoryImpl : AuthRepository {
-
-    private val api = NetworkModule.authApiService
+class AuthRepositoryImpl(
+    private val apiService: AuthApiService, // Koin pasará esto automáticamente
+    private val authManager: AuthManager    // Koin pasará esto automáticamente
+) : AuthRepository {
 
     override suspend fun login(user: User): Result<String> {
         return try {
-            val response = api.getToken(user)
+            // Llamamos al servicio de Ktor (AuthApiService debe ser una CLASE ahora)
+            val response = apiService.getToken(user)
+            val token = response.token // Extraemos el token del TokenResponse
 
-            if (response.isSuccessful) {
-                val token = response.body()?.token ?: ""
-                Result.success(token)
-            } else {
-                Result.failure(Exception("Error: ${response.code()}"))
-            }
+            Log.d("API_AUTH", "¡ÉXITO! Token guardado: $token")
+
+            // Guardamos el token para futuras peticiones
+            authManager.saveToken(token)
+
+            Result.success(token)
         } catch (e: Exception) {
+            Log.e("API_AUTH", "Error en el proceso de login: ${e.message}")
             Result.failure(e)
         }
+    }
+
+    override fun logout() {
+        authManager.clearToken()
+    }
+
+    override fun hasActiveSession(): Boolean {
+        // Comprobamos si hay un token guardado en el AuthManager
+        return !authManager.getToken().isNullOrBlank()
     }
 }

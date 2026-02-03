@@ -4,4 +4,6 @@ import com.example.pmdm.archivebook.auth.domain.model.User
 
 interface AuthRepository {
     suspend fun login(user: User): Result<String>
+    fun logout()
+    fun hasActiveSession(): Boolean
 }

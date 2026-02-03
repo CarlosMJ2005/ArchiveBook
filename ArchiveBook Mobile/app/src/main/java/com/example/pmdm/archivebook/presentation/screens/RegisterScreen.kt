@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -45,21 +46,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pmdm.archivebook.data.LoginRepositoryImpl
+import com.example.pmdm.archivebook.data.remote.AuthApiService
+import com.example.pmdm.archivebook.di.LoginViewModelFactory
 import com.example.pmdm.archivebook.di.RegisterViewModelFactory
 import com.example.pmdm.archivebook.presentation.RegisterViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
+    factory: RegisterViewModelFactory, // 1. Añadimos el parámetro aquí
     onRegisterSuccess: () -> Unit,
     onNavigateToLogin: () -> Unit,
-    modifier: Modifier = Modifier,
-    // Definimos el ViewModel aquí con su factory por defecto
-    viewModel: RegisterViewModel = viewModel(
-        factory = RegisterViewModelFactory(LoginRepositoryImpl())
-    )
+    modifier: Modifier = Modifier
 ) {
+    // 2. Usamos la factory para obtener el ViewModel
+    val viewModel: RegisterViewModel = viewModel(factory = factory)
     // Los estados visuales de los iconos se quedan aquí
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
@@ -287,11 +291,29 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreview() {
     ArchiveBookTheme {
-        RegisterScreen(
-            onRegisterSuccess = {},
-            onNavigateToLogin = {},
-            viewModel = TODO(),
-            modifier = TODO()
+        val context = LocalContext.current
+
+        // 1. Instanciamos el motor de Ktor para el Preview
+        // Usamos un cliente básico sin configuración de red real
+        val apiService = remember {
+            AuthApiService(HttpClient(Android))
+        }
+
+        // 2. Repositorio con sus dependencias satisfechas
+        val repository = remember {
+            LoginRepositoryImpl(
+                context = context,
+                authApiService = apiService
+            )
+        }
+
+        // 3. Factory necesaria para el ViewModel
+        val factory = remember { LoginViewModelFactory(repository) }
+
+        LoginScreen(
+            factory = factory,
+            onLoginSuccess = {},
+            onRegisterClick = {}
         )
     }
 }

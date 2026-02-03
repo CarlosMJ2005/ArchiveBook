@@ -51,6 +51,12 @@ class LibraryViewModel(private val repository: LibraryRepository) : ViewModel() 
 
     // --- FUNCIONES DE INTERACCIÓN (Toggles) ---
 
+    fun toggleBestseller(bookId: Int) {
+        allBooks = allBooks.map {
+            if (it.id == bookId) it.copy(isBestseller = !it.isBestseller) else it
+        }
+    }
+
     fun toggleFavorite(bookId: Int) {
         allBooks = allBooks.map {
             if (it.id == bookId) it.copy(isFavorite = !it.isFavorite) else it

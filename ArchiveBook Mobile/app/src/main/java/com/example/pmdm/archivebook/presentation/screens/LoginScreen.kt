@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -45,24 +46,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pmdm.archivebook.data.LoginRepositoryImpl
+import com.example.pmdm.archivebook.data.remote.AuthApiService
 import com.example.pmdm.archivebook.di.LoginViewModelFactory
 import com.example.pmdm.archivebook.presentation.LoginViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
+    factory: LoginViewModelFactory, // 1. Añadimos el parámetro necesario
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    val repository = remember { LoginRepositoryImpl() } // Idealmente esto se inyecta con Hilt
-    val factory = remember { LoginViewModelFactory(repository) }
+    // 2. Usamos la factory inyectada y eliminamos la creación manual del repo
     val viewModel: LoginViewModel = viewModel(factory = factory)
 
     // El estado de la contraseña suele quedarse en la UI porque es puramente visual
     var passwordVisible by remember { mutableStateOf(false) }
-
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -230,7 +232,26 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     ArchiveBookTheme {
+        val context = LocalContext.current
+
+        // 1. Creamos un HttpClient básico (sin configuración) solo para el Preview
+        val apiService = remember {
+            AuthApiService(HttpClient())
+        }
+
+        // 2. Creamos el repositorio pasando el contexto y el servicio
+        val repository = remember {
+            LoginRepositoryImpl(
+                context = context,
+                authApiService = apiService
+            )
+        }
+
+        // 3. Pasamos el repositorio a la Factory
+        val factory = remember { LoginViewModelFactory(repository) }
+
         LoginScreen(
+            factory = factory,
             onLoginSuccess = {},
             onRegisterClick = {}
         )

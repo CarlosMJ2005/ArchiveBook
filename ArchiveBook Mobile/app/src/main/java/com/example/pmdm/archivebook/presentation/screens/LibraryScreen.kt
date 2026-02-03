@@ -8,15 +8,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -35,6 +37,7 @@ import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -46,9 +49,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
-
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -69,13 +71,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontStyle.Companion.Italic
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
 import kotlinx.coroutines.launch
@@ -85,7 +86,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LibraryScreen(
     onLogout: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: LibraryViewModel = koinViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -102,7 +102,7 @@ fun LibraryScreen(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.background) {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(WindowInsets.systemBars.asPaddingValues().calculateTopPadding()))
                 Text(
                     "ArchiveBook",
                     modifier = Modifier.padding(24.dp),
@@ -125,9 +125,11 @@ fun LibraryScreen(
                     unselectedTextColor = contentColor
                 )
 
+                // --- SECCIONES PRINCIPALES ---
+
                 NavigationDrawerItem(
                     label = { Text("Library") },
-                    selected = true,
+                    selected = true, // Aquí podrías usar una variable de estado para saber cuál está seleccionado
                     icon = { Icon(Icons.Default.Menu, null) },
                     onClick = { coroutineScope.launch { drawerState.close() } },
                     colors = drawerItemColors,
@@ -188,9 +190,14 @@ fun LibraryScreen(
     ) {
         Scaffold(
             topBar = {
-                Surface(color = MaterialTheme.colorScheme.background, shadowElevation = 2.dp) {
+                Surface(
+                    color = MaterialTheme.colorScheme.background, 
+                    shadowElevation = 2.dp,
+                    modifier = Modifier.padding(top = WindowInsets.systemBars.asPaddingValues().calculateTopPadding())
+                ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
@@ -214,7 +221,7 @@ fun LibraryScreen(
                                         text = "Search by ${viewModel.selectedFilter}",
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.background.copy(alpha = 0.6f),
+                                        color = MaterialTheme.colorScheme.background,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -337,23 +344,28 @@ fun LibraryScreen(
                 }
             }
         ) { innerPadding ->
-            // El contenido de la lista permanece igual
             val booksToShow = viewModel.filteredBooks
-            Box(modifier = Modifier.padding(innerPadding).fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-                if (viewModel.isLoading) {
+            if (viewModel.isLoading) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     androidx.compose.material3.CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = contentColor)
-                } else if (booksToShow.isEmpty()) {
+                }
+            } else if (booksToShow.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     Text("There are no books available.", modifier = Modifier.align(Alignment.Center), color = contentColor)
-                } else {
-                    LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        items(booksToShow, key = { it.id }) { book ->
-                            BookCard(
-                                book = book,
-                                onFavoriteClick = { viewModel.toggleFavorite(book.id) },
-                                onBookmarkClick = { viewModel.toggleBookmark(book.id) },
-                                onReturnClick = { viewModel.toggleReturn(book.id) }
-                            )
-                        }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.padding(innerPadding),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(booksToShow, key = { it.id }) { book ->
+                        BookCard(
+                            book = book,
+                            onFavoriteClick = { viewModel.toggleFavorite(book.id) },
+                            onBookmarkClick = { viewModel.toggleBookmark(book.id) },
+                            onReturnClick = { viewModel.toggleReturn(book.id) }
+                        )
                     }
                 }
             }
@@ -412,7 +424,7 @@ fun BookCard(
                     text = book.author,
                     style = MaterialTheme.typography.bodyLarge,
                     color = authorColor,
-                    fontStyle = FontStyle.Italic
+                    fontStyle = Italic
                 )
                 Text(
                     text = book.publisher,
@@ -423,7 +435,7 @@ fun BookCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 // FILA DE ICONOS SIN MARGEN INFERIOR
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -431,6 +443,12 @@ fun BookCard(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Icon(
+                            imageVector = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = null,
+                            tint = if (book.isBestseller) Color(0xFFFFB700) else titleColor
+                        )
+
                         IconButton(onClick = onFavoriteClick) {
                             Icon(
                                 imageVector = if (book.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -449,7 +467,7 @@ fun BookCard(
                             Icon(
                                 imageVector = if (book.isToReturn) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
                                 contentDescription = null,
-                                tint = if (book.isToReturn) Color(0xFFFFB700) else titleColor
+                                tint = if (book.isToReturn) Color(0xFF0FDC0F) else titleColor
                             )
                         }
                     }

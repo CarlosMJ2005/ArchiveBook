@@ -3,8 +3,6 @@ package com.example.pmdm.archivebook.data
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 
 class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository {
 
@@ -16,7 +14,11 @@ class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository 
             author = "Brandon Sanderson",
             publisher = "Nova",
             genres = listOf("Fantasía", "Épico", "Aventura"),
-            isFavorite = true
+            isBestseller = true,
+            isFavorite = true,
+            description = "El primer libro de la saga Nacidos de la Bruma.",
+            isBookmarked = false,
+            isToReturn = false
         ),
         Book(
             id = 2,
@@ -24,14 +26,23 @@ class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository 
             author = "Gabriel García Márquez",
             publisher = "Sudamericana",
             genres = listOf("Realismo Mágico", "Clásico"),
-            isBookmarked = true
+            isBookmarked = true,
+            description = "Una de las obras más importantes de la literatura universal.",
+            isBestseller = true,
+            isFavorite = false,
+            isToReturn = true
         ),
         Book(
             id = 3,
             title = "1984",
             author = "George Orwell",
             publisher = "Secker & Warburg",
-            genres = listOf("Distopía", "Ficción Política")
+            genres = listOf("Distopía", "Ficción Política"),
+            description = "Un clásico de la literatura distópica.",
+            isBestseller = false,
+            isFavorite = true,
+            isBookmarked = false,
+            isToReturn = false
         )
     )
 

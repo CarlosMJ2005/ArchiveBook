@@ -9,9 +9,7 @@ class ArchiveBookApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            // Referencia al contexto de Android para que Koin pueda usarlo
             androidContext(this@ArchiveBookApp)
-            // Carga tu archivo AppModule.kt
             modules(appModule)
         }
     }
