@@ -100,8 +100,16 @@ export class Controller {
         this.#appView.openFilterPopUp()
         
     }
-    openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year){
-        this.#appView.openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year)
+    openDescriptionPopUp(cover,title,author,synopsis,isbn,year){
+        console.log("pup")
+        console.log(title.value)
+        console.log(author.value)
+        console.log(synopsis.value)
+        console.log(isbn.value)
+        console.log(year.value)
+        console.log("pip")
+        
+        this.#appView.openDescriptionPopUp(cover,title,author,synopsis,isbn,year)
         
     }
 
@@ -109,11 +117,25 @@ export class Controller {
 
     startLoad() {
         this.loadAll()
+
         this.loadBest()
         this.loadFavourite()
         this.loadToRead()
         this.loadToReturn()
     }
+    loadBest(){
+
+    }
+    loadFavourite(){
+        
+    }
+    loadToRead(){
+        
+    }
+    loadToReturn(){
+
+    }
+    /*
     loadBest() {
         app.getBest()
             .then((datos) => {
@@ -162,8 +184,10 @@ export class Controller {
 
             })
     }
+    */
     loadAll() {
         //let url = "http://192.168.207.76:8080/api/libros"; // Steven
+        //let url = "http://192.168.207.83:8080/api/libros"; // Israel
 
         app.getAllBooks()
             .then((datos) => {

@@ -7,6 +7,8 @@ const path = require('path');
 const ficheroUsuario = "./usuario.json"
 let myToken
 
+const apiUrl = "http://192.168.207.38:8080/"
+
 // 2.
 let logwindow;
 let appwindow;
@@ -79,7 +81,8 @@ app.on('ready', () => {
 
   ipcMain.handle('get-books', async () => {
   try {
-    const url = "http://192.168.207.38:8080/api/libros";
+    const url = apiUrl +"api/libros";
+    console.log(url)
 
     const response = await fetch(url, {
       method: 'GET',
@@ -104,7 +107,7 @@ app.on('ready', () => {
 
   ipcMain.handle('get-favourites', async () => {
   try {
-    const url = "http://192.168.207.38:8080/api/libros/favoritos/";
+    const url = apiUrl +"api/libros/favoritos/";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -130,7 +133,7 @@ app.on('ready', () => {
 
 ipcMain.handle('get-toRead', async () => {
   try {
-    const url = "http://192.168.207.38:8080/api/favoritos/";
+    const url = apiUrl +"api/favoritos/";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -155,7 +158,7 @@ ipcMain.handle('get-toRead', async () => {
 
   ipcMain.handle('get-best', async () => {
   try {
-    const url = "http://192.168.207.38:8080/api/libros/favoritos/";
+    const url = apiUrl +"api/libros/favoritos/";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -181,7 +184,7 @@ ipcMain.handle('get-toRead', async () => {
 
 ipcMain.handle('get-toReturn', async () => {
   try {
-    const url = "http://192.168.207.38:8080/api/favoritos/";
+    const url = apiUrl +"api/favoritos/";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -206,7 +209,7 @@ ipcMain.handle('get-toReturn', async () => {
 
   ipcMain.handle('verify-user', async (event, email,password, state) => {
   try {
-    let url = "http://192.168.207.38:8080/token";
+    let url = apiUrl +"token";
 
     const response = await fetch(url, {
       method: 'POST',
