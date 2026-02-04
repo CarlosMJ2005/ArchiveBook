@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.datastore.preferences.preferencesDataStore // This was the missing one
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.example.pmdm.archivebook.auth.data.remote.NetworkModule.authApiService
 import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.data.remote.AuthApiService
 import com.example.pmdm.archivebook.domain.repositories.LoginRepository
@@ -23,10 +22,10 @@ class LoginRepositoryImpl(
 
     private val KEEP_SESSION_KEY = booleanPreferencesKey("keep_session")
 
-    override suspend fun login(email: String, password: String): Result<String> = withContext(Dispatchers.IO) {
+    override suspend fun login(email: String, pass: String): Result<String> = withContext(Dispatchers.IO) {
         return@withContext try {
             // Creamos un objeto User temporal para la petición
-            val userRequest = User(email = email, password = password)
+            val userRequest = User(email = email, password = pass)
 
             // Llamada a Ktor (ahora devuelve directamente el TokenResponse o lanza excepción)
             val response = authApiService.getToken(userRequest)

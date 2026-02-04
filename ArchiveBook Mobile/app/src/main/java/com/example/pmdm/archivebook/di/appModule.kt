@@ -1,7 +1,6 @@
 package com.example.pmdm.archivebook.di
 
 import android.util.Log
-import com.example.pmdm.archivebook.BuildConfig
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
 import com.example.pmdm.archivebook.auth.repository.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.local.AuthManager
@@ -22,6 +21,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
+val apiUrl = "http://192.168.207.38:8080"
 val appModule = module {
 
     // 1. Persistencia local
@@ -43,7 +43,7 @@ val appModule = module {
                 }
             }
             defaultRequest {
-                url(BuildConfig.BASE_URL) // Esto toma el valor del build.gradle
+                url(apiUrl) // Esto toma el valor del build.gradle
             }
         }
     }
