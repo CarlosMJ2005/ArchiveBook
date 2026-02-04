@@ -55,7 +55,7 @@ app.on('ready', () => {
   const openApp = () => {
     console.log("entro en open window")
     appwindow.show()
-    //logwindow.hide()
+    logwindow.hide()
   }
   const openLog = () => {
     console.log("entro en open window")
@@ -92,7 +92,109 @@ app.on('ready', () => {
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en get-books:', error);
+    openLog()
+    throw error;
+  }
+});
 
+  ipcMain.handle('get-favourites', async () => {
+  try {
+    const url = "http://192.168.207.38:8080/api/libros/favoritos/";
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en get-books:', error);
+    openLog()
+    throw error;
+  }
+});
+
+ipcMain.handle('get-toRead', async () => {
+  try {
+    const url = "http://192.168.207.38:8080/api/favoritos/";
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en get-books:', error);
+    openLog()
+    throw error;
+  }
+});
+
+  ipcMain.handle('get-best', async () => {
+  try {
+    const url = "http://192.168.207.38:8080/api/libros/favoritos/";
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en get-books:', error);
+    openLog()
+    throw error;
+  }
+});
+
+ipcMain.handle('get-toReturn', async () => {
+  try {
+    const url = "http://192.168.207.38:8080/api/favoritos/";
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -110,19 +212,20 @@ app.on('ready', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa("dam:1234")
+        'Authorization': 'Basic ' + btoa(email + ":" + password)
       }
     })
-    
+    console.log(response)
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
     let token = await response.text();
     myToken = token
-    //console.log(myToken)
+    console.log(myToken)
     saveUser(email, password, state, token);
     openApp();
+    appwindow.webContents.send('load')
     return "Usuario iniciado con Éxito"
 
 

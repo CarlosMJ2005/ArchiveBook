@@ -45,8 +45,8 @@ public class ArchivebookApplication {
             System.out.println(">>> Base de datos vacía. Cargando datos iniciales...");
 
             Usuario admin = usuarioRepository.save(new Usuario(null, "admin", encoder.encode("admin123"), "ADMIN"));
-            Usuario lector1 = usuarioRepository.save(new Usuario(null, "juan_lector", encoder.encode("pass123"), "USER"));
-            Usuario lector2 = usuarioRepository.save(new Usuario(null, "maria_libros", encoder.encode("pass123"), "USER"));
+            Usuario juan_lector = usuarioRepository.save(new Usuario(null, "juan_lector", encoder.encode("pass123"), "USER"));
+            Usuario maria_libros = usuarioRepository.save(new Usuario(null, "maria_libros", encoder.encode("pass123"), "USER"));
 
             // Crear y guardar Autores
             Autor autor1 = new Autor(null, "Miguel", "de Cervantes", "Española");
@@ -73,11 +73,11 @@ public class ArchivebookApplication {
             //Crear relacion de favoritos y porLeer de Usuarios
             Favoritos favoritos1 = new Favoritos();
             favoritos1.setLibro(libro1);
-            favoritos1.setUsuario(lector2);
+            favoritos1.setUsuario(maria_libros);
             
             PorLeer porLeer1 = new PorLeer();
             porLeer1.setLibro(libro2);
-            porLeer1.setUsuario(lector1);
+            porLeer1.setUsuario(juan_lector);
             
             // Establecer relaciones (Asociaciones)
             // Relación Libro-Autor
@@ -113,7 +113,7 @@ public class ArchivebookApplication {
             //Relación Usuario Libro
             Prestamo prestamoActivo = new Prestamo();
             prestamoActivo.setLibro(libro4);
-            prestamoActivo.setUsuario(lector1);
+            prestamoActivo.setUsuario(juan_lector);
             prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3)); // Hace 3 días
             prestamoActivo.setDevuelto(false);
             prestamoRepository.save(prestamoActivo);
