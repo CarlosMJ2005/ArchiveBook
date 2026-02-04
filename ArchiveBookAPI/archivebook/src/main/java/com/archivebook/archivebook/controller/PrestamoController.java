@@ -43,120 +43,9 @@ public class PrestamoController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    // Listar todos los préstamos
-   /* @GetMapping("/api/prestamos")
-    public List<Prestamo> verPrestamos() {
-        return repository.findAll();
-    }
-
-    // Buscar un préstamo específico por su ID
-    @GetMapping("/api/prestamos/{id}")
-    public ResponseEntity<Prestamo> findById(@PathVariable Long id) {
-        Optional<Prestamo> prestamoOpt = repository.findById(id);
-
-        if (prestamoOpt.isPresent()) {
-            return ResponseEntity.ok(prestamoOpt.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-@PostMapping("/api/prestamos")
-    public ResponseEntity<?> crearPrestamo(@RequestBody Prestamo prestamo) {
-        // 1. Validar que el préstamo traiga un libro asociado
-        if (prestamo.getLibro() == null || prestamo.getLibro().getIdLibro() == null) {
-            return ResponseEntity.badRequest().body("El préstamo debe estar vinculado a un libro válido.");
-        }
-
-        // 2. Buscar el libro en la base de datos para verificar su estado actual
-        Optional<Libro> libroOpt = libroRepository.findById(prestamo.getLibro().getIdLibro());
-
-        if (libroOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Libro libro = libroOpt.get();
-
-        // 3. CONTROL DE SEGURIDAD: Verificar si el libro ya está prestado
-        if (libro.isPrestado()) {
-            return ResponseEntity.badRequest().body("Operación denegada: El libro '" + libro.getTitulo() + "' ya se encuentra prestado actualmente.");
-        }
-
-        // 4. Actualizar el estado del libro a prestado
-        libro.setPrestado(true);
-        libroRepository.save(libro); 
-
-        // --- CAMBIO AQUÍ: Inicializar el estado del préstamo como NO devuelto ---
-        prestamo.setDevuelto(false); 
-
-        // 5. Guardar el nuevo préstamo
-        Prestamo prestamoGuardado = repository.save(prestamo);
-        return ResponseEntity.ok(prestamoGuardado);
-    }
-
-    // Actualizar un préstamo (ej. para registrar una devolución)
-    @PutMapping("/api/prestamos/{id}")
-    public ResponseEntity<Prestamo> modificarPrestamo(@RequestBody Prestamo prestamo, @PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        prestamo.setId(id); // Usamos el setter de ID definido en tu entidad Prestamo
-        Prestamo prestamoActualizado = repository.save(prestamo);
-        return ResponseEntity.ok(prestamoActualizado);
-    }
-
-    // Eliminar el registro de un préstamo
-    @DeleteMapping("/api/prestamos/{id}")
-    public ResponseEntity<Void> eliminarPrestamo(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/buscar/fecha/{fecha}")
-    public List<Prestamo> buscarPorFecha(
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
-        return prestamoDAO.findByFechaPrestamo(fecha);
-    }
-
-
-@PutMapping("/api/prestamos/{id}/devolver")
-    public ResponseEntity<?> devolverLibro(@PathVariable Long id) {
-        // 1. Verificar si el préstamo existe
-        Optional<Prestamo> prestamoOpt = repository.findById(id);
-        if (prestamoOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Prestamo prestamo = prestamoOpt.get();
-        
-        // --- CAMBIO AQUÍ: Verificar si ya estaba devuelto usando el booleano ---
-        if (prestamo.getDevuelto()) {
-            return ResponseEntity.badRequest().body("Este libro ya ha sido devuelto anteriormente.");
-        }
-
-        Libro libro = prestamo.getLibro();
-
-        // 2. Cambiar el estado del libro a disponible
-        if (libro != null) {
-            libro.setPrestado(false);
-            libroRepository.save(libro); 
-        }
-
-        // --- CAMBIO AQUÍ: Usar booleano en lugar de String "DEVUELTO" ---
-        prestamo.setDevuelto(true); 
-        prestamo.setFechaDevolucionReal(LocalDate.now());
-        repository.save(prestamo);
-
-        return ResponseEntity.ok("El libro '" + (libro != null ? libro.getTitulo() : "desconocido") + "' ha sido devuelto correctamente.");
-    }*/
-    //AQUI EMPIEZA
+ 
     // LISTAR: Solo los préstamos del usuario logueado
-    /*@GetMapping("/api/prestamos")
+    @GetMapping("/api/prestamos")
     public ResponseEntity<List<Prestamo>> verPrestamos() {
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authenticationToken.getCredentials();
@@ -165,7 +54,7 @@ public class PrestamoController {
         return usuarioRepository.findByCorreo(correo)
                 .map(usuario -> ResponseEntity.ok(repository.findByUsuario(usuario)))
                 .orElse(ResponseEntity.status(401).build());
-    }*/
+    }
 
     @PostMapping("/api/prestamos")
     public ResponseEntity<?> crearPrestamo(@RequestBody Prestamo prestamo) {

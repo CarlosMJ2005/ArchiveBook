@@ -27,26 +27,7 @@ public class FavoritosController {
         this.usuarioRepository = usuariorepository;
     }
       
-    // LISTAR: Ver los favoritos de un usuario
-    /*@GetMapping("api/favoritos/usuario/{idUsuario}")
-    public List<Favoritos> listarFavoritos(@PathVariable Long idUsuario) {
-        
-        Usuario usuario = new Usuario(); 
-        usuario.setIdUsuario(idUsuario);
-        return repository.findByUsuario(usuario);
-    }*/
-    // LISTAR: Ver los favoritos del usuario autenticado
-    /*@GetMapping("api/favoritos") // Se elimina {idUsuario} de la URL
-    public ResponseEntity<List<Favoritos>> 
-        listarFavoritos(java.security.Principal principal) {
-        // 'principal.getName()' nos da el username/email del token
-        String correo = principal.getName();
-        
-        // Buscamos al usuario en la BD
-        return usuariorepository.findByCorreo(correo)
-            .map(usuario -> ResponseEntity.ok(repository.findByUsuario(usuario)))
-            .orElse(ResponseEntity.status(401).build());
-    }*/
+
     
     // LISTAR: Obtiene el usuario desde el SecurityContextHolder
     @GetMapping("api/favoritos")
@@ -62,14 +43,6 @@ public class FavoritosController {
                 .orElse(ResponseEntity.status(401).build());
     }
     
-
-    // AÑADIR: Guardar un libro como favorito
-    /*@PostMapping("api/favoritos")
-    public ResponseEntity<?> añadirAFavoritos(@RequestBody Favoritos favorito) {
-        // Guardamos el objeto que relaciona Usuario y Libro
-        Favoritos guardado = repository.save(favorito);
-        return ResponseEntity.ok(guardado);
-    }*/
     
     // AÑADIR: Asocia automáticamente el favorito al usuario logueado
     @PostMapping("api/favoritos")
@@ -87,15 +60,6 @@ public class FavoritosController {
                 .orElse(ResponseEntity.status(401).build());
     }
 
-    // ELIMINAR: Quitar de favoritos por el ID de la relación
-    /*@DeleteMapping("api/favoritos/{id}")
-    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }*/
     
     // ELIMINAR: Sin ID en la URL. Se busca la relación usando el usuario del token y el objeto enviado.
     @DeleteMapping("api/favoritos")

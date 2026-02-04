@@ -49,6 +49,9 @@ public class Libro {
     @Column(name="bestSeller")
     private boolean bestSeller = false;
     
+    @Column(name = "sinopsis", length = 1000)
+    private String sinopsis;
+    
     public Libro() {
     }
 
@@ -59,6 +62,7 @@ public class Libro {
         this.agnoPublicacion = agnoPublicacion;
         this.portadaLibro = portadaLibro;
     }
+    
 
     public Long getIdLibro() {
         return idLibro;
@@ -140,6 +144,15 @@ public class Libro {
         this.bestSeller = bestSeller;
     }
 
+    public String getSinopsis() {
+        return sinopsis;
+    }
+
+    public void setSinopsis(String sinopsis) {
+        this.sinopsis = sinopsis;
+    }
+
+    
 }
     
     

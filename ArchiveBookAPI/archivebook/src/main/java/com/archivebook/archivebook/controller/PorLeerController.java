@@ -29,31 +29,6 @@ public class PorLeerController {
         this.usuarioRepository = usuarioRepository;
     }
     
-     // LISTAR: Ver los porLeer de un usuario
-   /* @GetMapping("api/porLeer/usuario/{idUsuario}")
-    public List<PorLeer> listarPorLeer(@PathVariable Long idUsuario) {
-        Usuario usuario = new Usuario(); 
-        usuario.setIdUsuario(idUsuario);
-        return repository.findByUsuario(usuario);
-    }*/
-
-    // AÑADIR: Marcar un libro porLeer
-    /*@PostMapping("api/porLeer")
-    public ResponseEntity<?> añadirAPorLeer(@RequestBody PorLeer porLeer) {
-        // Guardamos el objeto que relaciona Usuario y Libro
-        PorLeer guardado = repository.save(porLeer);
-        return ResponseEntity.ok(guardado);
-    }*/
-
-    // ELIMINAR: Desmarcar porLeer por el ID de la relación
-    /*@DeleteMapping("api/porLeer/{id}")
-    public ResponseEntity<Void> eliminarPorLeer(@PathVariable Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }*/
     // LISTAR: Obtiene la lista "Por Leer" del usuario autenticado
     @GetMapping("api/porLeer")
     public ResponseEntity<List<PorLeer>> listarPorLeer() {
