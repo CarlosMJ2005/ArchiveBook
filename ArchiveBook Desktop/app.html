@@ -32,7 +32,6 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
             text-align: center;
         }
 
@@ -133,11 +132,11 @@
             margin-bottom: 20px;
         }
 
-        #book {
+        #book, #libro{
             max-width: 150px;
         }
 
-        #book img {
+        #book img, #libro img{
             max-width: 150px;
         }
 
@@ -148,11 +147,11 @@
 </head>
 
 <body>
-    <div id="right-popup" class="popup right-popup">
+    <div id="right-popup" class="popup right-popup d-none">
         <p>Este es el pop-up pegado a la izquierda</p>
     </div>
 
-    <div id="center-popup" class="popup center-popup d-flex">
+    <div id="center-popup" class="popup center-popup d-flex d-none">
         <button class="close-btn" id="close-center-popup">&times;</button>
         <img src="./images/easter.jpg" id="detailCover">
         <div>
@@ -231,6 +230,7 @@
                     <h3 id="isbn" class="d-none">987-92-50675-02-5</h3>
                     <h3 id="year" class="d-none">1954</h3>
                     <div class="d-flex gap-2" id="justified">
+                        <img src="./images/star.png" class="minibutton">
                         <button class="icon-btn" id="favourite">
                             <img src="./images/heart.png" class="minibutton">
                         </button>

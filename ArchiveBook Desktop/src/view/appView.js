@@ -2,7 +2,7 @@ export class appView {
     #filters
     #detail
     #detailCover
-    #detailTittle
+    #detailTitle
     #detailSynopsis
     #detailAuthor
     #detailYear
@@ -13,7 +13,7 @@ export class appView {
         this.#detail = document.getElementById("center-popup")
 
         this.#detailCover = document.getElementById("detailCover")
-        this.#detailTittle = document.getElementById("detailTittle")
+        this.#detailTitle = document.getElementById("detailTittle")
         this.#detailSynopsis = document.getElementById("detailSynopsis")
         this.#detailAuthor = document.getElementById("detailAuthor")
         this.#detailYear = document.getElementById("detailYear")
@@ -35,11 +35,16 @@ export class appView {
             this.#filters.classList.remove('d-none')
         }
     }
-    openDescriptionPopUp(cover,tittle,author,synopsis,isbn,year){
+    openDescriptionPopUp(cover,title,author,synopsis,isbn,year){
         console.log("abro detalle")
+        console.log(title.value)
+        console.log(author.value)
+        console.log(synopsis.value)
+        console.log(isbn.value)
+        console.log(year.value)
         this.#detail.classList.remove('d-none')
         this.#detailCover.src = cover.src;
-        this.#detailTittle.value = tittle.value
+        this.#detailTitle.value = title.value
         this.#detailSynopsis.value = author.value
         this.#detailAuthor.value = synopsis.value
         this.#detailYear.value = isbn.value
