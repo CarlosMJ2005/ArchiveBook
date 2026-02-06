@@ -9,9 +9,10 @@ window.onload = () => {
   if (document.getElementById("favourite") != null) document.getElementById("favourite").addEventListener('click', () => controller.tapFavourite(document.getElementById("favourite")));
   if (document.getElementById("to-read") != null) document.getElementById("to-read").addEventListener('click', () => controller.tapToRead(document.getElementById("to-read")));
   if (document.getElementById("to-return") != null) document.getElementById("to-return").addEventListener('click', () => controller.tapToReturn(document.getElementById("to-return")));
-  if (document.getElementById("libro") != null) document.getElementById("libro").addEventListener('click', () => controller.openDescriptionPopUp(
-    document.getElementById("cover"),document.getElementById("tittle"),document.getElementById("author"),
-    document.getElementById("synopsis"),document.getElementById("isbn"),document.getElementById("year")
+  if (document.getElementById("cover") != null) document.getElementById("cover").addEventListener('click', () => controller.openDescriptionPopUp(
+    document.getElementById("cover"),"titulo", "autor","sinopsis","isbn","year"
+    /*document.getElementById("cover"),document.getElementById("tittle"),document.getElementById("author"),
+    document.getElementById("synopsis"),document.getElementById("isbn"),document.getElementById("year")*/
   ));
 
 

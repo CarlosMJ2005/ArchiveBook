@@ -1,7 +1,7 @@
 // Hacer los import de las clases del modelo
 //
 //
-import { Model } from '../model/model.js';
+import { book } from '../model/book.js';
 
 // Hacer los imports de las clases de la vista
 //
@@ -16,12 +16,11 @@ export class Controller {
     #model
     #loginView
     #appView
-    #token
 
 
     // Instantiating classes
     constructor() {
-        this.#model = new Model();
+        this.#model = new book();
         this.#loginView = new loginView();
         this.#appView = new appView();
 
@@ -30,7 +29,6 @@ export class Controller {
             console.log('backflip');
             this.startLoad();
         });
-
     }
 
     // Initializing classes
@@ -102,11 +100,11 @@ export class Controller {
     }
     openDescriptionPopUp(cover,title,author,synopsis,isbn,year){
         console.log("pup")
-        console.log(title.value)
-        console.log(author.value)
-        console.log(synopsis.value)
-        console.log(isbn.value)
-        console.log(year.value)
+        console.log(title)
+        console.log(author)
+        console.log(synopsis)
+        console.log(isbn)
+        console.log(year)
         console.log("pip")
         
         this.#appView.openDescriptionPopUp(cover,title,author,synopsis,isbn,year)
@@ -117,7 +115,6 @@ export class Controller {
 
     startLoad() {
         this.loadAll()
-
         this.loadBest()
         this.loadFavourite()
         this.loadToRead()
@@ -192,8 +189,9 @@ export class Controller {
         app.getAllBooks()
             .then((datos) => {
                     JSON.parse(JSON.stringify(datos)).forEach(element => {
-                        console.log(element.titulo)
-                    });
+                        console.log(element)
+                        //this.#appView.createBook(element)
+                });
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))

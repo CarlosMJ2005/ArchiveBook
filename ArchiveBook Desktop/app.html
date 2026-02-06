@@ -72,6 +72,10 @@
             color: #501f09;
         }
 
+        #detailCover {
+            max-width: 293px; 
+        }
+
         .sidebar a {
             display: block;
             color: #4e250a;
@@ -132,12 +136,12 @@
             margin-bottom: 20px;
         }
 
-        #book, #libro{
+        #book{
             max-width: 150px;
         }
 
-        #book img, #libro img{
-            max-width: 150px;
+        #book img{
+            max-width: 150px; 
         }
 
         #justified {
@@ -151,11 +155,11 @@
         <p>Este es el pop-up pegado a la izquierda</p>
     </div>
 
-    <div id="center-popup" class="popup center-popup d-flex d-none">
+    <div id="center-popup" class="popup center-popup d-flex">
         <button class="close-btn" id="close-center-popup">&times;</button>
         <img src="./images/easter.jpg" id="detailCover">
         <div>
-            <h2>Tittle: <span id="detailTittle"></span></h2>
+            <h2>Title: <span id="detailTittle"></span></h2>
             <h2>Synopsis: <span id="detailSynopsis"></span></h2>
             <h2>Author: <span id="detailAuthor"></span></h2>
             <h2>Publication year:<span id="detailYear"></span></h2>
@@ -222,15 +226,15 @@
                     <img src="./images/camara_.jpg">
                     <h3>pepito</h3>
                 </div>
-                <div id="libro"> <!--Esto va ha ser el modelo de estructura para la creación de books-->
+                <div id="book"> <!--Esto va ha ser el modelo de estructura para la creación de books-->
                     <img id="cover" src="./images/camara_.jpg">
                     <h3 id="tittle">La guia del club de lectura...</h3>
-                    <h3 id="author" class="d-none">Manolo</h3>
-                    <h3 id="synopsis" class="d-none">This is a book</h3>
-                    <h3 id="isbn" class="d-none">987-92-50675-02-5</h3>
-                    <h3 id="year" class="d-none">1954</h3>
+                    <p id="author" class="d-none">Manolo</p>
+                    <p id="synopsis" class="d-none">This is a book</p>
+                    <p id="isbn" class="d-none">987-92-50675-02-5</p>
+                    <p id="year" class="d-none">1954</p>
                     <div class="d-flex gap-2" id="justified">
-                        <img src="./images/star.png" class="minibutton">
+                        <img src="./images/star-bold.png" class="minibutton">
                         <button class="icon-btn" id="favourite">
                             <img src="./images/heart.png" class="minibutton">
                         </button>
