@@ -1,17 +1,20 @@
 package com.example.pmdm.archivebook.data.remote
 
-import com.example.pmdm.archivebook.auth.domain.model.User
+import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.basicAuth
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 
 class AuthApiService(private val client: HttpClient) {
-    suspend fun getToken(user: User): TokenResponse {
-        return client.post("token") {
-            // Ktor usará la configuración Basic Auth del HttpClient si la necesitas,
-            // o puedes pasar las credenciales aquí manualmente
-            basicAuth(user.email, user.password)
-        }.body()
+    suspend fun getToken(request: LoginRequest): String {
+        val response = client.post("/token") {
+            setBody(request)
+            contentType(ContentType.Application.Json)
+        }
+
+        return response.bodyAsText()
     }
 }

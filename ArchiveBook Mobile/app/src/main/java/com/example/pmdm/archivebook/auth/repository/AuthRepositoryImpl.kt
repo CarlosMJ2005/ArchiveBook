@@ -1,7 +1,8 @@
 package com.example.pmdm.archivebook.auth.repository
 
 import android.util.Log
-import com.example.pmdm.archivebook.auth.domain.model.User //
+import com.example.pmdm.archivebook.auth.domain.model.User
+import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
 import java.lang.Exception
@@ -15,8 +16,7 @@ class AuthRepositoryImpl(
     override suspend fun login(user: User): Result<String> {
         return try {
             // Llamamos al servicio de Ktor (AuthApiService debe ser una CLASE ahora)
-            val response = apiService.getToken(user)
-            val token = response.token // Extraemos el token del TokenResponse
+            val token = apiService.getToken(LoginRequest(user.email, user.password))
 
             Log.d("API_AUTH", "¡ÉXITO! Token guardado: $token")
 

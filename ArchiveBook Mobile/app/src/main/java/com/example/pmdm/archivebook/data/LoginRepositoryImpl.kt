@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.datastore.preferences.preferencesDataStore // This was the missing one
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.data.remote.AuthApiService
+import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import com.example.pmdm.archivebook.domain.repositories.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -24,13 +24,15 @@ class LoginRepositoryImpl(
 
     override suspend fun login(email: String, pass: String): Result<String> = withContext(Dispatchers.IO) {
         return@withContext try {
-            // Creamos un objeto User temporal para la petición
-            val userRequest = User(email = email, password = pass)
+            // Creamos un objeto LoginRequest para la petición
+            val loginRequest = LoginRequest(
+                username = email,
+                passw = pass
+            )
 
-            // Llamada a Ktor (ahora devuelve directamente el TokenResponse o lanza excepción)
-            val response = authApiService.getToken(userRequest)
+            // Llamada a Ktor
+            val token = authApiService.getToken(loginRequest)
 
-            val token = response.token
             Log.d("API_AUTH", "¡TOKEN RECIBIDO!: $token")
 
             Result.success(token)
@@ -43,6 +45,10 @@ class LoginRepositoryImpl(
 
     override suspend fun register(email: String, pass: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
+            val loginRequest = LoginRequest(
+                username = email,
+                passw = pass
+            )
             // Aquí iría tu lógica de registro real cuando la tengas
             Result.success(true)
         } catch (e: Exception) {

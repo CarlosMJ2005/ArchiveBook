@@ -1,6 +1,7 @@
 package com.example.pmdm.archivebook.presentation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,16 +78,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pmdm.archivebook.di.LibraryViewModelFactory
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
     onLogout: () -> Unit,
-    viewModel: LibraryViewModel = koinViewModel()
+    onBookClick: (Int) -> Unit, // Asegúrate de tener este callback también
+    factory: LibraryViewModelFactory, // Agregamos el parámetro factory
+    viewModel: LibraryViewModel = viewModel(factory = factory) // Usamos la factory aquí
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
@@ -362,6 +366,7 @@ fun LibraryScreen(
                     items(booksToShow, key = { it.id }) { book ->
                         BookCard(
                             book = book,
+                            modifier = Modifier.clickable { onBookClick(book.id) }, // Trigger navigation
                             onFavoriteClick = { viewModel.toggleFavorite(book.id) },
                             onBookmarkClick = { viewModel.toggleBookmark(book.id) },
                             onReturnClick = { viewModel.toggleReturn(book.id) }
@@ -377,6 +382,7 @@ fun LibraryScreen(
 @Composable
 fun BookCard(
     book: Book,
+    modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
     onBookmarkClick: () -> Unit,
     onReturnClick: () -> Unit
@@ -386,7 +392,7 @@ fun BookCard(
     val authorColor = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000)
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 8.dp), // Padding mínimo para no estrecharla
         shape = RoundedCornerShape(12.dp),

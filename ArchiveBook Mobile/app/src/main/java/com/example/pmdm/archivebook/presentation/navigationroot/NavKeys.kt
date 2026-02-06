@@ -16,3 +16,6 @@ object RegisterScreenKey : NavKey
 
 @Serializable
 object LibraryScreenKey : NavKey
+
+@Serializable
+data class BookDetailScreenKey(val bookId: Int) : NavKey

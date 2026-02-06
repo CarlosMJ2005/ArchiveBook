@@ -4,6 +4,7 @@ import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
+import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 
 class AuthRepositoryImpl(
     private val apiService: AuthApiService,
@@ -13,10 +14,8 @@ class AuthRepositoryImpl(
     override suspend fun login(user: User): Result<String> {
         return try {
             // En Ktor, si getToken falla, saltará directamente al catch(e)
-            val response = apiService.getToken(user)
+            val token = apiService.getToken(LoginRequest(user.email, user.password))
 
-            // Si llegamos aquí, es que la respuesta fue exitosa (200 OK)
-            val token = response.token
 
             android.util.Log.d("API_AUTH", "¡ÉXITO! Token: $token")
             authManager.saveToken(token)

@@ -16,7 +16,7 @@ class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository 
             genres = listOf("Fantasía", "Épico", "Aventura"),
             isBestseller = true,
             isFavorite = true,
-            description = "El primer libro de la saga Nacidos de la Bruma.",
+            synopsis = "El primer libro de la saga Nacidos de la Bruma.",
             isBookmarked = false,
             isToReturn = false
         ),
@@ -27,7 +27,7 @@ class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository 
             publisher = "Sudamericana",
             genres = listOf("Realismo Mágico", "Clásico"),
             isBookmarked = true,
-            description = "Una de las obras más importantes de la literatura universal.",
+            synopsis = "Una de las obras más importantes de la literatura universal.",
             isBestseller = true,
             isFavorite = false,
             isToReturn = true
@@ -38,7 +38,7 @@ class LibraryRepositoryImpl(private val client: HttpClient) : LibraryRepository 
             author = "George Orwell",
             publisher = "Secker & Warburg",
             genres = listOf("Distopía", "Ficción Política"),
-            description = "Un clásico de la literatura distópica.",
+            synopsis = "Un clásico de la literatura distópica.",
             isBestseller = false,
             isFavorite = true,
             isBookmarked = false,
