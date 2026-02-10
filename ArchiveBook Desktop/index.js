@@ -208,7 +208,7 @@ ipcMain.handle('get-toReturn', async () => {
   }
 });
 
-  ipcMain.handle('verify-user', async (event, email,password, state) => {
+  ipcMain.handle('verify-user', async (event, email, password, state) => {
   try {
     let url = apiUrl +"token";
 

@@ -1,4 +1,4 @@
-import { Controller } from './src/controller/controller.js';
+import { Controller } from '../src/controller/controller.js';
 
 
 const controller = new Controller();

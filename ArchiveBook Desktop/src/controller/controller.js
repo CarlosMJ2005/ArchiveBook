@@ -72,13 +72,13 @@ export class Controller {
 
     //book buttons
 
-    tapFavourite(button) {
+    tapFavourite(button) { //añadir funcionalidad con api
         this.#appView.tapFavourite(button)
     }
-    tapToReturn(button) {
+    tapToReturn(button) { //añadir funcionalidad con api
         this.#appView.tapToReturn(button)
     }
-    tapToRead(button) {
+    tapToRead(button) { //añadir funcionalidad con api
         this.#appView.tapToRead(button)
     }
 
@@ -115,7 +115,6 @@ export class Controller {
 
     startLoad() {
         this.loadAll()
-        this.loadBest()
         this.loadFavourite()
         this.loadToRead()
         this.loadToReturn()
@@ -188,9 +187,11 @@ export class Controller {
 
         app.getAllBooks()
             .then((datos) => {
+                    this.#appView.eraseAllList()
+                    this.#appView.eraseBestList()
                     JSON.parse(JSON.stringify(datos)).forEach(element => {
                         console.log(element)
-                        //this.#appView.createBook(element)
+                        this.#appView.createBook(element,"all",this)
                 });
             })
             .catch((error) => {
