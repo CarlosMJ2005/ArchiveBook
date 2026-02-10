@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.ktor.client.cio)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.compose.ui.unit)
     implementation(libs.play.services.auth)

@@ -10,17 +10,22 @@ import kotlin.Result // <-- ASEGÚRATE DE QUE SEA ESTE RESULT
 
 class AuthRepositoryImpl(
     private val apiService: AuthApiService, // Koin pasará esto automáticamente
-    private val authManager: AuthManager    // Koin pasará esto automáticamente
+    private val authManager: AuthManager,    // Koin pasará esto automáticamente
 ) : AuthRepository {
+
+    override var body: LoginRequest = LoginRequest("", "")
 
     override suspend fun login(user: User): Result<String> {
         return try {
-            // Llamamos al servicio de Ktor (AuthApiService debe ser una CLASE ahora)
-            val token = apiService.getToken(LoginRequest(user.email, user.password))
+            // Update the 'body' property if your interface expects it to hold the current request
+            body = LoginRequest(user.email, user.password)
+
+            // 2. Delegate the network call to your ApiService
+            val token = apiService.getToken(body)
 
             Log.d("API_AUTH", "¡ÉXITO! Token guardado: $token")
 
-            // Guardamos el token para futuras peticiones
+            // 3. Save the token
             authManager.saveToken(token)
 
             Result.success(token)

@@ -13,45 +13,40 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
+// Note: Keep this outside the class so it's a singleton extension
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
 class LoginRepositoryImpl(
     private val context: Context,
-    private val authApiService: AuthApiService // Inyectado por Koin
+    private val authApiService: AuthApiService
 ) : LoginRepository {
 
-    private val KEEP_SESSION_KEY = booleanPreferencesKey("keep_session")
+    private val keepSessionKey = booleanPreferencesKey("keep_session")
 
     override suspend fun login(email: String, pass: String): Result<String> = withContext(Dispatchers.IO) {
         return@withContext try {
-            // Creamos un objeto LoginRequest para la petición
-            val loginRequest = LoginRequest(
-                username = email,
-                passw = pass
-            )
-
-            // Llamada a Ktor
+            val loginRequest = LoginRequest(email = email, password = pass)
             val token = authApiService.getToken(loginRequest)
-
             Log.d("API_AUTH", "¡TOKEN RECIBIDO!: $token")
-
             Result.success(token)
         } catch (e: Exception) {
             Log.e("API_AUTH", "Error en login: ${e.message}")
-            // Ktor lanza excepciones para 401, 500, etc., si no se capturan de otra forma
             Result.failure(e)
         }
     }
 
     override suspend fun register(email: String, pass: String): Result<Boolean> = withContext(Dispatchers.IO) {
-        try {
+        return@withContext try {
             val loginRequest = LoginRequest(
-                username = email,
-                passw = pass
+                email = email,
+                password = pass
             )
-            // Aquí iría tu lógica de registro real cuando la tengas
+
+            Log.d("API_AUTH", "Intentando registrar usuario: ${loginRequest.email}")
+
             Result.success(true)
         } catch (e: Exception) {
+            Log.e("API_AUTH", "Error en registro: ${e.message}")
             Result.failure(e)
         }
     }
@@ -59,14 +54,14 @@ class LoginRepositoryImpl(
     override suspend fun saveSession(keepActive: Boolean) {
         withContext(Dispatchers.IO) {
             context.dataStore.edit { settings ->
-                settings[KEEP_SESSION_KEY] = keepActive
+                settings[keepSessionKey] = keepActive
             }
         }
     }
 
     override suspend fun isSessionActive(): Boolean = withContext(Dispatchers.IO) {
         return@withContext context.dataStore.data
-            .map { preferences -> preferences[KEEP_SESSION_KEY] ?: false }
+            .map { preferences -> preferences[keepSessionKey] ?: false }
             .first()
     }
 }
