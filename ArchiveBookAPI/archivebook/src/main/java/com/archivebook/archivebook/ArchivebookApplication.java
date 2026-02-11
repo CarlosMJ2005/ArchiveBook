@@ -26,10 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ArchivebookApplication {
 
     public static void main(String[] args) {
-        // Levantamos el contexto de la aplicación
         ApplicationContext context = SpringApplication.run(ArchivebookApplication.class, args);
 
-        // Obtenemos los beans de los repositorios
         AutorRepository autorRepository = context.getBean(AutorRepository.class);
         EditorialRepository editorialRepository = context.getBean(EditorialRepository.class);
         LibroRepository libroRepository = context.getBean(LibroRepository.class);
@@ -37,105 +35,83 @@ public class ArchivebookApplication {
         PrestamoRepository prestamoRepository = context.getBean(PrestamoRepository.class);
         FavoritosRepository favoritosRepository = context.getBean(FavoritosRepository.class);
         PorLeerRepository porLeerRepository = context.getBean(PorLeerRepository.class);
-        // cifrar password
-        PasswordEncoder encoder = context.getBean(PasswordEncoder.class); // hay que crear bean, hecho en WebSecurityConfig
-        //Usuario user1 = new Usuario(null, "daw", encoder.encode("1234"), "USER");
-        //usuarioRepository.save(user1);
-        
+        PasswordEncoder encoder = context.getBean(PasswordEncoder.class);
+
+        // CONDICIÓN: Solo cargamos datos si no hay usuarios registrados
+        if (usuarioRepository.count() == 0) {
             System.out.println(">>> Base de datos vacía. Cargando datos iniciales...");
 
             Usuario admin = usuarioRepository.save(new Usuario(null, "admin", encoder.encode("admin123"), "ADMIN"));
             Usuario juan_lector = usuarioRepository.save(new Usuario(null, "juan_lector", encoder.encode("pass123"), "USER"));
             Usuario maria_libros = usuarioRepository.save(new Usuario(null, "maria_libros", encoder.encode("pass123"), "USER"));
 
-            // Crear y guardar Autores
-            Autor autor1 = new Autor(null, "Miguel", "de Cervantes", "Española");
-            Autor autor2 = new Autor(null, "Isaac", "Asimov", "Estadounidense");
-            Autor autor3 = new Autor(null, "J.K.", "Rowling", "Británica");
-            autorRepository.save(autor1);
-            autorRepository.save(autor2);
-            autorRepository.save(autor3);
+            Autor autor1 = autorRepository.save(new Autor(null, "Miguel", "de Cervantes", "Española"));
+            Autor autor2 = autorRepository.save(new Autor(null, "Isaac", "Asimov", "Estadounidense"));
+            Autor autor3 = autorRepository.save(new Autor(null, "J.K.", "Rowling", "Británica"));
 
-            // Crear y guardar Editoriales
-            Editorial editorial1 = new Editorial(null, "Planeta", "Calle A", "España", "www.planeta.es");
-            Editorial editorial2 = new Editorial(null, "Minotauro", "Calle B", "España", "www.minotauro.com");
-            Editorial editorial3 = new Editorial(null, "Pearson", "Calle C", "Reino Unido", "www.pearson.com");
-            editorialRepository.save(editorial1);
-            editorialRepository.save(editorial2);
-            editorialRepository.save(editorial3);
+            Editorial editorial1 = editorialRepository.save(new Editorial(null, "Planeta", "Calle A", "España", "www.planeta.es"));
+            Editorial editorial2 = editorialRepository.save(new Editorial(null, "Minotauro", "Calle B", "España", "www.minotauro.com"));
+            Editorial editorial3 = editorialRepository.save(new Editorial(null, "Pearson", "Calle C", "Reino Unido", "www.pearson.com"));
 
-            // Crear Libros
             Libro libro1 = new Libro(null, "Don Quijote de la Mancha", "978-84-1", 1605, "portada_quijote.jpg");
             Libro libro2 = new Libro(null, "Fundación", "978-84-2", 1951, "portada_fundacion.jpg");
             Libro libro3 = new Libro(null, "Yo, Robot", "978-84-3", 1950, "portada_robot.jpg");
             Libro libro4 = new Libro(null, "Harry Potter y la piedra filosofal", "978-84-4", 1997, "portada_harry.jpg");
 
-            //Crear relacion de favoritos y porLeer de Usuarios
-            Favoritos favoritos1 = new Favoritos();
-            favoritos1.setLibro(libro1);
-            favoritos1.setUsuario(maria_libros);
-            
-            PorLeer porLeer1 = new PorLeer();
-            porLeer1.setLibro(libro2);
-            porLeer1.setUsuario(juan_lector);
-            
-            // Establecer relaciones (Asociaciones)
-            // Relación Libro-Autor
             libro1.setAutor(autor1);
             libro2.setAutor(autor2);
             libro3.setAutor(autor2);
             libro4.setAutor(autor3);
 
-            // Relación Libro-Editorial
             libro1.setEditorial(editorial1);
             libro2.setEditorial(editorial2);
             libro3.setEditorial(editorial2);
             libro4.setEditorial(editorial3);
 
-            // Establecer Categorías (Enums)
             libro1.setCategoria(CategoriaLibro.FICCION);
             libro2.setCategoria(CategoriaLibro.CIENCIA);
             libro3.setCategoria(CategoriaLibro.CIENCIA);
             libro4.setCategoria(CategoriaLibro.FICCION);
 
-            //Establecemos libros favoritos, best sellers
-            //y por leer
             libro1.setBestSeller(true);
             libro4.setBestSeller(true);
             libro4.setPrestado(true);
 
-            // 5. Guardar Libros en la base de datos
             libroRepository.save(libro1);
             libroRepository.save(libro2);
             libroRepository.save(libro3);
             libroRepository.save(libro4);
 
-            //Relación Usuario Libro
+            Favoritos favoritos1 = new Favoritos();
+            favoritos1.setLibro(libro1);
+            favoritos1.setUsuario(maria_libros);
+            favoritosRepository.save(favoritos1);
+
+            PorLeer porLeer1 = new PorLeer();
+            porLeer1.setLibro(libro2);
+            porLeer1.setUsuario(juan_lector);
+            porLeerRepository.save(porLeer1);
+
             Prestamo prestamoActivo = new Prestamo();
             prestamoActivo.setLibro(libro4);
             prestamoActivo.setUsuario(juan_lector);
-            prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3)); // Hace 3 días
+            prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3));
             prestamoActivo.setDevuelto(false);
             prestamoRepository.save(prestamoActivo);
-            
-            //Guardamos las relaciones
-            favoritosRepository.save(favoritos1);
-            porLeerRepository.save(porLeer1);
-            
 
-            // 6. Verificación por consola
-            System.out.println("\n--- PRUEBA DE CARGA DE DATOS ---");
-            System.out.println("Total de libros en BD: " + libroRepository.count());
+            System.out.println(">>> Carga inicial completada con éxito.");
+        } else {
+            System.out.println(">>> La base de datos ya contiene informacion. Omitiendo carga inicial.");
+        }
 
-            List<Libro> todosLosLibros = libroRepository.findAll();
-            for (Libro l : todosLosLibros) {
-                System.out.println("Libro: " + l.getTitulo()
-                        + " | Autor: " + l.getAutor().getNombre()
-                        + " | Editorial: " + l.getEditorial().getNombre()
-                        + " | Categoria: " + l.getCategoria());
-            }
-            System.out.println("--------------------------------\n");
-
-
+        // Verificación por consola (siempre se ejecuta)
+        System.out.println("\n--- ESTADO ACTUAL DE LA BASE DE DATOS ---");
+        System.out.println("Total de libros en BD: " + libroRepository.count());
+        List<Libro> todosLosLibros = libroRepository.findAll();
+        for (Libro l : todosLosLibros) {
+            String autorNombre = (l.getAutor() != null) ? l.getAutor().getNombre() : "Sin autor";
+            System.out.println("Libro: " + l.getTitulo() + " | Autor: " + autorNombre);
+        }
+        System.out.println("--------------------------------\n");
     }
 }
