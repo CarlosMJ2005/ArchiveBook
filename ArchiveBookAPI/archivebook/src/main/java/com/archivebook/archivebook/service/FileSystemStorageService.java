@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 public class FileSystemStorageService {
 
-    private final Path rootLocation = Paths.get("upload-dir");
+    private final Path rootLocation = Paths.get("src/main/resources/static/uploads");
 
     public FileSystemStorageService() {
         try {

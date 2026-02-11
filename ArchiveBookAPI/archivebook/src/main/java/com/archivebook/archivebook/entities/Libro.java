@@ -55,13 +55,16 @@ public class Libro {
     public Libro() {
     }
 
-    public Libro(Long idLibro, String titulo, String isbn, int agnoPublicacion, String portadaLibro) {
+    public Libro(Long idLibro, String titulo, String isbn, int agnoPublicacion, String portadaLibro, String sinopsis) {
         this.idLibro = idLibro;
         this.titulo = titulo;
         this.isbn = isbn;
         this.agnoPublicacion = agnoPublicacion;
         this.portadaLibro = portadaLibro;
+        this.sinopsis = sinopsis;
     }
+    
+    
     
 
     public Long getIdLibro() {
