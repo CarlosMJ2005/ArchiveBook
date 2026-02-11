@@ -53,11 +53,14 @@ public class ArchivebookApplication {
             Editorial editorial2 = editorialRepository.save(new Editorial(null, "Minotauro", "Calle B", "España", "www.minotauro.com"));
             Editorial editorial3 = editorialRepository.save(new Editorial(null, "Pearson", "Calle C", "Reino Unido", "www.pearson.com"));
 
-            Libro libro1 = new Libro(null, "Don Quijote de la Mancha", "978-84-1", 1605, "portada_quijote.jpg");
-            Libro libro2 = new Libro(null, "Fundación", "978-84-2", 1951, "portada_fundacion.jpg");
-            Libro libro3 = new Libro(null, "Yo, Robot", "978-84-3", 1950, "portada_robot.jpg");
-            Libro libro4 = new Libro(null, "Harry Potter y la piedra filosofal", "978-84-4", 1997, "portada_harry.jpg");
-
+            Libro libro1 = new Libro(null, "Don Quijote de la Mancha", "978-84-1", 1605, "portada_quijote.jpg",
+                    "Las aventuras de un caballero que pierde la cordura por leer libros de caballería.");
+            Libro libro2 = new Libro(null, "Fundación", "978-84-2", 1951, "portada_fundacion.jpg",
+                    "Un científico predice la caída de un imperio galáctico y crea un plan para salvar el conocimiento humano.");
+            Libro libro3 = new Libro(null, "Yo, Robot", "978-84-3", 1950, "portada_robot.jpg",
+                    "Una serie de relatos que exploran las interacciones entre humanos y robots bajo las tres leyes de la robótica.");
+            Libro libro4 = new Libro(null, "Harry Potter y la piedra filosofal", "978-84-4", 1997, "portada_harry.jpg",
+                    "Un niño huérfano descubre que es un mago y comienza su formación en una escuela de magia.");
             libro1.setAutor(autor1);
             libro2.setAutor(autor2);
             libro3.setAutor(autor2);
