@@ -8,8 +8,14 @@ export class book {
     #Year
     #Isbn
 
+    #favList
+    #allList
+    #readList
+    #returnList
+    #bestList
 
-    constructor(title,author,synopsis,isbn,year, cover = "./images/easter.jpg") {
+
+    constructor(book) {
         this.#Cover = cover
         this.#Title = title
         this.#Synopsis = synopsis
