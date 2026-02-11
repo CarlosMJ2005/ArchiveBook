@@ -61,6 +61,7 @@ public class ArchivebookApplication {
                     "Una serie de relatos que exploran las interacciones entre humanos y robots bajo las tres leyes de la robótica.");
             Libro libro4 = new Libro(null, "Harry Potter y la piedra filosofal", "978-84-4", 1997, "portada_harry.jpg",
                     "Un niño huérfano descubre que es un mago y comienza su formación en una escuela de magia.");
+            
             libro1.setAutor(autor1);
             libro2.setAutor(autor2);
             libro3.setAutor(autor2);

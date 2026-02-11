@@ -20,17 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pmdm.archivebook.di.BookDetailViewModelFactory
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.presentation.BookDetailViewModel
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun BookDetailScreen(
-    factory: BookDetailViewModelFactory,
-    onBack: () -> Unit,
-    viewModel: BookDetailViewModel = viewModel(factory = factory)
+    viewModel: BookDetailViewModel,
+    onBack: () -> Unit
 ) {
     val book = viewModel.book
     val isLoading = viewModel.isLoading
@@ -51,7 +48,6 @@ fun BookDetailScreen(
             }
         }
         book != null -> {
-            // Esta es la función que faltaba declarar abajo
             BookDetailContent(book = book, onBack = onBack)
         }
     }
@@ -92,7 +88,6 @@ fun BookDetailContent(
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // --- PORTADA ---
             Card(
                 modifier = Modifier.size(width = 180.dp, height = 270.dp),
                 shape = RoundedCornerShape(8.dp),
@@ -115,7 +110,6 @@ fun BookDetailContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // --- ESTADOS (BADGES) ---
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 StatusBadge(Icons.Default.Star, "Bestseller", Color(0xFFFFB700), book.isBestseller)
                 StatusBadge(Icons.Default.Favorite, "Favorite", Color(0xFFFF0000), book.isFavorite)
@@ -125,7 +119,6 @@ fun BookDetailContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- GÉNEROS ---
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -145,7 +138,6 @@ fun BookDetailContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- SINOPSIS ---
             Surface(
                 color = cardColor.copy(alpha = 0.4f),
                 shape = RoundedCornerShape(12.dp),
@@ -162,7 +154,12 @@ fun BookDetailContent(
 }
 
 @Composable
-fun StatusBadge(icon: ImageVector, label: String, activeColor: Color, isActive: Boolean) {
+fun StatusBadge(
+    icon: ImageVector,
+    label: String,
+    activeColor: Color,
+    isActive: Boolean
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
             imageVector = icon,
@@ -170,6 +167,10 @@ fun StatusBadge(icon: ImageVector, label: String, activeColor: Color, isActive: 
             tint = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f),
             modifier = Modifier.size(30.dp)
         )
-        Text(label, style = MaterialTheme.typography.labelSmall, color = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f)
+        )
     }
 }

@@ -57,13 +57,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
-    factory: RegisterViewModelFactory, // 1. Añadimos el parámetro aquí
+    viewModel: RegisterViewModel, // Solo el ViewModel
     onRegisterSuccess: () -> Unit,
     onNavigateToLogin: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier // Valor por defecto para no tener que pasarlo siempre
 ) {
-    // 2. Usamos la factory para obtener el ViewModel
-    val viewModel: RegisterViewModel = viewModel(factory = factory)
     // Los estados visuales de los iconos se quedan aquí
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
@@ -286,7 +284,7 @@ fun RegisterScreen(
         }
     }
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
@@ -313,7 +311,7 @@ fun RegisterScreenPreview() {
         LoginScreen(
             factory = factory,
             onLoginSuccess = {},
-            onRegisterClick = {}
+            onRegisterClick = {},
         )
     }
-}
+}*/

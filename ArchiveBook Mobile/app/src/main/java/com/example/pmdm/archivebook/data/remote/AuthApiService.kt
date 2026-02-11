@@ -13,7 +13,7 @@ import io.ktor.http.contentType
 class AuthApiService(private val client: HttpClient) {
 
     suspend fun getToken(request: LoginRequest): String {
-        val response = client.post("http://10.56.193.184:8080/token") {
+        val response = client.post("token") {
             contentType(ContentType.Application.Json)
             basicAuth(username = request.email, password = request.password)
             setBody(request)
