@@ -7,13 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LibraryViewModel(private val repository: LibraryRepository) : ViewModel() {
+class LibraryViewModel(
+    private val repository: LibraryRepository
+) : ViewModel() {
 
     // Lista maestra de libros
     private var allBooks by mutableStateOf<List<Book>>(emptyList())
-
+    val state: List<Book> get() = filteredBooks
     // Estados de UI
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
@@ -43,8 +48,12 @@ class LibraryViewModel(private val repository: LibraryRepository) : ViewModel() 
             isLoading = true
             errorMessage = null
             repository.getBooks()
-                .onSuccess { allBooks = it }
-                .onFailure { errorMessage = it.message ?: "Error desconocido" }
+                .onSuccess { books ->
+                    allBooks = books // Esto disparará la recomposición de filteredBooks
+                }
+                .onFailure { e ->
+                    errorMessage = e.message ?: "Error desconocido"
+                }
             isLoading = false
         }
     }
@@ -57,17 +66,17 @@ class LibraryViewModel(private val repository: LibraryRepository) : ViewModel() 
         }
     }
 
-    fun toggleFavorite(bookId: Int) {
+    /*fun toggleFavorite(bookId: Int) {
         allBooks = allBooks.map {
             if (it.id == bookId) it.copy(isFavorite = !it.isFavorite) else it
         }
-    }
+    }*/
 
-    fun toggleBookmark(bookId: Int) {
+    /*fun toggleBookmark(bookId: Int) {
         allBooks = allBooks.map {
             if (it.id == bookId) it.copy(isBookmarked = !it.isBookmarked) else it
         }
-    }
+    }*/
 
     fun toggleReturn(bookId: Int) {
         allBooks = allBooks.map {

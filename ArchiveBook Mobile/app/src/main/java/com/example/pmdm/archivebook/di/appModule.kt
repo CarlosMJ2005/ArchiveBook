@@ -6,9 +6,13 @@ import com.example.pmdm.archivebook.auth.repository.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.LibraryRepositoryImpl
 import com.example.pmdm.archivebook.data.remote.AuthApiService
+import com.example.pmdm.archivebook.data.remote.LibraryApiService
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
+import com.example.pmdm.archivebook.domain.repositories.LoginRepository
 import com.example.pmdm.archivebook.presentation.BookDetailViewModel
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
+import com.example.pmdm.archivebook.presentation.LoginViewModel
+import com.example.pmdm.archivebook.presentation.RegisterViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.auth.Auth
@@ -50,11 +54,8 @@ val appModule = module {
                 bearer {
                     loadTokens {
                         val token = authManager.getToken()
-                        if (token != null) {
-                            BearerTokens(token, "") // El refresh token no lo usamos ahora
-                        } else {
-                            null
-                        }
+                        Log.d("AUTH_DEBUG", "Cargando token para la petición: $token")
+                        if (token != null) BearerTokens(token, "") else null
                     }
                     sendWithoutRequest {
                         !it.url.pathSegments.contains("token")
@@ -64,7 +65,7 @@ val appModule = module {
             defaultRequest {
                 url {
                     protocol = URLProtocol.HTTP
-                    host = "10.56.193.184"
+                    host = "10.75.204.184"
                     port = 8080
                 }
             }
@@ -72,33 +73,37 @@ val appModule = module {
     }
 
     // 3. Servicios de API
-    single<AuthApiService> {
-        AuthApiService(
-            get()
-        ) }
+    single { AuthApiService(get()) }
+    single { LibraryApiService(get()) }
 
 
+    // 4. Repositorios
     single<AuthRepository> {
-        AuthRepositoryImpl(
-            apiService = get(),
-            authManager = get()
-        )
+        AuthRepositoryImpl(apiService = get(), authManager = get())
     }
 
-    single<LibraryRepository> { LibraryRepositoryImpl(
-        client = get()
-    ) }
+    single<LibraryRepository> {
+        LibraryRepositoryImpl(apiService = get())
+    }
 
-    // LibraryViewModel doesn't need parameters
+    // 5. VIEWMODELS (Asegúrate de que todos estén aquí)
+
+    // Faltaban estos dos para que el Login y Registro funcionen:
+    // 1. Define el repositorio para que responda a todas sus interfaces
+    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+// Si LoginViewModel pide específicamente "LoginRepository", añade esta línea:
+    single<LoginRepository> { get<AuthRepository>() as AuthRepositoryImpl }
+
+// 2. Define los ViewModels pidiendo la interfaz exacta que tienen en su constructor
+    viewModel { LoginViewModel(repository = get<LoginRepository>()) }
+    viewModel { RegisterViewModel(repository = get<AuthRepository>()) }
+
+    // Estos ya los tenías bien:
     viewModel { LibraryViewModel(get()) }
-
-    // --- NEW: BookDetailViewModel with parameters ---
-    // The (id: Int) matches the parametersOf(id) call in your Screen
     viewModel { (id: Int) ->
         BookDetailViewModel(
             repository = get(),
             bookId = id
         )
     }
-
 }
