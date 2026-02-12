@@ -106,6 +106,11 @@ public class ArchivebookApplication {
             porLeer1.setLibro(libro2);
             porLeer1.setUsuario(juan_lector);
             porLeerRepository.save(porLeer1);
+            
+            PorLeer porLeer2 = new PorLeer();
+            porLeer2.setLibro(libro2);
+            porLeer2.setUsuario(maria_libros);
+            porLeerRepository.save(porLeer2);
 
             Prestamo prestamoActivo = new Prestamo();
             prestamoActivo.setLibro(libro4);
@@ -113,6 +118,14 @@ public class ArchivebookApplication {
             prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3));
             prestamoActivo.setDevuelto(false);
             prestamoRepository.save(prestamoActivo);
+            
+            
+            Prestamo prestamoActivo2 = new Prestamo();
+            prestamoActivo2.setLibro(libro4);
+            prestamoActivo2.setUsuario(maria_libros);
+            prestamoActivo2.setFechaPrestamo(LocalDate.now().minusDays(3));
+            prestamoActivo2.setDevuelto(false);
+            prestamoRepository.save(prestamoActivo2);
 
             System.out.println(">>> Carga inicial completada con éxito.");
         } else {

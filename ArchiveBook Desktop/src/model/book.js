@@ -7,6 +7,12 @@ export class book {
     #Author
     #Year
     #Isbn
+    #Publisher
+    #Category
+    
+    #favBool
+    #returnBool
+    #readBool
 
     #favList
     #allList
@@ -15,13 +21,15 @@ export class book {
     #bestList
 
 
-    constructor(book) {
-        this.#Cover = cover
-        this.#Title = title
-        this.#Synopsis = synopsis
-        this.#Author = author
-        this.#Year = year
-        this.#Isbn = isbn
+    constructor(book, image = "") {
+        this.#Cover = image
+        this.#Title = book.titulo
+        this.#Synopsis = book.sinopsis
+        this.#Publisher = book.editorial.nombre
+        this.#Author = book.autor.nombre + " " + book.autor.apellidos
+        this.#Year = book.agnoPublicacion
+        this.#Isbn = book.isbn 
+        this.#Category = book.categoria
     }
 
     init() {

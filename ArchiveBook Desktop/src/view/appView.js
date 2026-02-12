@@ -153,6 +153,29 @@ export class appView {
                     best.src = "./images/star-bold.png"
 
                     const clone = div.cloneNode(true);
+
+                    // Buscar elementos dentro del CLON
+                    const cloneImg = clone.querySelector('#cover');
+                    const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
+                    const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
+                    const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
+
+                    // Reasignar eventos
+                    cloneImg.addEventListener('click', () =>
+                        this.openDescriptionPopUp(
+                            cloneImg,
+                            book.titulo,
+                            book.autor.nombre + " " + book.autor.apellidos,
+                            book.sinopsis,
+                            book.isbn,
+                            book.agnoPublicacion
+                        )
+                    );
+
+                    cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
+                    cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
+                    cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+
                     this.#baseBest.appendChild(clone);
                 } else {
                     best.src = "./images/star.png"
