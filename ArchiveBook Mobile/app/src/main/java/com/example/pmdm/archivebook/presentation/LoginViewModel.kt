@@ -5,12 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pmdm.archivebook.domain.repositories.LoginRepository
+import com.example.pmdm.archivebook.auth.domain.model.User
+import com.example.pmdm.archivebook.auth.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
 
     var email by mutableStateOf("")
     var password by mutableStateOf("")
@@ -21,16 +22,20 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
         viewModelScope.launch {
             isLoading = true
             try {
-                val result = repository.login(email, password)
+                val result = repository.login(User(email = email, password = password))
 
-                // --- AÑADE ESTA LÍNEA ---
                 android.util.Log.d("DEBUG_TOKEN", "Respuesta del servidor: $result")
 
-                if (result != null) {
-                    // Si usas tokens JWT, suelen empezar por "eyJ..."
-                    onSuccess()
-                } else {
-                    onError("Invalid credentials")
+                result.onSuccess { token ->
+                    if (token.isNotBlank()) {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    } else {
+                        onError("Login failed: Received an empty token.")
+                    }
+                }.onFailure {
+                    onError(it.message ?: "Invalid credentials")
                 }
             } catch (e: Exception) {
                 android.util.Log.e("DEBUG_TOKEN", "Error en login: ${e.message}")

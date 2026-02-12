@@ -2,9 +2,10 @@ package com.example.pmdm.archivebook.data
 
 import android.content.Context
 import android.util.Log
-import androidx.datastore.preferences.preferencesDataStore // This was the missing one
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
+import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.data.remote.AuthApiService
 import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import com.example.pmdm.archivebook.domain.repositories.LoginRepository
@@ -23,9 +24,9 @@ class LoginRepositoryImpl(
 
     private val keepSessionKey = booleanPreferencesKey("keep_session")
 
-    override suspend fun login(email: String, pass: String): Result<String> = withContext(Dispatchers.IO) {
+    override suspend fun login(user: User): Result<String> = withContext(Dispatchers.IO) {
         return@withContext try {
-            val loginRequest = LoginRequest(email = email, password = pass)
+            val loginRequest = LoginRequest(email = user.email, password = user.password)
             val token = authApiService.getToken(loginRequest)
             Log.d("API_AUTH", "¡TOKEN RECIBIDO!: $token")
             Result.success(token)
@@ -35,11 +36,11 @@ class LoginRepositoryImpl(
         }
     }
 
-    override suspend fun register(email: String, pass: String): Result<Boolean> = withContext(Dispatchers.IO) {
+    override suspend fun register(user: User): Result<Boolean> = withContext(Dispatchers.IO) {
         return@withContext try {
             val loginRequest = LoginRequest(
-                email = email,
-                password = pass
+                email = user.email,
+                password = user.password
             )
 
             Log.d("API_AUTH", "Intentando registrar usuario: ${loginRequest.email}")
@@ -63,5 +64,9 @@ class LoginRepositoryImpl(
         return@withContext context.dataStore.data
             .map { preferences -> preferences[keepSessionKey] ?: false }
             .first()
+    }
+
+    override suspend fun logout() {
+        saveSession(false)
     }
 }
