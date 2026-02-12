@@ -113,116 +113,62 @@ export class Controller {
 
     // book loading
 
-    startLoad() {
-
-        this.loadFavourite()
-        this.loadToRead()
-        this.loadToReturn()
-        this.loadAll()
-    }
-    loadBest() {
-
-    }
-    loadToRead() {
-
-    }
-    loadToReturn() {
-
-    }
-
-    loadFavourite() {
-        console.log("pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato pato")
-
-    }
-    /*
-    loadToRead() {
-        app.getToRead()
-            .then((datos) => {
-                    JSON.parse(JSON.stringify(datos)).forEach(element => {
-                        console.log(element.titulo)
-                    });
-            })
-            .catch((error) => {
-                console.log(error.message.substring(error.message.lastIndexOf("Error")))
-
-            })
+    async startLoad() {
+        
+        const [favs/*, returns, reads*/] = await Promise.all([
+        app.getFavourites(),
+        //app.getToReturn(),
+        //app.getToRead()
+        ]);
+        
+        this.loadAll(favs/*, returns, reads*/)
     }
     
-    loadToReturn() {
-        app.getToReturn()
-            .then((datos) => {
-                    JSON.parse(JSON.stringify(datos)).forEach(element => {
-                        console.log(element.titulo)
-                    });
-            })
-            .catch((error) => {
-                console.log(error.message.substring(error.message.lastIndexOf("Error")))
-
-            })
-    }
-    */
-    loadAll() {
+    loadAll(favs/*,returns,reads*/) {
         console.log(new Date())
         //let url = "http://192.168.207.76:8080/api/libros"; // Steven
         //let url = "http://192.168.207.83:8080/api/libros"; // Israel
 
-        app.getFavourites()
-            .then((favs) => {
+        app.getAllBooks()
+            .then((datos) => {
                 console.log(new Date())
-                app.getToRead()
-                    .then((reads) => {
-                        app.getToReturn()
-                            .then((returns) => {
-                                app.getAllBooks()
-                                    .then((datos) => {
-                                        console.log(new Date())
-                                        this.#appView.eraseAllList()
-                                        this.#appView.eraseBestList()
-                                        JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
-                                            console.log(bookEntry)
-                                            let favourite = false
-                                            let toRead = false
-                                            let toReturn = false
-                                            favourite = favs.some(favEntry => {
-                                                if (bookEntry.idLibro === favEntry.libro.idLibro) {
-                                                    console.log("Bua, israel, eres un fiera")
-                                                    return true;
-                                                }
-                                            });
-                                            toRead = reads.some(readEntry => {
-                                                if (bookEntry.idLibro === readEntry.libro.idLibro) {
-                                                    console.log("Bua, israel, eres un fiera 2")
-                                                    return true;
-                                                }
-                                            });
-                                            toReturn = returns.some(returnEntry => {
-                                                if (bookEntry.idLibro === returnEntry.libro.idLibro) {
-                                                    console.log("Bua, israel, eres un fiera 3")
-                                                    return true;
-                                                }
-                                            });
+                this.#appView.eraseAllList()
+                this.#appView.eraseBestList()
+                JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
+                    console.log(bookEntry)
+                    
+                    let favourite = false
+                    /*
+                    let toRead = false
+                    let toReturn = false
+                    */
+                    favourite = favs.some(favEntry => {
+                        if (bookEntry.idLibro === favEntry.libro.idLibro) {
+                            console.log("Bua, israel, eres un fiera")
+                            return true;
+                        }
+                    });
+                    /*
+                    toRead = reads.some(readEntry => {
+                        if (bookEntry.idLibro === readEntry.libro.idLibro) {
+                            console.log("Bua, israel, eres un fiera 2")
+                            return true;
+                        }
+                    });
+                    toReturn = returns.some(returnEntry => {
+                        if (bookEntry.idLibro === returnEntry.libro.idLibro) {
+                            console.log("Bua, israel, eres un fiera 3")
+                            return true;
+                        }
+                    });
+                    */
 
-                                            let actualBook = new book(bookEntry)
-                                            this.#appView.createBook(bookEntry, "all", this)
-                                        });
-                                    })
-                                    .catch((error) => {
-                                        console.log(error.message.substring(error.message.lastIndexOf("Error")))
-
-                                    })
-                            })
-                            .catch((error) => {
-                                console.log(error.message.substring(error.message.lastIndexOf("Error")))
-
-                            })
-                    })
-                    .catch((error) => {
-                        console.log(error.message.substring(error.message.lastIndexOf("Error")))
-
-                    })
+                    let actualBook = new book(bookEntry)
+                    this.#appView.createBook(bookEntry, "all", this)
+                });
             })
             .catch((error) => {
-                console.log(error.message.substring(error.message.lastIndexOf("Error")))
+                console.log("Get-all-books " + error.message.substring(error.message.lastIndexOf("Error")))
 
             })
     }

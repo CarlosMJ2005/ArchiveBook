@@ -73,7 +73,7 @@ app.on('ready', () => {
   ipcMain.handle('load-user', async () => {
     try {
       const results = JSON.parse(await readFile(ficheroUsuario, "utf8"));
-      //myToken = results.token
+      myToken = results.token
       return results;
     } catch (err) {
       throw new Error("Error loading user file: " + err);
@@ -144,31 +144,6 @@ ipcMain.handle('get-toRead', async () => {
       }
     });
 
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error en get-books:', error);
-    openLog()
-    throw error;
-  }
-});
-
-  ipcMain.handle('get-best', async () => {
-  try {
-    const url = apiUrl +"api/libros/favoritos/";
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${myToken}`
-      }
-    });
-
     console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -195,6 +170,7 @@ ipcMain.handle('get-toReturn', async () => {
       }
     });
 
+    console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
