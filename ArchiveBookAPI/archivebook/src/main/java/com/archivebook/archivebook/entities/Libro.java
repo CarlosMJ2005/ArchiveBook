@@ -154,11 +154,4 @@ public class Libro {
     public void setSinopsis(String sinopsis) {
         this.sinopsis = sinopsis;
     }
-
-    
 }
-    
-    
-    
-    
-

@@ -42,7 +42,7 @@ public class Prestamo {
     
     public Prestamo() {
         this.fechaPrestamo = LocalDate.now();
-        this.devuelto = true;
+        this.devuelto = false;
     }
 
     public Prestamo(Long idPrestamo, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, LocalDate fechaDevolucionReal, boolean devuelto) {
