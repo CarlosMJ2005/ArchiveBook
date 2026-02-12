@@ -2,13 +2,12 @@ package com.example.pmdm.archivebook.di
 
 import android.util.Log
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
-import com.example.pmdm.archivebook.auth.repository.AuthRepositoryImpl
-import com.example.pmdm.archivebook.data.local.AuthManager
+import com.example.pmdm.archivebook.data.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.LibraryRepositoryImpl
+import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
 import com.example.pmdm.archivebook.data.remote.LibraryApiService
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
-import com.example.pmdm.archivebook.domain.repositories.LoginRepository
 import com.example.pmdm.archivebook.presentation.BookDetailViewModel
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
 import com.example.pmdm.archivebook.presentation.LoginViewModel
@@ -23,6 +22,9 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
@@ -37,6 +39,7 @@ val appModule = module {
 
     // 2. Cliente de Red (Ktor)
     single {
+        // We need to get AuthManager here for the Auth plugin
         val authManager: AuthManager = get()
         HttpClient(Android) {
             install(ContentNegotiation) {
@@ -58,11 +61,13 @@ val appModule = module {
                         if (token != null) BearerTokens(token, "") else null
                     }
                     sendWithoutRequest {
+                        // We don't want to send the token when we are asking for a token
                         !it.url.pathSegments.contains("token")
                     }
                 }
             }
             defaultRequest {
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
                 url {
                     protocol = URLProtocol.HTTP
                     host = "10.75.204.184"
@@ -78,27 +83,13 @@ val appModule = module {
 
 
     // 4. Repositorios
-    single<AuthRepository> {
-        AuthRepositoryImpl(apiService = get(), authManager = get())
-    }
+    // Restore authManager here
+    single<AuthRepository> { AuthRepositoryImpl(apiService = get(), authManager = get()) }
+    single<LibraryRepository> { LibraryRepositoryImpl(get()) }
 
-    single<LibraryRepository> {
-        LibraryRepositoryImpl(apiService = get())
-    }
-
-    // 5. VIEWMODELS (Asegúrate de que todos estén aquí)
-
-    // Faltaban estos dos para que el Login y Registro funcionen:
-    // 1. Define el repositorio para que responda a todas sus interfaces
-    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-// Si LoginViewModel pide específicamente "LoginRepository", añade esta línea:
-    single<LoginRepository> { get<AuthRepository>() as AuthRepositoryImpl }
-
-// 2. Define los ViewModels pidiendo la interfaz exacta que tienen en su constructor
-    viewModel { LoginViewModel(repository = get<LoginRepository>()) }
-    viewModel { RegisterViewModel(repository = get<AuthRepository>()) }
-
-    // Estos ya los tenías bien:
+    // 5. ViewModels
+    viewModel { LoginViewModel(get()) }
+    viewModel { RegisterViewModel(get()) }
     viewModel { LibraryViewModel(get()) }
     viewModel { (id: Int) ->
         BookDetailViewModel(

@@ -2,10 +2,10 @@ package com.example.pmdm.archivebook.data.remote
 
 import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
@@ -21,15 +21,20 @@ class AuthApiService(private val client: HttpClient) {
 
         return when (response.status) {
             HttpStatusCode.OK -> {
-                val tokenResponse = response.body<TokenResponse>()
-                tokenResponse.token
+                // Leemos la respuesta como texto plano, no como JSON
+                val plainToken = response.bodyAsText()
+                plainToken
             }
-            HttpStatusCode.Unauthorized -> {
-                throw Exception("401: No autorizado. Revisa credenciales o configuración del servidor.")
-            }
-            else -> {
-                throw Exception("Error del servidor: ${response.status.value}")
-            }
+            HttpStatusCode.Unauthorized -> throw Exception("401: Credenciales incorrectas.")
+            else -> throw Exception("Error ${response.status.value}: ${response.bodyAsText()}")
         }
+    }
+
+    suspend fun registerUser(request: LoginRequest): Boolean {
+        val response = client.post("api/usuarios") { // Ajusta el endpoint según tu API
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+        return response.status == HttpStatusCode.Created || response.status == HttpStatusCode.OK
     }
 }
