@@ -61,7 +61,7 @@ public class ArchivebookApplication {
                     "Una serie de relatos que exploran las interacciones entre humanos y robots bajo las tres leyes de la robótica.");
             Libro libro4 = new Libro(null, "Harry Potter y la piedra filosofal", "978-84-4", 1997, "portada_harry.jpg",
                     "Un niño huérfano descubre que es un mago y comienza su formación en una escuela de magia.");
-            
+
             libro1.setAutor(autor1);
             libro2.setAutor(autor2);
             libro3.setAutor(autor2);
@@ -86,15 +86,31 @@ public class ArchivebookApplication {
             libroRepository.save(libro3);
             libroRepository.save(libro4);
 
-            Favoritos favoritos1 = new Favoritos();
-            favoritos1.setLibro(libro1);
-            favoritos1.setUsuario(maria_libros);
-            favoritosRepository.save(favoritos1);
+            //favoritos
+            Favoritos favoritosAdmin = new Favoritos();
+            favoritosAdmin.setLibro(libro1);
+            favoritosAdmin.setUsuario(admin);
+            favoritosRepository.save(favoritosAdmin);
+
+            Favoritos favoritosJuan = new Favoritos();
+            favoritosJuan.setLibro(libro1);
+            favoritosJuan.setUsuario(juan_lector);
+            favoritosRepository.save(favoritosJuan);
+
+            Favoritos favoritosMaria = new Favoritos();
+            favoritosMaria.setLibro(libro1);
+            favoritosMaria.setUsuario(maria_libros);
+            favoritosRepository.save(favoritosMaria);
 
             PorLeer porLeer1 = new PorLeer();
             porLeer1.setLibro(libro2);
             porLeer1.setUsuario(juan_lector);
             porLeerRepository.save(porLeer1);
+            
+            PorLeer porLeer2 = new PorLeer();
+            porLeer2.setLibro(libro2);
+            porLeer2.setUsuario(maria_libros);
+            porLeerRepository.save(porLeer2);
 
             Prestamo prestamoActivo = new Prestamo();
             prestamoActivo.setLibro(libro4);
@@ -102,6 +118,14 @@ public class ArchivebookApplication {
             prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3));
             prestamoActivo.setDevuelto(false);
             prestamoRepository.save(prestamoActivo);
+            
+            
+            Prestamo prestamoActivo2 = new Prestamo();
+            prestamoActivo2.setLibro(libro4);
+            prestamoActivo2.setUsuario(maria_libros);
+            prestamoActivo2.setFechaPrestamo(LocalDate.now().minusDays(3));
+            prestamoActivo2.setDevuelto(false);
+            prestamoRepository.save(prestamoActivo2);
 
             System.out.println(">>> Carga inicial completada con éxito.");
         } else {

@@ -143,9 +143,10 @@ public class LibroController {
         return libroDAO.findByTitulo(titulo);
     }
 
-    @GetMapping("/buscar/categoria/{categoria}")
-    public List<Libro> findByCategoria(@PathVariable CategoriaLibro categoria) {
-        return libroDAO.findByCategoria(categoria);
+    @GetMapping("/api/libros/categoria/{categoria}")
+    public ResponseEntity<List<Libro>> buscarPorCategoria(@PathVariable CategoriaLibro categoria) {
+        List<Libro> libros = repository.findByCategoria(categoria);
+        return ResponseEntity.ok(libros);
     }
 
     @GetMapping("/buscar/autor/{nombre}")

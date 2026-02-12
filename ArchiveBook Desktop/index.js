@@ -108,7 +108,7 @@ app.on('ready', () => {
 
   ipcMain.handle('get-favourites', async () => {
   try {
-    const url = apiUrl +"api/libros/favoritos/";
+    const url = apiUrl +"api/favoritos";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -134,7 +134,7 @@ app.on('ready', () => {
 
 ipcMain.handle('get-toRead', async () => {
   try {
-    const url = apiUrl +"api/favoritos/";
+    const url = apiUrl +"api/porLeer";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -185,7 +185,7 @@ ipcMain.handle('get-toRead', async () => {
 
 ipcMain.handle('get-toReturn', async () => {
   try {
-    const url = apiUrl +"api/favoritos/";
+    const url = apiUrl +"/api/prestamos";
 
     const response = await fetch(url, {
       method: 'GET',
