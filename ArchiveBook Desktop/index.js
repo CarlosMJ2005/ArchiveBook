@@ -56,12 +56,12 @@ app.on('ready', () => {
 
 
   const openApp = () => {
-    console.log("entro en open window")
+    //console.log("entro en open window")
     appwindow.show()
     logwindow.hide()
   }
   const openLog = () => {
-    console.log("entro en open window")
+    //console.log("entro en open window")
     logwindow.show()
     appwindow.hide()
   }
@@ -83,7 +83,7 @@ app.on('ready', () => {
   ipcMain.handle('get-books', async () => {
   try {
     const url = apiUrl +"api/libros";
-    console.log(url)
+    //console.log(url)
 
     const response = await fetch(url, {
       method: 'GET',
@@ -117,7 +117,6 @@ app.on('ready', () => {
         'Authorization': `Bearer ${myToken}`
       }
     });
-
     console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -136,6 +135,8 @@ ipcMain.handle('get-toRead', async () => {
   try {
     const url = apiUrl +"api/porLeer";
 
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -144,7 +145,7 @@ ipcMain.handle('get-toRead', async () => {
       }
     });
 
-    console.log(response)
+    //console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
@@ -160,6 +161,8 @@ ipcMain.handle('get-toRead', async () => {
 
 ipcMain.handle('get-toReturn', async () => {
   try {
+
+    console.log(myToken)
     const url = apiUrl +"/api/prestamos";
 
     const response = await fetch(url, {
@@ -202,7 +205,7 @@ ipcMain.handle('get-toReturn', async () => {
     }
     let token = await response.text();
     myToken = token
-    console.log(myToken)
+    //console.log(myToken)
     saveUser(email, password, state, token);
     openApp();
     appwindow.webContents.send('load')
