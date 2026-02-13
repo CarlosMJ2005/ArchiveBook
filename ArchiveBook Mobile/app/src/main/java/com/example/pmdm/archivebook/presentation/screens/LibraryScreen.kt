@@ -114,8 +114,12 @@ fun LibraryScreen(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.background) {
+            ModalDrawerSheet(
+                drawerContainerColor = MaterialTheme.colorScheme.background,
+                modifier = Modifier.fillMaxHeight()
+            ) {
                 Spacer(modifier = Modifier.height(WindowInsets.systemBars.asPaddingValues().calculateTopPadding()))
+
                 Text(
                     "ArchiveBook",
                     modifier = Modifier.padding(24.dp),
@@ -123,8 +127,8 @@ fun LibraryScreen(
                     fontWeight = FontWeight.Bold,
                     color = contentColor
                 )
-                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = contentColor)
-                Spacer(modifier = Modifier.height(8.dp))
+
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = contentColor.copy(alpha = 0.2f))
 
                 val drawerItemColors = NavigationDrawerItemDefaults.colors(
                     selectedContainerColor = selectedBg,
@@ -135,27 +139,73 @@ fun LibraryScreen(
                     unselectedTextColor = contentColor
                 )
 
-                NavigationDrawerItem(
-                    label = { Text("Library") },
-                    selected = true,
-                    icon = { Icon(Icons.Default.Menu, null) },
-                    onClick = { coroutineScope.launch { drawerState.close() } },
-                    colors = drawerItemColors,
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                )
-                // ... (El resto de items del Drawer igual que antes) ...
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    item {
+                        // --- SECCIÓN GENERAL ---
+                        NavigationDrawerItem(
+                            label = { Text("All Library") },
+                            selected = viewModel.selectedFilter == "All",
+                            icon = { Icon(Icons.Default.Menu, null) },
+                            onClick = {
+                                viewModel.clearFilters()
+                                coroutineScope.launch { drawerState.close() }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
 
-                Spacer(modifier = Modifier.weight(1f)) // Empuja el Logout abajo
+                        // --- BESTSELLERS ---
+                        NavigationDrawerItem(
+                            label = { Text("Bestsellers") },
+                            selected = viewModel.selectedFilter == "Bestsellers",
+                            icon = { Icon(Icons.Default.Star, null) },
+                            onClick = {
+                                coroutineScope.launch { drawerState.close() }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
 
-                NavigationDrawerItem(
-                    label = { Text("Log Out") },
-                    selected = false,
-                    icon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
-                    onClick = { coroutineScope.launch { onLogout() } },
-                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-                    colors = drawerItemColors
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                        // --- FAVORITES ---
+                        NavigationDrawerItem(
+                            label = { Text("Favorites") },
+                            selected = viewModel.selectedFilter == "Favorites",
+                            icon = { Icon(Icons.Default.Favorite, null) },
+                            onClick = {
+                                coroutineScope.launch { drawerState.close() }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
+
+                        // --- YET TO READ (Bookmarks) ---
+                        NavigationDrawerItem(
+                            label = { Text("Yet to read") },
+                            selected = viewModel.selectedFilter == "YetToRead",
+                            icon = { Icon(Icons.Default.Bookmark, null) },
+                            onClick = {
+                                coroutineScope.launch { drawerState.close() }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
+
+                        // --- TO RETURN ---
+                        NavigationDrawerItem(
+                            label = { Text("Log Out") },
+                            selected = false,
+                            icon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
+                            onClick = {
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                    onLogout()
+                                }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
+                    }
+                }
             }
         }
     ) {
