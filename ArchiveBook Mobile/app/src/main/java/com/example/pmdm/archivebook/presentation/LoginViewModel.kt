@@ -45,4 +45,9 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
             }
         }
     }
+
+    fun clearFields() {
+        email = ""
+        password = ""
+    }
 }

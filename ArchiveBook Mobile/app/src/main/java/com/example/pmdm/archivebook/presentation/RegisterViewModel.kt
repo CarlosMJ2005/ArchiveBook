@@ -17,21 +17,38 @@ class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
     var isLoading by mutableStateOf(false)
 
     fun onRegisterClicked(onSuccess: () -> Unit, onError: (String) -> Unit) {
+        // 1. Validación local básica
+        if (email.isBlank() || password.isBlank()) {
+            onError("Por favor, rellena todos los campos")
+            return
+        }
+
+        if (password != confirmPassword) {
+            onError("Las contraseñas no coinciden")
+            return
+        }
+
         viewModelScope.launch {
             isLoading = true
             val user = User(email = email, password = password)
+
+            // El repositorio ahora se encarga de crear el UserDto con el rol 'USER'
             val result = repository.register(user)
-            if (result.isSuccess) {
-                // After a successful registration, we log in to get the token
-                val loginResult = repository.login(user)
-                if (loginResult.isSuccess) {
-                    onSuccess()
-                } else {
-                    onError("Registration succeeded but login failed")
+
+            result.fold(
+                onSuccess = {
+                    // Registro OK, ahora intentamos login para obtener el token
+                    val loginResult = repository.login(user)
+                    loginResult.fold(
+                        onSuccess = { onSuccess() },
+                        onFailure = { onError("Cuenta creada, pero hubo un error al iniciar sesión automáticamente") }
+                    )
+                },
+                onFailure = { error ->
+                    // Aquí verás el error real en el Logcat
+                    onError("Error en el registro: ${error.message ?: "Error desconocido"}")
                 }
-            } else {
-                onError("Registration failed")
-            }
+            )
             isLoading = false
         }
     }

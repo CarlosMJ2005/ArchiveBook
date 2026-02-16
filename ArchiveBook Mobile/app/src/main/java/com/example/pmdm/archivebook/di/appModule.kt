@@ -43,7 +43,11 @@ val appModule = module {
         val authManager: AuthManager = get()
         HttpClient(Android) {
             install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys = true })
+                json(Json {
+                    ignoreUnknownKeys = true
+                    encodeDefaults = true
+                    }
+                )
             }
             install(Logging) {
                 level = LogLevel.ALL
@@ -62,7 +66,7 @@ val appModule = module {
                     }
                     sendWithoutRequest {
                         // We don't want to send the token when we are asking for a token
-                        !it.url.pathSegments.contains("token")
+                        !it.url.pathSegments.contains("token") || !it.url.pathSegments.contains("api/usuarios")
                     }
                 }
             }
@@ -79,7 +83,7 @@ val appModule = module {
 
     // 3. Servicios de API
     single { AuthApiService(get()) }
-    single { LibraryApiService(get()) }
+    single { LibraryApiService(client = get(), authManager = get()) }
 
 
     // 4. Repositorios
@@ -91,10 +95,5 @@ val appModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { LibraryViewModel(get()) }
-    viewModel { (id: Int) ->
-        BookDetailViewModel(
-            repository = get(),
-            bookId = id
-        )
-    }
+    viewModel { (id: Int) -> BookDetailViewModel(id, get()) }
 }

@@ -1,5 +1,6 @@
 package com.example.pmdm.archivebook.data
 
+import com.example.pmdm.archivebook.auth.data.UserDto
 import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
 import com.example.pmdm.archivebook.data.local.AuthManager
@@ -23,7 +24,13 @@ class AuthRepositoryImpl(
 
     override suspend fun register(user: User): Result<Boolean> {
         return try {
-            val success = apiService.registerUser(LoginRequest(user.email, user.password))
+            val userDto = UserDto(
+                email = user.email,
+                contrasena = user.password,
+                rol = "USER"
+            )
+
+            val success = apiService.registerUser(userDto)
             Result.success(success)
         } catch (e: Exception) {
             Result.failure(e)

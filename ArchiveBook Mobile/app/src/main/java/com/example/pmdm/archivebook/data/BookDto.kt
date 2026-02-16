@@ -60,3 +60,23 @@ fun BookDto.toDomain(): Book {
         isToReturn = this.isToReturn
     )
 }
+
+fun Book.toDto(): BookDto {
+    // Dividimos el string del autor para reconstruir el objeto que el JSON espera
+    val nameParts = this.author.split(" ", limit = 2)
+    val nombre = nameParts.getOrNull(0) ?: ""
+    val apellidos = nameParts.getOrNull(1) ?: ""
+
+    return BookDto(
+        id = this.id,
+        title = this.title,
+        synopsis = this.synopsis,
+        authorObj = AuthorDto(nombre = nombre, apellidos = apellidos),
+        publisherObj = EditorialDto(nombre = this.publisher),
+        category = this.genres.firstOrNull() ?: "General",
+        isBestseller = this.isBestseller,
+        isFavorite = this.isFavorite,
+        isBookmarked = this.isBookmarked,
+        isToReturn = this.isToReturn
+    )
+}

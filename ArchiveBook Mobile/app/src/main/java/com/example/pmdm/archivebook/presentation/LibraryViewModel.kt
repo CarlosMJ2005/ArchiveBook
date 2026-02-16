@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LibraryViewModel(
@@ -66,26 +63,60 @@ class LibraryViewModel(
         }
     }
 
-    /*fun toggleFavorite(bookId: Int) {
-        allBooks = allBooks.map {
-            if (it.id == bookId) it.copy(isFavorite = !it.isFavorite) else it
+    fun toggleFavorite(bookId: Int) {
+        val book = allBooks.find { it.id == bookId } ?: return
+        viewModelScope.launch {
+            repository.toggleFavorite(bookId, book.isFavorite).onSuccess {
+                refreshBooks() // Refrescamos desde la fuente oficial
+            }
         }
-    }*/
+    }
 
-    /*fun toggleBookmark(bookId: Int) {
-        allBooks = allBooks.map {
-            if (it.id == bookId) it.copy(isBookmarked = !it.isBookmarked) else it
+    fun toggleBookmark(bookId: Int) {
+        val book = allBooks.find { it.id == bookId } ?: return
+        viewModelScope.launch {
+            repository.toggleBookmark(bookId, book.isBookmarked).onSuccess {
+                refreshBooks()
+            }
         }
-    }*/
+    }
 
     fun toggleReturn(bookId: Int) {
-        allBooks = allBooks.map {
-            if (it.id == bookId) it.copy(isToReturn = !it.isToReturn) else it
+        val book = allBooks.find { it.id == bookId } ?: return
+
+        viewModelScope.launch {
+            repository.toggleReturn(bookId, book.isToReturn)
+                .onSuccess {
+                    // Opción A: Volver a cargar
+                    loadBooks()
+                    // Opción B: Si quieres velocidad, actualiza allBooks manualmente aquí
+                }
+                .onFailure { e ->
+                    errorMessage = "Error: ${e.message}"
+                }
+        }
+    }
+
+    private fun refreshBooks() {
+        viewModelScope.launch {
+            repository.getBooks().onSuccess { updatedList ->
+                // Simplemente actualizamos la lista maestra.
+                // Como 'filteredBooks' depende de 'allBooks', se actualizará sola.
+                allBooks = updatedList
+            }.onFailure { e ->
+                errorMessage = "Error al refrescar: ${e.message}"
+            }
         }
     }
 
     fun clearFilters() {
         searchText = ""
+        selectedGenres = emptySet()
+    }
+
+    fun clearFields() {
+        searchText = ""
+        selectedFilter = "Title"
         selectedGenres = emptySet()
     }
 

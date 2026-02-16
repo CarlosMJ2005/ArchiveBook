@@ -12,7 +12,7 @@ class BookDetailViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BookDetailViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return BookDetailViewModel(repository, bookId) as T
+            return BookDetailViewModel(bookId, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

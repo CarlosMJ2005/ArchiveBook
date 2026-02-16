@@ -52,11 +52,14 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                 )
             }
 
-            entry<LibraryScreenKey> {
-                val viewModel: LibraryViewModel = koinViewModel()
+            entry<LibraryScreenKey> { 
+                val libraryViewModel: LibraryViewModel = koinViewModel()
+                val loginViewModel: LoginViewModel = koinViewModel()
                 LibraryScreen(
-                    viewModel = viewModel,
+                    viewModel = libraryViewModel,
                     onLogout = {
+                        libraryViewModel.clearFields()
+                        loginViewModel.clearFields()
                         backStack.clear()
                         backStack.add(LoginScreenKey)
                     },

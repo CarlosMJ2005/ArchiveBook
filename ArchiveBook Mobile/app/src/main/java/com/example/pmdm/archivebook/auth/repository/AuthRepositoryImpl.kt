@@ -1,5 +1,6 @@
 package com.example.pmdm.archivebook.auth.repository
 
+import com.example.pmdm.archivebook.auth.data.UserDto
 import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
@@ -28,14 +29,19 @@ class AuthRepositoryImpl(
     // REGISTER FUNCTION
     override suspend fun register(user: User): Result<Boolean> {
         return try {
-            val request = LoginRequest(user.email, user.password)
-            val success = apiService.registerUser(request)
+            // Convertimos User (dominio) a UserDto (red)
+            val userDto = UserDto(
+                email = user.email,
+                contrasena = user.password,
+                rol = "USER" // Aquí inyectas el rol fijo
+            )
 
-            if (success) {
-                Result.success(true)
-            } else {
-                Result.failure(Exception("Could not create account"))
-            }
+            // Enviamos el DTO al servicio de API
+            val success = apiService.registerUser(userDto)
+
+            if (success) Result.success(true)
+            else Result.failure(Exception("Error en el registro"))
+
         } catch (e: Exception) {
             Result.failure(e)
         }

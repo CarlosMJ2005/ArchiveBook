@@ -1,5 +1,6 @@
 package com.example.pmdm.archivebook.data.remote
 
+import com.example.pmdm.archivebook.auth.data.UserDto
 import com.example.pmdm.archivebook.data.remote.model.LoginRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.request.basicAuth
@@ -30,10 +31,10 @@ class AuthApiService(private val client: HttpClient) {
         }
     }
 
-    suspend fun registerUser(request: LoginRequest): Boolean {
-        val response = client.post("api/usuarios") { // Ajusta el endpoint según tu API
+    suspend fun registerUser(userDto: UserDto): Boolean {
+        val response = client.post("api/usuarios") {
             contentType(ContentType.Application.Json)
-            setBody(request)
+            setBody(userDto)
         }
         return response.status == HttpStatusCode.Created || response.status == HttpStatusCode.OK
     }

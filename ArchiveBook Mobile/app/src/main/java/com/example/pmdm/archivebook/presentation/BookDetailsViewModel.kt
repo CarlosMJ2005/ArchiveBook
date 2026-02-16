@@ -10,8 +10,8 @@ import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
 import kotlinx.coroutines.launch
 
 class BookDetailViewModel(
-    private val repository: LibraryRepository,
-    private val bookId: Int
+    private val bookId: Int,
+    private val repository: LibraryRepository
 ) : ViewModel() {
 
     var book by mutableStateOf<Book?>(null)
