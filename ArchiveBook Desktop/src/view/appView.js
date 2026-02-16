@@ -1,12 +1,15 @@
 export class appView {
     #filters
     #detail
+
     #detailCover
     #detailTitle
     #detailSynopsis
     #detailAuthor
     #detailYear
     #detailIsbn
+    #detailPublisher
+    #detailCategories
 
     #baseFav
     #baseAll
@@ -22,6 +25,8 @@ export class appView {
         this.#detailTitle = document.getElementById("detailTittle")
         this.#detailSynopsis = document.getElementById("detailSynopsis")
         this.#detailAuthor = document.getElementById("detailAuthor")
+        this.#detailPublisher = document.getElementById("detailPublisher")
+        this.#detailCategories = document.getElementById("detailCategories")
         this.#detailYear = document.getElementById("detailYear")
         this.#detailIsbn = document.getElementById("detailIsbn")
 
@@ -47,7 +52,7 @@ export class appView {
             this.#filters.classList.add('d-none')
         }
     }
-    createBook(book, where, that) {
+    createBook(book, that) {
         //console.log(that)
 
         let div = document.createElement('div');
@@ -56,11 +61,11 @@ export class appView {
         //creación de la estructura interna
         let img = document.createElement('img');
         img.id = "cover"
-        img.src = "./images/easter.jpg" //cambiar
+        img.src = book.getCover()
 
 
         let title = document.createElement('h3');
-        title.textContent = book.titulo
+        title.textContent = book.getTitle()
 
         /*
         let author = document.createElement('p');
@@ -89,7 +94,15 @@ export class appView {
         */
 
         img.addEventListener('click', () => this.openDescriptionPopUp(
-            img, book.titulo, book.autor.nombre + " " + book.autor.apellidos, book.sinopsis, book.isbn, book.agnoPublicacion))
+            img,
+            book.getTitle(), 
+            book.getAuthor(), 
+            book.getSynopsis(), 
+            book.getIsbn(), 
+            book.getYear(),
+            book.getCategory(),
+            book.getPublisher(),
+        ))
 
         //Botones
 
@@ -98,7 +111,7 @@ export class appView {
         divButtons.classList.add('d-flex', 'gap-2')
 
         let best = document.createElement('img');
-
+        best.src = "./images/star.png"
         best.classList.add('minibutton')
 
         let favButton = document.createElement('button');
@@ -146,52 +159,147 @@ export class appView {
         */
         div.appendChild(divButtons);
 
-
-        switch (where) {
-            case "all":
-                if (book.bestSeller) {
-                    best.src = "./images/star-bold.png"
-
-                    const clone = div.cloneNode(true);
-
-                    // Buscar elementos dentro del CLON
-                    const cloneImg = clone.querySelector('#cover');
-                    const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
-                    const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
-                    const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
-
-                    // Reasignar eventos
-                    cloneImg.addEventListener('click', () =>
-                        this.openDescriptionPopUp(
-                            cloneImg,
-                            book.titulo,
-                            book.autor.nombre + " " + book.autor.apellidos,
-                            book.sinopsis,
-                            book.isbn,
-                            book.agnoPublicacion
-                        )
-                    );
-
-                    cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
-                    cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
-                    cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
-
-                    this.#baseBest.appendChild(clone);
-                } else {
-                    best.src = "./images/star.png"
-                }
-                this.#baseAll.appendChild(div);
-                break;
-            case "fav":
-                this.#baseFav.appendChild(div);
-                break;
-            case "read":
-                this.#baseRead.appendChild(div);
-                break;
-            case "return":
-                this.#baseReturn.appendChild(div);
-                break;
+        if(book.getFavBool()){
+            favIcon.src= "./images/heart-bold.png"
         }
+        if(true){ // cambiar por book.getReadBool(
+            readIcon.src= "./images/bookmark-bold.png"
+        }
+        if(true){ // cambiar por book.getReturnBool()
+            returnIcon.src= "./images/notification-bold.png"
+        }
+        if(book.getBestBool()){
+            best.src = "./images/star-bold.png"
+        }
+
+
+
+        if (book.getBestBool()) {
+            const clone = div.cloneNode(true);
+
+            // Buscar elementos dentro del CLON
+            const cloneImg = clone.querySelector('#cover');
+            const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
+            const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
+            const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
+
+            // Reasignar eventos
+            cloneImg.addEventListener('click', () =>
+                this.openDescriptionPopUp(
+                    cloneImg,
+                    book.getTitle(), 
+                    book.getAuthor(), 
+                    book.getSynopsis(), 
+                    book.getIsbn(), 
+                    book.getYear(),
+                    book.getCategory(),
+                    book.getPublisher()
+                )
+            );
+
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+
+            this.#baseBest.appendChild(clone);
+        }
+
+        if (true) { //cambiar por read
+
+            const clone = div.cloneNode(true);
+
+            // Buscar elementos dentro del CLON
+            const cloneImg = clone.querySelector('#cover');
+            const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
+            const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
+            const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
+
+            // Reasignar eventos
+            cloneImg.addEventListener('click', () =>
+                this.openDescriptionPopUp(
+                    cloneImg,
+                    book.getTitle(), 
+                    book.getAuthor(), 
+                    book.getSynopsis(), 
+                    book.getIsbn(), 
+                    book.getYear(),
+                    book.getCategory(),
+                    book.getPublisher()
+                )
+            );
+
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+
+            this.#baseRead.appendChild(clone);
+        }
+
+        if (true) { //cambiar por retun
+
+            const clone = div.cloneNode(true);
+
+            // Buscar elementos dentro del CLON
+            const cloneImg = clone.querySelector('#cover');
+            const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
+            const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
+            const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
+
+            // Reasignar eventos
+            cloneImg.addEventListener('click', () =>
+                this.openDescriptionPopUp(
+                    cloneImg,
+                    book.getTitle(), 
+                    book.getAuthor(), 
+                    book.getSynopsis(), 
+                    book.getIsbn(), 
+                    book.getYear(),
+                    book.getCategory(),
+                    book.getPublisher()
+                )
+            );
+
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+
+            this.#baseReturn.appendChild(clone);
+        }
+
+        if (book.getFavBool()) {
+
+            const clone = div.cloneNode(true);
+
+            // Buscar elementos dentro del CLON
+            const cloneImg = clone.querySelector('#cover');
+            const cloneFavButton = clone.querySelectorAll('.icon-btn')[0];
+            const cloneReadButton = clone.querySelectorAll('.icon-btn')[1];
+            const cloneReturnButton = clone.querySelectorAll('.icon-btn')[2];
+
+            // Reasignar eventos
+            cloneImg.addEventListener('click', () =>
+                this.openDescriptionPopUp(
+                    cloneImg,
+                    book.getTitle(), 
+                    book.getAuthor(), 
+                    book.getSynopsis(), 
+                    book.getIsbn(), 
+                    book.getYear(),
+                    book.getCategory(),
+                    book.getPublisher()
+                )
+            );
+
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+
+            this.#baseFav.appendChild(clone);
+        }
+
+
+        this.#baseAll.appendChild(div);
+
 
     }
     eraseAllList() {
@@ -210,7 +318,7 @@ export class appView {
         this.#baseReturn.innerHTML = ""
     }
 
-    openDescriptionPopUp(cover, title, author, synopsis, isbn, year) {
+    openDescriptionPopUp(cover, title, author, synopsis, isbn, year, categories, publisher) {
         console.log("abro detalle")
         console.log()
         this.#detail.classList.remove('d-none')
@@ -218,6 +326,8 @@ export class appView {
         this.#detailTitle.textContent = title
         this.#detailSynopsis.textContent = synopsis
         this.#detailAuthor.textContent = author
+        this.#detailCategories.textContent = categories
+        this.#detailPublisher.textContent = publisher
         this.#detailIsbn.textContent = isbn
         this.#detailYear.textContent = year
     }

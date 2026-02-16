@@ -7,6 +7,7 @@ export class loginView {
     #structureLog
     #structureSign
     #stateCheckbox
+    #errorLabelLogin
 
     constructor() {
         this.#emailLog = document.getElementById("email-log")
@@ -20,15 +21,21 @@ export class loginView {
         this.#structureSign = document.getElementById('sign')
 
         this.#stateCheckbox = document.getElementById('state')
+
+        this.#errorLabelLogin = document.getElementById('error-label-login')
     }
 
     init() {
     }
-    showError(){
-        console.log("Bua, la has cagado")
+    showError(error){
+        this.#errorLabelLogin.innerText = error
+        this.#errorLabelLogin.classList.remove("d-none")
+        this.reset()
     }
-    reset(){
-        this.#emailLog.value = ""
+    reset(trueReset){
+        if (trueReset){
+            this.#emailLog.value = ""
+        }
         this.#passwordlog.value = ""
     }
     fulfill(email, password, state){
@@ -50,7 +57,22 @@ export class loginView {
             console.log("muestro log")
             this.#structureLog.classList.remove("d-none")
             this.#structureSign.classList.add("d-none")
+            reset()
         }
+    }
+    showPassword(icon){
+        console.log(this.#passwordlog.type)
+        if(this.#passwordlog.type == "password"){
+            console.log("cambio")
+            this.#passwordlog.type = "text"
+            icon.src = "./images/eye.png"
+        }
+        else{
+            console.log("descambio")
+            this.#passwordlog.type = "password"
+            icon.src = "./images/closed_eye.png"
+        }
+        
     }
     getEmailLog(){
         return this.#emailLog.value

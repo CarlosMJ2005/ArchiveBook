@@ -35,6 +35,20 @@
             transition: 0.2s ease;
         }
 
+        .visibilityButton{
+            background-color: #f5f0e6;
+            border: #ff0000;
+            border-radius: 2;
+            color: #5c483a;
+            font-weight: 600;
+        }
+
+        .visibilityButton:hover {
+            background-color: #c9a97c;
+            color: #5c483a;
+            transition: 0.2s ease;
+        }
+
         .form-control {
             background-color: #F5F0E6;
             border-color: #CBB89D;
@@ -56,6 +70,9 @@
             border-radius: 8px;
             transition: 0.2s ease;
         }
+        #errorLabel{
+            color: red;
+        }
     </style>
 </head>
 
@@ -71,16 +88,19 @@
                     <label class="form-label text-beige">Email</label>
                     <input type="email" class="form-control" id="email-log" placeholder="example@email.com" required>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label text-beige">Password</label>
-                    <input type="password" class="form-control" id="password-log" placeholder="••••••••" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-log" placeholder="••••••••" required>
+                        <img src="./images/closed_eye.png" style="width: 50px;" id="toggle-password-log" class="btn border border-secondary visibilityButton">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <p>
                         <input type="checkbox" id="state"> Remember Me
                     </p>
                 </div>
+                <label id="error-label-login" class="d-none"></label>
                 <div class="d-grid mb-3">
                     <button id="login" type="button" class="btn btn-beige">
                         Log in
@@ -112,12 +132,20 @@
 
                 <div class="mb-3">
                     <label class="form-label text-beige">Password</label>
-                    <input type="password" class="form-control" id="password-sign" placeholder="••••••••" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-sign" placeholder="••••••••" required>
+                        <img src="./images/closed_eye.png" style="width: 50px;" id="toggle-password-sign" class="btn border border-secondary visibilityButton">
+                    </div>
+                    
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label text-beige">Confirm password</label>
-                    <input type="password" class="form-control" id="confirmation-sign" placeholder="••••••••" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirmation-sign" placeholder="••••••••" required>
+                        <img src="./images/closed_eye.png" style="width: 50px;" id="toggle-confirm-sign" class="btn border border-secondary visibilityButton">
+                    </div>
+                    
                 </div>
 
                 </br>

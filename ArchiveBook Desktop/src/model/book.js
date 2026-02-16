@@ -10,18 +10,13 @@ export class book {
     #Publisher
     #Category
     
+    #bestBool
     #favBool
     #returnBool
     #readBool
 
-    #favList
-    #allList
-    #readList
-    #returnList
-    #bestList
 
-
-    constructor(book, image = "") {
+    constructor(book, favourite, toRead, toReturn, image = "./images/easter.jpg") {
         this.#Cover = image
         this.#Title = book.titulo
         this.#Synopsis = book.sinopsis
@@ -30,10 +25,53 @@ export class book {
         this.#Year = book.agnoPublicacion
         this.#Isbn = book.isbn 
         this.#Category = book.categoria
+
+        this.#bestBool = book.bestSeller
+        this.#favBool = favourite
+        this.#returnBool = toRead
+        this.#readBool = toReturn
     }
 
     init() {
         
+    }
+
+    getCover(){
+        return this.#Cover
+    }
+    getTitle(){
+        return this.#Title
+    }
+    getSynopsis(){
+        return this.#Synopsis
+    }
+    getAuthor(){
+        return this.#Author
+    }
+    getYear(){
+        return this.#Year
+    }
+    getIsbn(){
+        return this.#Isbn
+    }
+    getPublisher(){
+        return this.#Publisher
+    }
+    getCategory(){
+        return this.#Category
+    }
+
+    getBestBool(){
+        return this.#bestBool
+    }
+    getFavBool(){
+        return this.#favBool
+    }
+    getReturnBool(){
+        return this.#returnBool
+    }
+    getReadBool(){
+        return this.#readBool
     }
 
 }

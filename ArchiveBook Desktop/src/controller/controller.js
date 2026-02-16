@@ -13,7 +13,6 @@ import { appView } from '../view/appView.js';
 export class Controller {
 
     // Access to view and model classes as private fields
-    #model
     #loginView
     #appView
 
@@ -44,10 +43,11 @@ export class Controller {
         app.verify(email, password, state)
             .then((data) => {
                 console.log(data)
+                this.#loginView.reset()
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))
-                this.#loginView.reset()
+                this.#loginView.showError("Fallo en el usuario o contraseña")
             })
     }
     /*async*/ signin() {
@@ -88,6 +88,11 @@ export class Controller {
         this.#loginView.change(bool)
     }
 
+    //toggle password
+    showPassword(icon){
+        this.#loginView.showPassword(icon)
+    }
+
     //pop ups
 
     closePopUp() {
@@ -126,22 +131,22 @@ export class Controller {
     
     loadAll(favs/*,returns,reads*/) {
         console.log(new Date())
-        //let url = "http://192.168.207.76:8080/api/libros"; // Steven
-        //let url = "http://192.168.207.83:8080/api/libros"; // Israel
 
         app.getAllBooks()
             .then((datos) => {
                 console.log(new Date())
                 this.#appView.eraseAllList()
                 this.#appView.eraseBestList()
+                this.#appView.eraseFavList()
+                this.#appView.eraseReadList()
+                this.#appView.eraseReturnList()
                 JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
                     console.log(bookEntry)
                     
                     let favourite = false
-                    /*
                     let toRead = false
                     let toReturn = false
-                    */
+                    
                     favourite = favs.some(favEntry => {
                         if (bookEntry.idLibro === favEntry.libro.idLibro) {
                             console.log("Bua, israel, eres un fiera")
@@ -163,8 +168,8 @@ export class Controller {
                     });
                     */
 
-                    let actualBook = new book(bookEntry)
-                    this.#appView.createBook(bookEntry, "all", this)
+                    let actualBook = new book(bookEntry, favourite, toRead, toReturn)
+                    this.#appView.createBook(actualBook, this)
                 });
             })
             .catch((error) => {
