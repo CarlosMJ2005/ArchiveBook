@@ -2,6 +2,7 @@ package com.example.pmdm.archivebook.di
 
 import android.util.Log
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
+import com.example.pmdm.archivebook.auth.usecase.LogOut
 import com.example.pmdm.archivebook.data.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.LibraryRepositoryImpl
 import com.example.pmdm.archivebook.data.local.AuthManager
@@ -39,7 +40,6 @@ val appModule = module {
 
     // 2. Cliente de Red (Ktor)
     single {
-        // We need to get AuthManager here for the Auth plugin
         val authManager: AuthManager = get()
         HttpClient(Android) {
             install(ContentNegotiation) {
@@ -61,12 +61,16 @@ val appModule = module {
                 bearer {
                     loadTokens {
                         val token = authManager.getToken()
-                        Log.d("AUTH_DEBUG", "Cargando token para la petición: $token")
-                        if (token != null) BearerTokens(token, "") else null
+                        if (token != null) {
+                            BearerTokens(token, "") // El refresh token no se usa aquí
+                        } else {
+                            null
+                        }
                     }
-                    sendWithoutRequest {
-                        // We don't want to send the token when we are asking for a token
-                        !it.url.pathSegments.contains("token") || !it.url.pathSegments.contains("api/usuarios")
+                    // NO enviar el token en estas rutas
+                    sendWithoutRequest { request ->
+                        val urlString = request.url.toString()
+                        urlString.endsWith("/token") || urlString.endsWith("/api/usuarios")
                     }
                 }
             }
@@ -83,15 +87,16 @@ val appModule = module {
 
     // 3. Servicios de API
     single { AuthApiService(get()) }
-    single { LibraryApiService(client = get(), authManager = get()) }
-
+    single { LibraryApiService(get(), get()) }
 
     // 4. Repositorios
-    // Restore authManager here
     single<AuthRepository> { AuthRepositoryImpl(apiService = get(), authManager = get()) }
     single<LibraryRepository> { LibraryRepositoryImpl(get()) }
 
-    // 5. ViewModels
+    // 5. Casos de Uso
+    single { LogOut(repository = get()) }
+
+    // 6. ViewModels
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { LibraryViewModel(get()) }

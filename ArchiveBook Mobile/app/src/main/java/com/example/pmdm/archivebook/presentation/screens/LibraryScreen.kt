@@ -333,7 +333,7 @@ fun LibraryScreen(
                             DropdownMenu(
                                 expanded = showGenreMenu,
                                 onDismissRequest = { showGenreMenu = false; showMenu = false },
-                                containerColor = if (isDarkTheme) DarkPrimary else LightPrimary // FONDO GRANATE
+                                containerColor = if (isDarkTheme) DarkPrimary else LightPrimary
                             ) {
                                 val genres = listOf("Fantasy", "Terror", "Sci-Fi", "Romance", "History", "Clásico", "Distopía")
                                 genres.forEach { genre ->
@@ -342,18 +342,26 @@ fun LibraryScreen(
                                         text = {
                                             Text(
                                                 text = genre,
-                                                color = if (isDarkTheme) LightPrimary  else DarkPrimary
+                                                color = if (isDarkTheme) LightPrimary else DarkPrimary
                                             )
                                         },
-                                        onClick = { viewModel.toggleGenre(genre) },
+                                        onClick = {
+                                            // 1. Alternamos el género
+                                            viewModel.toggleGenre(genre)
+
+                                            // 2. Si después de alternar, la lista está vacía, volvemos a "Title"
+                                            if (viewModel.selectedGenres.isEmpty()) {
+                                                viewModel.selectedFilter = "Title"
+                                            }
+                                        },
                                         leadingIcon = {
                                             Checkbox(
                                                 checked = isChecked,
                                                 onCheckedChange = null,
                                                 colors = CheckboxDefaults.colors(
-                                                    checkedColor = if (isDarkTheme) LightPrimary  else DarkPrimary, // Checkbox crema
-                                                    uncheckedColor = if (isDarkTheme) LightPrimary  else DarkPrimary,
-                                                    checkmarkColor = if (isDarkTheme) DarkPrimary  else LightPrimary // El tick se ve granate
+                                                    checkedColor = if (isDarkTheme) LightPrimary else DarkPrimary,
+                                                    uncheckedColor = if (isDarkTheme) LightPrimary else DarkPrimary,
+                                                    checkmarkColor = if (isDarkTheme) DarkPrimary else LightPrimary
                                                 )
                                             )
                                         }
