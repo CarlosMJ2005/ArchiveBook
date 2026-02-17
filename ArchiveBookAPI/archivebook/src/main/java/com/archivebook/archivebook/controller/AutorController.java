@@ -6,6 +6,7 @@ import com.archivebook.archivebook.repository.AutorRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +20,11 @@ public class AutorController {
     
     
     private AutorRepository repository;
+
     
     public AutorController(AutorRepository repository) {
         this.repository = repository;
+
     }
     
     @GetMapping("/api/autores")

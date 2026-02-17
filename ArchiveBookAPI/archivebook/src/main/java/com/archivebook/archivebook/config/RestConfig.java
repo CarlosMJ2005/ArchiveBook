@@ -27,10 +27,7 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- *
- * @author 7N
- */
+
 @Configuration
 public class RestConfig {
 
@@ -49,6 +46,7 @@ public class RestConfig {
                 
                 // Otras rutas configuradas
                 .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/usuarios/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             // Es vital deshabilitar CSRF para el endpoint de registro si usas herramientas como Postman
