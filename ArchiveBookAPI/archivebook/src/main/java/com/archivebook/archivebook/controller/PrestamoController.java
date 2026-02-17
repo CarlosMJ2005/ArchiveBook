@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrestamoController {
 
     private PrestamoRepository repository;
-    private final PrestamoDAO prestamoDAO;
+    private PrestamoDAO prestamoDAO;
     private LibroRepository libroRepository;
     private UsuarioRepository usuarioRepository;
 
@@ -156,4 +156,10 @@ public class PrestamoController {
                     .orElse(ResponseEntity.notFound().build());
         }).orElse(ResponseEntity.status(401).build());
     }
+    
+    @GetMapping("/api/prestamos/buscarPorFecha/{fecha}")
+    public List<Prestamo> findByFechaPrestamo(@PathVariable LocalDate fecha){
+        return prestamoDAO.findByFechaPrestamo(fecha);
+    }
+    
 }

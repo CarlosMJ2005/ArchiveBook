@@ -138,7 +138,7 @@ public class LibroController {
         }
     }
 
-    @GetMapping("/buscar/titulo/{titulo}")
+    @GetMapping("/api/libros/buscar/titulo/{titulo}")
     public List<Libro> findByTitulo(@PathVariable String titulo) {
         return libroDAO.findByTitulo(titulo);
     }
@@ -149,32 +149,32 @@ public class LibroController {
         return ResponseEntity.ok(libros);
     }
 
-    @GetMapping("/buscar/autor/{nombre}")
+    @GetMapping("/api/libros/buscar/autor/{nombre}")
     public List<Libro> findByAutorNombre(@PathVariable String nombre) {
         return libroDAO.findByAutorNombre(nombre);
     }
 
-    @GetMapping("/estado/prestado/{prestado}")
+    @GetMapping("/api/libros/estado/prestado/{prestado}")
     public List<Libro> findByPrestado(@PathVariable boolean prestado) {
         return libroDAO.findByPrestado(prestado);
     }
 
-    @GetMapping("/disponibles")
+    @GetMapping("/api/libros/buscar/disponibles")
     public List<Libro> findLibrosDisponibles() {
         return libroDAO.findLibrosDisponibles();
     }
 
-    @GetMapping("/estado/porLeer/{porLeer}")
+    @GetMapping("/api/libros/estado/porLeer/{porLeer}")
     public List<Libro> findByPorLeer(@PathVariable boolean porLeer) {
         return libroDAO.findByPorLeer(porLeer);
     }
 
-    @GetMapping("/estado/bestseller/{isBestseller}")
+    @GetMapping("/api/libros/estado/bestseller/{isBestseller}")
     public List<Libro> findByBestSeller(@PathVariable boolean isBestseller) {
         return libroDAO.findByBestSeller(isBestseller);
     }
 
-    @GetMapping("/estado/favorito/{favorito}")
+    @GetMapping("/api/libros/estado/favorito/{favorito}")
     public List<Libro> findByFavorito(@PathVariable boolean favorito) {
         return libroDAO.findByFavorito(favorito);
     }
