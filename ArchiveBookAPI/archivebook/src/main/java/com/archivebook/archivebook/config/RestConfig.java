@@ -15,6 +15,7 @@ import java.security.interfaces.RSAPublicKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -42,13 +43,17 @@ public class RestConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		// @formatter:off
-		http
-				.authorizeHttpRequests((authorize) -> authorize
-                                        .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
-					.anyRequest().authenticated()
-				)
-				.csrf((csrf) -> csrf.ignoringRequestMatchers("/token"))
-				.httpBasic(Customizer.withDefaults())
+		http.authorizeHttpRequests((authorize) -> authorize
+                // Permitir acceso público para crear un nuevo usuario
+                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                
+                // Otras rutas configuradas
+                .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            )
+            // Es vital deshabilitar CSRF para el endpoint de registro si usas herramientas como Postman
+            .csrf((csrf) -> csrf.ignoringRequestMatchers("/token", "/api/usuarios"))
+            .httpBasic(Customizer.withDefaults())
 				.oauth2ResourceServer((jwt) -> jwt.jwt(Customizer.withDefaults()))
 				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling((exceptions) -> exceptions
