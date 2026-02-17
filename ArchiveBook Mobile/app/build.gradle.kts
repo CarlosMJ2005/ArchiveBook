@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.ktor.client.auth)
     implementation(libs.identity.jvm)
+    implementation(libs.bcrypt)
     testImplementation(libs.junit)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     androidTestImplementation(libs.androidx.junit)
