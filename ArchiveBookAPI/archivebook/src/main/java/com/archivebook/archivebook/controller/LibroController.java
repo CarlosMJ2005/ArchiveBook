@@ -178,5 +178,4 @@ public class LibroController {
     public List<Libro> findByFavorito(@PathVariable boolean favorito) {
         return libroDAO.findByFavorito(favorito);
     }
-
 }

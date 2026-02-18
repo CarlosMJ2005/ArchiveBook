@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FavoritosRepository extends JpaRepository<Favoritos, Long>{
+    
     // Esto nos servirá para saber si un usuario ya tiene ese libro en favoritos
     Optional<Favoritos> findByUsuarioAndLibro(Usuario usuario, Libro libro);
     
