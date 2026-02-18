@@ -1,6 +1,7 @@
-export class book {
+export class Book {
 
     // Model data
+    #Id
     #Cover
     #Title
     #Synopsis
@@ -18,6 +19,7 @@ export class book {
 
     constructor(book, favourite, toRead, toReturn, image = "./images/easter.jpg") {
         this.#Cover = image
+        this.#Id = book.idLibro
         this.#Title = book.titulo
         this.#Synopsis = book.sinopsis
         this.#Publisher = book.editorial.nombre
@@ -59,6 +61,9 @@ export class book {
     }
     getCategory(){
         return this.#Category
+    }
+    getId(){
+        return this.#Id
     }
 
     getBestBool(){

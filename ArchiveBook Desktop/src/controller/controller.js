@@ -1,7 +1,11 @@
 // Hacer los import de las clases del modelo
 //
 //
-import { book } from '../model/book.js';
+import { Book } from '../model/book.js';
+
+import { User } from '../model/user.js';
+
+import { Library } from '../model/library.js';
 
 // Hacer los imports de las clases de la vista
 //
@@ -15,6 +19,8 @@ export class Controller {
     // Access to view and model classes as private fields
     #loginView
     #appView
+    #library
+    #usuarioActivo
 
 
     // Instantiating classes
@@ -22,10 +28,13 @@ export class Controller {
         //this.#model = new book();
         this.#loginView = new loginView();
         this.#appView = new appView();
+        this.#library = new Library()
 
 
-        window.app.load().then(() => {
+        window.app.load().then(({ email, password, state }) => {
             console.log('backflip');
+            this.#usuarioActivo = new User(email, password, state)
+            //console.log(this.#usuarioActivo)
             this.startLoad();
         });
     }
@@ -36,13 +45,15 @@ export class Controller {
 
     // Controller methods...
     async login() {
+        
         const email = this.#loginView.getEmailLog()
         const password = this.#loginView.getPasswordLog()
         const state = this.#loginView.getStateCheckbox()
 
         app.verify(email, password, state)
             .then((data) => {
-                console.log(data)
+                //console.log(data)
+                this.#usuarioActivo = new User(email,password,state)
                 this.#loginView.reset()
             })
             .catch((error) => {
@@ -50,36 +61,46 @@ export class Controller {
                 this.#loginView.showError("Fallo en el usuario o contraseña")
             })
     }
-    /*async*/ signin() {
-        try {
-            const email = this.#loginView.getEmailSign()
-            const password = this.#loginView.getPasswordSign()
-            const confirmation = this.#loginView.getConfirmationSign()
+    async signin() {
 
-            if (password != confirmation) {
-                this.#loginView.showError()
-            }
-            else {
-                console.log("obtenido correctamente: " + email)
-                app.saveUser(email, password, false)
-                app.windowOpen()
-            }
-        } catch (error) {
-            console.log(error)
+        const email = this.#loginView.getEmailSign()
+        const password = this.#loginView.getPasswordSign()
+        const confirmation = this.#loginView.getConfirmationSign()
+
+        if (password != confirmation) {
+            this.#loginView.showError()
+            this.#loginView.showError()
         }
+        else {
+            app.addUser(email, password)
+                .then((data) => {
+                    //console.log(data)
+                    this.#loginView.setEmailLog(email)
+                    this.#loginView.setPasswordLog(password)
+                    this.#loginView.setStateCheckbox(false)
+                    this.login()
+                })
+                .catch((error) => {
+                    console.log(error.message.substring(error.message.lastIndexOf("Error")))
+                })
+        }
+
 
     }
 
     //book buttons
 
-    tapFavourite(button) { //añadir funcionalidad con api
+    tapFavourite(button, idLibro) { //añadir funcionalidad con api
         this.#appView.tapFavourite(button)
+        console.log(idLibro)
     }
-    tapToReturn(button) { //añadir funcionalidad con api
+    tapToReturn(button, idLibro) { //añadir funcionalidad con api
         this.#appView.tapToReturn(button)
+        console.log(idLibro)
     }
-    tapToRead(button) { //añadir funcionalidad con api
+    tapToRead(button, idLibro) { //añadir funcionalidad con api
         this.#appView.tapToRead(button)
+        console.log(idLibro)
     }
 
     //log-sign switch
@@ -89,59 +110,50 @@ export class Controller {
     }
 
     //toggle password
-    showPassword(icon){
-        this.#loginView.showPassword(icon)
+    showPassword(icon, input){
+        //console.log(icon)
+        //console.log(input)
+        this.#loginView.showPassword(icon,input)
     }
 
     //pop ups
 
     closePopUp() {
         this.#appView.closePopUp()
-
     }
     openFilterPopUp() {
         this.#appView.openFilterPopUp()
-
-    }
-    openDescriptionPopUp(cover, title, author, synopsis, isbn, year) {
-        console.log("pup")
-        console.log(title)
-        console.log(author)
-        console.log(synopsis)
-        console.log(isbn)
-        console.log(year)
-        console.log("pip")
-
-        this.#appView.openDescriptionPopUp(cover, title, author, synopsis, isbn, year)
-
     }
 
     // book loading
 
     async startLoad() {
         
-        const [favs/*, returns, reads*/] = await Promise.all([
+        const [favs, returns, reads] = await Promise.all([
         app.getFavourites(),
-        //app.getToReturn(),
-        //app.getToRead()
+        app.getToReturn(),
+        app.getToRead()
         ]);
+
         
-        this.loadAll(favs/*, returns, reads*/)
+        //console.log(returns)
+        
+        this.loadAll(favs , returns, reads)
     }
     
-    loadAll(favs/*,returns,reads*/) {
-        console.log(new Date())
+    loadAll(favs,returns,reads) {
+        //console.log(new Date())
 
         app.getAllBooks()
             .then((datos) => {
-                console.log(new Date())
+                //console.log(new Date())
                 this.#appView.eraseAllList()
                 this.#appView.eraseBestList()
                 this.#appView.eraseFavList()
                 this.#appView.eraseReadList()
                 this.#appView.eraseReturnList()
                 JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
-                    console.log(bookEntry)
+                    //console.log(bookEntry)
                     
                     let favourite = false
                     let toRead = false
@@ -153,7 +165,7 @@ export class Controller {
                             return true;
                         }
                     });
-                    /*
+                    
                     toRead = reads.some(readEntry => {
                         if (bookEntry.idLibro === readEntry.libro.idLibro) {
                             console.log("Bua, israel, eres un fiera 2")
@@ -161,21 +173,59 @@ export class Controller {
                         }
                     });
                     toReturn = returns.some(returnEntry => {
-                        if (bookEntry.idLibro === returnEntry.libro.idLibro) {
+                        if (bookEntry.idLibro === returnEntry.libro.idLibro && !returnEntry.devuelto) {
                             console.log("Bua, israel, eres un fiera 3")
                             return true;
                         }
                     });
-                    */
+                    
 
-                    let actualBook = new book(bookEntry, favourite, toRead, toReturn)
-                    this.#appView.createBook(actualBook, this)
+                    let actualBook = new Book(bookEntry, favourite, toRead, toReturn)
+                    console.log(actualBook)
+
+                    if (actualBook.getBestBool()){
+                        this.#library.pushBestList(actualBook)
+                    }
+                    if (actualBook.getReturnBool()){
+                        this.#library.pushReturnList(actualBook)
+                    }
+                    if (actualBook.getFavBool()){
+                        this.#library.pushFavList(actualBook)
+                    }
+                    if (actualBook.getReadBool()){
+                        this.#library.pushReadList(actualBook)
+                    }
+                    
+
+                    this.#appView.createBook(
+                        actualBook.getId(),
+                        actualBook.getCover(),
+                        actualBook.getTitle(),
+                        actualBook.getAuthor(),
+                        actualBook.getPublisher(), 
+                        actualBook.getSynopsis(),
+                        actualBook.getCategory(),
+                        actualBook.getYear(),
+                        actualBook.getIsbn(),
+                        actualBook.getBestBool(),
+                        actualBook.getFavBool(),
+                        actualBook.getReturnBool(),
+                        actualBook.getReadBool(),
+                        this)
                 });
             })
             .catch((error) => {
                 console.log("Get-all-books " + error.message.substring(error.message.lastIndexOf("Error")))
 
             })
+        console.log("Favorites:")
+        console.log(this.#library.getFavList())
+        console.log("Best Sellers:")
+        console.log(this.#library.getBestList())
+        console.log("To Retruns:")
+        console.log(this.#library.getReturnList())
+        console.log("To Read:")
+        console.log(this.#library.getReadList())
     }
 
     //apply user data

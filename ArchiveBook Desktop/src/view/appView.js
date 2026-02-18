@@ -52,7 +52,7 @@ export class appView {
             this.#filters.classList.add('d-none')
         }
     }
-    createBook(book, that) {
+    createBook(idGet,coverGet,titleGet,authorGet,publisherGet,synopsisGet,categoryGet,yearGet,isbnGet,bestGet,favGet,returnGet,readGet, that) {
         //console.log(that)
 
         let div = document.createElement('div');
@@ -61,11 +61,11 @@ export class appView {
         //creación de la estructura interna
         let img = document.createElement('img');
         img.id = "cover"
-        img.src = book.getCover()
+        img.src = coverGet
 
 
         let title = document.createElement('h3');
-        title.textContent = book.getTitle()
+        title.textContent = titleGet
 
         /*
         let author = document.createElement('p');
@@ -95,13 +95,13 @@ export class appView {
 
         img.addEventListener('click', () => this.openDescriptionPopUp(
             img,
-            book.getTitle(), 
-            book.getAuthor(), 
-            book.getSynopsis(), 
-            book.getIsbn(), 
-            book.getYear(),
-            book.getCategory(),
-            book.getPublisher(),
+            titleGet, 
+            authorGet, 
+            synopsisGet, 
+            isbnGet, 
+            yearGet,
+            categoryGet,
+            publisherGet,
         ))
 
         //Botones
@@ -116,7 +116,7 @@ export class appView {
 
         let favButton = document.createElement('button');
         favButton.classList.add('icon-btn');
-        favButton.addEventListener('click', () => that.tapFavourite(favButton));
+        favButton.addEventListener('click', () => that.tapFavourite(favButton,idGet));
 
         let favIcon = document.createElement('img');
         favIcon.src = "./images/heart.png"
@@ -124,7 +124,7 @@ export class appView {
 
         let readButton = document.createElement('button');
         readButton.classList.add('icon-btn');
-        readButton.addEventListener('click', () => that.tapToRead(readButton));
+        readButton.addEventListener('click', () => that.tapToRead(readButton,idGet));
 
         let readIcon = document.createElement('img');
         readIcon.src = "./images/bookmark.png"
@@ -132,7 +132,7 @@ export class appView {
 
         let returnButton = document.createElement('button');
         returnButton.classList.add('icon-btn');
-        returnButton.addEventListener('click', () => that.tapToReturn(returnButton));
+        returnButton.addEventListener('click', () => that.tapToReturn(returnButton,idGet));
 
         let returnIcon = document.createElement('img');
         returnIcon.src = "./images/notification.png"
@@ -159,22 +159,22 @@ export class appView {
         */
         div.appendChild(divButtons);
 
-        if(book.getFavBool()){
+        if(favGet){
             favIcon.src= "./images/heart-bold.png"
         }
-        if(true){ // cambiar por book.getReadBool(
+        if(readGet){ // cambiar por readGet
             readIcon.src= "./images/bookmark-bold.png"
         }
-        if(true){ // cambiar por book.getReturnBool()
+        if(returnGet){ // cambiar por returnGet
             returnIcon.src= "./images/notification-bold.png"
         }
-        if(book.getBestBool()){
+        if(bestGet){
             best.src = "./images/star-bold.png"
         }
 
 
 
-        if (book.getBestBool()) {
+        if (bestGet) {
             const clone = div.cloneNode(true);
 
             // Buscar elementos dentro del CLON
@@ -187,24 +187,24 @@ export class appView {
             cloneImg.addEventListener('click', () =>
                 this.openDescriptionPopUp(
                     cloneImg,
-                    book.getTitle(), 
-                    book.getAuthor(), 
-                    book.getSynopsis(), 
-                    book.getIsbn(), 
-                    book.getYear(),
-                    book.getCategory(),
-                    book.getPublisher()
+                    titleGet,
+                    authorGet,
+                    synopsisGet,
+                    isbnGet,
+                    yearGet,
+                    categoryGet,
+                    publisherGet
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
-            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
-            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
             this.#baseBest.appendChild(clone);
         }
 
-        if (true) { //cambiar por read
+        if (readGet) { //cambiar por read
 
             const clone = div.cloneNode(true);
 
@@ -218,24 +218,24 @@ export class appView {
             cloneImg.addEventListener('click', () =>
                 this.openDescriptionPopUp(
                     cloneImg,
-                    book.getTitle(), 
-                    book.getAuthor(), 
-                    book.getSynopsis(), 
-                    book.getIsbn(), 
-                    book.getYear(),
-                    book.getCategory(),
-                    book.getPublisher()
+                    titleGet,
+                    authorGet,
+                    synopsisGet,
+                    isbnGet,
+                    yearGet,
+                    categoryGet,
+                    publisherGet,
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
-            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
-            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
             this.#baseRead.appendChild(clone);
         }
 
-        if (true) { //cambiar por retun
+        if (returnGet) { //cambiar por retun
 
             const clone = div.cloneNode(true);
 
@@ -249,24 +249,24 @@ export class appView {
             cloneImg.addEventListener('click', () =>
                 this.openDescriptionPopUp(
                     cloneImg,
-                    book.getTitle(), 
-                    book.getAuthor(), 
-                    book.getSynopsis(), 
-                    book.getIsbn(), 
-                    book.getYear(),
-                    book.getCategory(),
-                    book.getPublisher()
+                    titleGet,
+                    authorGet,
+                    synopsisGet,
+                    isbnGet,
+                    yearGet,
+                    categoryGet,
+                    publisherGet,
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
-            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
-            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
             this.#baseReturn.appendChild(clone);
         }
 
-        if (book.getFavBool()) {
+        if (favGet) {
 
             const clone = div.cloneNode(true);
 
@@ -280,19 +280,19 @@ export class appView {
             cloneImg.addEventListener('click', () =>
                 this.openDescriptionPopUp(
                     cloneImg,
-                    book.getTitle(), 
-                    book.getAuthor(), 
-                    book.getSynopsis(), 
-                    book.getIsbn(), 
-                    book.getYear(),
-                    book.getCategory(),
-                    book.getPublisher()
+                    titleGet,
+                    authorGet,
+                    synopsisGet,
+                    isbnGet,
+                    yearGet,
+                    categoryGet,
+                    publisherGet,
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton));
-            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton));
-            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
+            cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
+            cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
             this.#baseFav.appendChild(clone);
         }
@@ -340,24 +340,22 @@ export class appView {
             button.querySelector('img').src = './images/heart.png'
         }
     }
+
     tapToReturn(button) {
         if (button.querySelector('img').src.endsWith('notification.png')) {
             button.querySelector('img').src = './images/notification-bold.png';
-            console.log("añado bold")
         }
         else {
             button.querySelector('img').src = './images/notification.png'
-            console.log("quito bold")
         }
     }
+    
     tapToRead(button) {
         if (button.querySelector('img').src.endsWith('bookmark.png')) {
             button.querySelector('img').src = './images/bookmark-bold.png';
-            console.log("añado bold")
         }
         else {
             button.querySelector('img').src = './images/bookmark.png'
-            console.log("quito bold")
         }
     }
 }

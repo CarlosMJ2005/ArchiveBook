@@ -5,7 +5,9 @@ const controller = new Controller();
 window.onload = () => {
          
   // addEventListeners de la aplicacion
-  if (document.getElementById("toggle-password-log") != null) document.getElementById("toggle-password-log").addEventListener('click', () => controller.showPassword(document.getElementById("toggle-password-log")));
+  if (document.getElementById("toggle-password-log") != null) document.getElementById("toggle-password-log").addEventListener('click', () => controller.showPassword(document.getElementById("toggle-password-log"),document.getElementById("password-log")))
+  if (document.getElementById("toggle-password-sign") != null) document.getElementById("toggle-password-sign").addEventListener('click', () => controller.showPassword(document.getElementById("toggle-password-sign"),document.getElementById("password-sign")));
+  if (document.getElementById("toggle-confirmation-sign") != null) document.getElementById("toggle-confirmation-sign").addEventListener('click', () => controller.showPassword(document.getElementById("toggle-confirmation-sign"),document.getElementById("confirmation-sign")));
 
   if (document.getElementById("login") != null) document.getElementById("login").addEventListener('click', () => controller.login());
   if (document.getElementById("signin") != null) document.getElementById("signin").addEventListener('click', () => controller.signin());
