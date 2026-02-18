@@ -26,54 +26,63 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
-/**
- *
- * @author 7N
- */
 @Configuration
 public class RestConfig {
 
-	@Value("${jwt.public.key}")
-	RSAPublicKey key;
+    @Value("${jwt.public.key}")
+    RSAPublicKey key;
 
-	@Value("${jwt.private.key}")
-	RSAPrivateKey priv;
+    @Value("${jwt.private.key}")
+    RSAPrivateKey priv;
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		// @formatter:off
-		http.authorizeHttpRequests((authorize) -> authorize
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http.authorizeHttpRequests((authorize) -> authorize
                 // Permitir acceso público para crear un nuevo usuario
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
-                
                 // Otras rutas configuradas
                 .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/usuarios/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
-            )
-            // Es vital deshabilitar CSRF para el endpoint de registro si usas herramientas como Postman
-            .csrf((csrf) -> csrf.ignoringRequestMatchers("/token", "/api/usuarios"))
-            .httpBasic(Customizer.withDefaults())
-				.oauth2ResourceServer((jwt) -> jwt.jwt(Customizer.withDefaults()))
-				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.exceptionHandling((exceptions) -> exceptions
-				.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-				);
-		// @formatter:on
-		return http.build();
-	}
+        )
+                // Es vital deshabilitar CSRF para el endpoint de registro si usas herramientas como Postman
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token", "/api/usuarios"))
+                .httpBasic(Customizer.withDefaults())
+                .oauth2ResourceServer((jwt) -> jwt.jwt(Customizer.withDefaults()))
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling((exceptions) -> exceptions
+                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+                );
+        // @formatter:on
+        return http.build();
+    }
 
-	@Bean
-	JwtDecoder jwtDecoder() {
-		return NimbusJwtDecoder.withPublicKey(this.key).build();
-	}
+    @Bean
+    JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withPublicKey(this.key).build();
+    }
 
-	@Bean
-	JwtEncoder jwtEncoder() {
-		JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
-		JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-		return new NimbusJwtEncoder(jwks);
-	}
+    @Bean
+    JwtEncoder jwtEncoder() {
+        JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
+        JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+        return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    public CommonsRequestLoggingFilter logFilter() {
+        CommonsRequestLoggingFilter filter
+          = new CommonsRequestLoggingFilter();
+        filter.setIncludeQueryString(true);
+        filter.setIncludePayload(true);
+        filter.setMaxPayloadLength(10000);
+        filter.setIncludeHeaders(true);
+        filter.setAfterMessagePrefix("REQUEST DATA: ");
+        return filter;
+    }
 
 }

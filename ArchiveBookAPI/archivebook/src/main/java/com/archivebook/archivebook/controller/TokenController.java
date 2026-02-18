@@ -36,7 +36,7 @@ public class TokenController {
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
-				.expiresAt(now.plusSeconds(expiry))
+				//.expiresAt(now.plusSeconds(expiry))
 				.subject(authentication.getName())
 				.claim("scope", scope)
 				.build();
