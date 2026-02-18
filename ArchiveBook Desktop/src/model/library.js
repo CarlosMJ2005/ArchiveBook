@@ -80,4 +80,12 @@ export class Library {
     filterAllList(book){
         this.#allList = this.#allList.filter(i => i !== book)
     }
+
+    eraseAll(){
+        this.#bestList = []
+        this.#favList = []
+        this.#returnList = []
+        this.#readList = []
+        this.#allList = []
+    }
 }

@@ -90,17 +90,36 @@ export class Controller {
 
     //book buttons
 
-    tapFavourite(button, idLibro) { //añadir funcionalidad con api
-        this.#appView.tapFavourite(button)
+    async tapFavorite(button, idLibro) { //añadir funcionalidad con api
         console.log(idLibro)
+        if (button.querySelector('img').src.endsWith('heart.png')) { // cuando se marca como fav
+            console.log(await app.addFavorite(idLibro))
+            this.startLoad()
+            //this.#appView.tapFavorite(button, false)
+        }
+        else {// cuando se desmarca como fav
+            console.log(await app.removeFavorite(idLibro))
+            this.startLoad()
+        }
     }
     tapToReturn(button, idLibro) { //añadir funcionalidad con api
-        this.#appView.tapToReturn(button)
         console.log(idLibro)
+        if (button.querySelector('img').src.endsWith('notification.png')) {
+            this.#appView.tapToReturn(button, false)
+        }
+        else {
+            this.#appView.tapToReturn(button, true)
+        }
     }
-    tapToRead(button, idLibro) { //añadir funcionalidad con api
-        this.#appView.tapToRead(button)
+    async tapToRead(button, idLibro) { //añadir funcionalidad con api
         console.log(idLibro)
+        if (button.querySelector('img').src.endsWith('bookmark.png')) {
+            console.log(await app.addToRead(idLibro))
+            this.startLoad()
+        }
+        else {
+            this.#appView.tapToRead(button, true)
+        }
     }
 
     //log-sign switch
@@ -129,8 +148,8 @@ export class Controller {
 
     async startLoad() {
         
-        const [favs, returns, reads] = await Promise.all([
-        app.getFavourites(),
+        const [favs, reads, returns] = await Promise.all([
+        app.getFavorites(),
         app.getToReturn(),
         app.getToRead()
         ]);
@@ -138,7 +157,7 @@ export class Controller {
         
         //console.log(returns)
         
-        this.loadAll(favs , returns, reads)
+        this.loadAll(favs, returns, reads)
     }
     
     loadAll(favs,returns,reads) {
@@ -152,14 +171,17 @@ export class Controller {
                 this.#appView.eraseFavList()
                 this.#appView.eraseReadList()
                 this.#appView.eraseReturnList()
+
+                this.#library.eraseAll()
+
                 JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
                     //console.log(bookEntry)
                     
-                    let favourite = false
+                    let favorite = false
                     let toRead = false
                     let toReturn = false
                     
-                    favourite = favs.some(favEntry => {
+                    favorite = favs.some(favEntry => {
                         if (bookEntry.idLibro === favEntry.libro.idLibro) {
                             console.log("Bua, israel, eres un fiera")
                             return true;
@@ -180,7 +202,7 @@ export class Controller {
                     });
                     
 
-                    let actualBook = new Book(bookEntry, favourite, toRead, toReturn)
+                    let actualBook = new Book(bookEntry, favorite, toRead, toReturn)
                     console.log(actualBook)
 
                     if (actualBook.getBestBool()){

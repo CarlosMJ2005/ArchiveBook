@@ -54,6 +54,9 @@ app.on('ready', () => {
     }
   })
 
+//---------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------UTILITIES---------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------//
 
   const openApp = () => {
     //console.log("entro en open window")
@@ -80,8 +83,11 @@ app.on('ready', () => {
     }
   });
 
+//-----------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------GET FROM DATABASE---------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
 
-
+//---------------------------------------------------GET BOOKS---------------------------------------------------//
   ipcMain.handle('get-books', async () => {
   try {
     const url = apiUrl +"api/libros";
@@ -108,7 +114,9 @@ app.on('ready', () => {
   }
 });
 
-  ipcMain.handle('get-favourites', async () => {
+//---------------------------------------------------GET FAVORITES---------------------------------------------------//
+
+  ipcMain.handle('get-favorites', async () => {
   try {
     console.log("TOKEN fav:", myToken)
     const url = apiUrl +"api/favoritos";
@@ -120,7 +128,7 @@ app.on('ready', () => {
         'Authorization': `Bearer ${myToken}`
       }
     });
-    console.log("favourites")
+    console.log("favorites")
     console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -129,17 +137,17 @@ app.on('ready', () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error en get-favourite:', error);
+    console.error('Error en get-favorite:', error);
     openLog()
     throw error;
   }
 });
 
+//---------------------------------------------------GET TO READ---------------------------------------------------//
+
 ipcMain.handle('get-toRead', async () => {
   try {
     const url = apiUrl +"api/porLeer";
-
-    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -162,6 +170,8 @@ ipcMain.handle('get-toRead', async () => {
     throw error;
   }
 });
+
+//---------------------------------------------------GET TO RETURN---------------------------------------------------//
 
 ipcMain.handle('get-toReturn', async () => {
   try {
@@ -190,6 +200,128 @@ ipcMain.handle('get-toReturn', async () => {
     throw error;
   }
 });
+
+
+
+//---------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------ADD TO DATABASE---------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------------//
+
+//----------------------------------------------------ADD FAVORITE-----------------------------------------------------//
+
+ipcMain.handle('add-favorite', async (event, id) => {
+  try {
+    const url = apiUrl +"api/favoritos/" + id;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return "marked as favorite complete";
+  } catch (error) {
+    console.error('Error en add-favorite:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//---------------------------------------------------ADD TO READ---------------------------------------------------//
+
+ipcMain.handle('add-toRead', async (event, id) => {
+  try {
+    const url = apiUrl +"api/porLeer/" + id;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    //console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en add-toRead:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//---------------------------------------------------ADD TO RETURN---------------------------------------------------//
+
+ipcMain.handle('add-toReturn', async (event, id) => {
+  try {
+    const url = apiUrl +"api/prestamos";
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log("return")
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en add-toReturn:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//-----------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------UPDATE/REMOVE FROMDATABASE------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
+
+//----------------------------------------------------REMOVE FAVORITE-----------------------------------------------------//
+
+ipcMain.handle('remove-favorite', async (event, id) => {
+  try {
+    const url = apiUrl +"api/favoritos/" + id;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return "unmarked as favorite complete";
+  } catch (error) {
+    console.error('Error en add-favorite:', error);
+    openLog()
+    throw error;
+  }
+});
+
+
+//-----------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------USER MANAGER------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
+
 
   ipcMain.handle('verify-user', async (event, email, password, state) => {
   try {
