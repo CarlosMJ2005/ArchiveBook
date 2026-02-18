@@ -2,15 +2,16 @@ package com.example.pmdm.archivebook.data.remote
 
 import android.util.Log
 import com.example.pmdm.archivebook.data.BookDto
+import com.example.pmdm.archivebook.data.PrestamoDto
 import com.example.pmdm.archivebook.data.local.AuthManager
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.put
-import io.ktor.client.request.HttpRequestBuilder
 
 class LibraryApiService(
     private val client: HttpClient,
@@ -27,9 +28,9 @@ class LibraryApiService(
     // --- GET --- //
     suspend fun fetchBooks(): List<BookDto> = client.get("api/libros") { withAuth() }.body()
 
-    suspend fun getPendingReturns(): List<Int> {
-        Log.d(TAG, "Pendientes -> GET: api/prestamos/pendientes")
-        return client.get("api/prestamos/pendientes") { withAuth() }.body()
+    suspend fun getLoans(): List<PrestamoDto> {
+        Log.d(TAG, "Préstamos -> GET: api/prestamos")
+        return client.get("api/prestamos") { withAuth() }.body()
     }
 
     // --- FAVORITES --- //

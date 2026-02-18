@@ -89,7 +89,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LibraryScreen(
     onLogout: () -> Unit,
-    onBookClick: (Int) -> Unit,
+    onBookClick: (Book) -> Unit,
     viewModel: LibraryViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -188,6 +188,19 @@ fun LibraryScreen(
                             icon = { Icon(Icons.Default.Bookmark, null) },
                             onClick = {
                                 viewModel.selectedCategory = "YetToRead"
+                                coroutineScope.launch { drawerState.close() }
+                            },
+                            colors = drawerItemColors,
+                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                        )
+
+                        // --- TO RETURN ---
+                        NavigationDrawerItem(
+                            label = { Text("To Return") },
+                            selected = viewModel.selectedCategory == "ToReturn",
+                            icon = { Icon(Icons.Default.NotificationsActive, null) },
+                            onClick = {
+                                viewModel.selectedCategory = "ToReturn"
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
@@ -363,7 +376,7 @@ fun LibraryScreen(
                     items(booksToShow, key = { it.id }) { book ->
                         BookCard(
                             book = book,
-                            modifier = Modifier.clickable { onBookClick(book.id) },
+                            modifier = Modifier.clickable { onBookClick(book) },
                             onFavoriteClick = { viewModel.toggleFavorite(book.id) },
                             onBookmarkClick = { viewModel.toggleBookmark(book.id) },
                             onReturnClick = { viewModel.toggleReturn(book.id) }

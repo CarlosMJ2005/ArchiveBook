@@ -6,54 +6,47 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AuthorDto(
+    @SerialName("idAutor") val id: Int? = null,
     @SerialName("nombre") val nombre: String,
-    @SerialName("apellidos") val apellidos: String
+    @SerialName("apellidos") val apellidos: String,
+    @SerialName("nacionalidad") val nationality: String? = null
 )
 
 @Serializable
 data class EditorialDto(
-    @SerialName("nombre") val nombre: String
+    @SerialName("idEditorial") val id: Int? = null,
+    @SerialName("nombre") val nombre: String,
+    @SerialName("direccion") val address: String? = null,
+    @SerialName("pais") val country: String? = null,
+    @SerialName("sitioWeb") val website: String? = null
 )
 
-// 2. Tu DTO principal adaptado EXACTAMENTE al JSON de la imagen
 @Serializable
 data class BookDto(
     @SerialName("idLibro") val id: Int,
     @SerialName("titulo") val title: String,
-
-    // Puede venir null en el JSON, así que ponemos String? (nullable)
+    @SerialName("isbn") val isbn: String? = null,
+    @SerialName("agnoPublicacion") val publicationYear: Int? = null,
+    @SerialName("portadaLibro") val cover: String? = null,
     @SerialName("sinopsis") val synopsis: String?,
-
-    // Estos son OBJETOS, no Strings
     @SerialName("autor") val authorObj: AuthorDto,
     @SerialName("editorial") val publisherObj: EditorialDto,
-
-    @SerialName("categoria") val category: String, // Es un String, no una lista en el JSON
+    @SerialName("categoria") val category: String,
+    @SerialName("prestado") val isLoaned: Boolean = false,
     @SerialName("bestSeller") val isBestseller: Boolean,
-
-    // Campos locales (no vienen en el JSON, se ponen por defecto)
     val isFavorite: Boolean = false,
     val isBookmarked: Boolean = false,
     val isToReturn: Boolean = false
 )
 
-// 3. El Mapper: Aquí transformamos la estructura compleja del JSON a tu Domain simple
 fun BookDto.toDomain(): Book {
     return Book(
         id = this.id,
         title = this.title,
-        // Si la sinopsis es null, ponemos un texto por defecto
         synopsis = this.synopsis ?: "Sin sinopsis disponible",
-
-        // Concatenamos nombre y apellidos para formar el String "author" que quiere tu Domain
         author = "${this.authorObj.nombre} ${this.authorObj.apellidos}",
-
-        // Sacamos solo el nombre de la editorial
         publisher = this.publisherObj.nombre,
-
-        // Convertimos la categoría única en una lista para tu Domain
         genres = listOf(this.category),
-
         isBestseller = this.isBestseller,
         isFavorite = this.isFavorite,
         isBookmarked = this.isBookmarked,
@@ -62,7 +55,6 @@ fun BookDto.toDomain(): Book {
 }
 
 fun Book.toDto(): BookDto {
-    // Dividimos el string del autor para reconstruir el objeto que el JSON espera
     val nameParts = this.author.split(" ", limit = 2)
     val nombre = nameParts.getOrNull(0) ?: ""
     val apellidos = nameParts.getOrNull(1) ?: ""
