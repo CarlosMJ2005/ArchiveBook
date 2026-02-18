@@ -132,9 +132,9 @@ class LibraryViewModel(
     }
 
     // Si usas el botón de estrella en la Card:
-    fun toggleBestseller(bookId: Int) {
+    /*fun toggleBestseller(bookId: Int) {
         updateBookLocal(bookId) { it.copy(isBestseller = !it.isBestseller) }
-    }
+    }*/
 
     // Helper para actualizar lista local limpiamente
     private fun updateBookLocal(bookId: Int, update: (Book) -> Book) {
