@@ -57,39 +57,53 @@ export class loginView {
             console.log("muestro log")
             this.#structureLog.classList.remove("d-none")
             this.#structureSign.classList.add("d-none")
-            reset()
+            this.reset()
         }
     }
-    showPassword(icon){
-        console.log(this.#passwordlog.type)
-        if(this.#passwordlog.type == "password"){
+    showPassword(icon,input){
+        if(input.type == "password"){
             console.log("cambio")
-            this.#passwordlog.type = "text"
+            input.type = "text"
             icon.src = "./images/eye.png"
         }
         else{
             console.log("descambio")
-            this.#passwordlog.type = "password"
+            input.type = "password"
             icon.src = "./images/closed_eye.png"
         }
-        
     }
     getEmailLog(){
         return this.#emailLog.value
     }
-    getPasswordLog(){
-        return this.#passwordlog.value
+    setEmailLog(email){
+        this.#emailLog.value = email
     }
     getEmailSign(){
         return this.#emailSign.value
     }
+
+
+    getPasswordLog(){
+        return this.#passwordlog.value
+    }
+    setPasswordLog(password){
+        this.#passwordlog.value = password
+    }
+
+
+    getStateCheckbox(){
+        return this.#stateCheckbox.checked
+    }
+    setStateCheckbox(value){
+        this.#stateCheckbox.checked = value
+    }
+
+    
     getPasswordSign(){
         return this.#passwordSign.value
     }
     getConfirmationSign(){
         return this.#confirmationSign.value
     }
-    getStateCheckbox(){
-        return this.#stateCheckbox.checked
-    }
+    
 }

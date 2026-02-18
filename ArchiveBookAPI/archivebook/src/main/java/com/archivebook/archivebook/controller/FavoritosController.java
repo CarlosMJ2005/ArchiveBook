@@ -2,6 +2,7 @@ package com.archivebook.archivebook.controller;
 
 import com.archivebook.archivebook.entities.Favoritos;
 import com.archivebook.archivebook.repository.FavoritosRepository;
+import com.archivebook.archivebook.repository.LibroRepository;
 import com.archivebook.archivebook.repository.UsuarioRepository;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class FavoritosController {
-    
-        private FavoritosRepository repository;
-        private UsuarioRepository usuarioRepository;
+
+    private FavoritosRepository repository;
+    private UsuarioRepository usuarioRepository;
+    private LibroRepository libroRepository;
 
     public FavoritosController(FavoritosRepository repository,
-            UsuarioRepository usuariorepository) {
+            UsuarioRepository usuariorepository,
+            LibroRepository libroRepository) {
         this.repository = repository;
         this.usuarioRepository = usuariorepository;
+        this.libroRepository = libroRepository;
     }
-      
 
-    
     // LISTAR: Obtiene el usuario desde el SecurityContextHolder
     @GetMapping("api/favoritos")
     public ResponseEntity<List<Favoritos>> listarFavoritos() {
@@ -42,28 +44,9 @@ public class FavoritosController {
                 .map(usuario -> ResponseEntity.ok(repository.findByUsuario(usuario)))
                 .orElse(ResponseEntity.status(401).build());
     }
-    
-    
-    // AÑADIR: Asocia automáticamente el favorito al usuario logueado
-    @PostMapping("api/favoritos")
-    public ResponseEntity<?> añadirAFavoritos(@RequestBody Favoritos favorito) {
-        JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwt = (Jwt) authenticationToken.getCredentials();
-        String correo = (String) jwt.getSubject();
 
-        return usuarioRepository.findByCorreo(correo)
-                .map(usuario -> {
-                    favorito.setUsuario(usuario);
-                    Favoritos guardado = repository.save(favorito);
-                    return ResponseEntity.ok(guardado);
-                })
-                .orElse(ResponseEntity.status(401).build());
-    }
-
-    
-    // ELIMINAR: Sin ID en la URL. Se busca la relación usando el usuario del token y el objeto enviado.
-    @DeleteMapping("api/favoritos")
-    public ResponseEntity<Void> eliminarFavorito(@RequestBody Favoritos favoritoRequest) {
+    @PostMapping("api/favoritos/{idLibro}")
+    public ResponseEntity<?> añadirAFavoritos(@PathVariable Long idLibro) {
         // 1. Obtener el usuario del token
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authenticationToken.getCredentials();
@@ -71,18 +54,50 @@ public class FavoritosController {
 
         // 2. Buscar al usuario logueado
         return usuarioRepository.findByCorreo(correo).map(usuario -> {
-            // 3. Buscar el registro de favorito que coincida con este usuario y el ID enviado en el body
-            // Esto asegura que el usuario SOLO pueda borrar sus propios favoritos
-            return repository.findById(favoritoRequest.getIdFavorito())
-                .filter(f -> f.getUsuario().getIdUsuario().equals(usuario.getIdUsuario()))
-                .map(f -> {
-                    repository.delete(f);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
-        })
-                .orElse(ResponseEntity.status(401).build());
+
+            // 3. Buscar el libro existente en la base de datos
+            return libroRepository.findById(idLibro).map(libro -> {
+
+                // 4. Crear la relación de favorito
+                Favoritos favorito = new Favoritos();
+                favorito.setUsuario(usuario);
+                favorito.setLibro(libro); // Asociamos el libro real encontrado
+
+                return ResponseEntity.ok(repository.save(favorito));
+
+            }).orElse(ResponseEntity.notFound().build()); // Error 404 si el libro no existe
+
+        }).orElse(ResponseEntity.status(401).build()); // Error 401 si el usuario no es válido
     }
-        
-    
+
+    // ELIMINAR: Se recibe el ID del libro por la URL para identificar qué favorito borrar
+    @DeleteMapping("api/favoritos/{idLibro}")
+    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long idLibro) {
+        // 1. Obtener el usuario del token
+        JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authenticationToken.getCredentials();
+        String correo = (String) jwt.getSubject();
+
+        // 2. Buscar al usuario logueado
+        return usuarioRepository.findByCorreo(correo).map(usuario -> {
+
+            // 3. Buscar el libro para asegurar que existe
+            return libroRepository.findById(idLibro).map(libro -> {
+
+                // 4. Buscar el registro en la tabla 'favoritos' que coincida con este usuario y este libro
+                // Usamos un método del repositorio para encontrar la relación específica
+                return repository.findByUsuario(usuario).stream()
+                        .filter(f -> f.getLibro().getIdLibro().equals(libro.getIdLibro()))
+                        .findFirst()
+                        .map(f -> {
+                            repository.delete(f);
+                            return ResponseEntity.noContent().<Void>build();
+                        })
+                        .orElse(ResponseEntity.notFound().build()); // No existe esa relación de favorito
+
+            }).orElse(ResponseEntity.notFound().build()); // El libro no existe
+
+        }).orElse(ResponseEntity.status(401).build());
+    }
+
 }

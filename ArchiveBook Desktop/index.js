@@ -7,7 +7,7 @@ const path = require('path');
 const ficheroUsuario = "./usuario.json"
 let myToken
 
-const apiUrl = "http://192.168.207.83:8080/" // Israel "http://192.168.207.38:8080/" //Carlos  "http://192.168.207.76:8080/" //Steven 
+const apiUrl = "http://192.168.207.83:8080/" // Israel "http://192.168.207.76:8080/" //Steven "http://192.168.207.38:8080/" //Carlos   
 // portatil
 
 // 2.
@@ -54,6 +54,9 @@ app.on('ready', () => {
     }
   })
 
+//---------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------UTILITIES---------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------//
 
   const openApp = () => {
     //console.log("entro en open window")
@@ -80,6 +83,11 @@ app.on('ready', () => {
     }
   });
 
+//-----------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------GET FROM DATABASE---------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
+
+//---------------------------------------------------GET BOOKS---------------------------------------------------//
   ipcMain.handle('get-books', async () => {
   try {
     const url = apiUrl +"api/libros";
@@ -106,8 +114,11 @@ app.on('ready', () => {
   }
 });
 
-  ipcMain.handle('get-favourites', async () => {
+//---------------------------------------------------GET FAVORITES---------------------------------------------------//
+
+  ipcMain.handle('get-favorites', async () => {
   try {
+    console.log("TOKEN fav:", myToken)
     const url = apiUrl +"api/favoritos";
 
     const response = await fetch(url, {
@@ -117,6 +128,7 @@ app.on('ready', () => {
         'Authorization': `Bearer ${myToken}`
       }
     });
+    console.log("favorites")
     console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -125,17 +137,17 @@ app.on('ready', () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error en get-books:', error);
+    console.error('Error en get-favorite:', error);
     openLog()
     throw error;
   }
 });
 
+//---------------------------------------------------GET TO READ---------------------------------------------------//
+
 ipcMain.handle('get-toRead', async () => {
   try {
     const url = apiUrl +"api/porLeer";
-
-    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -153,17 +165,19 @@ ipcMain.handle('get-toRead', async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error en get-books:', error);
+    console.error('Error en get-toRead:', error);
     openLog()
     throw error;
   }
 });
 
+//---------------------------------------------------GET TO RETURN---------------------------------------------------//
+
 ipcMain.handle('get-toReturn', async () => {
   try {
 
-    console.log(myToken)
-    const url = apiUrl +"/api/prestamos";
+    console.log("TOKEN:", myToken)
+    const url = apiUrl +"api/prestamos";
 
     const response = await fetch(url, {
       method: 'GET',
@@ -172,7 +186,7 @@ ipcMain.handle('get-toReturn', async () => {
         'Authorization': `Bearer ${myToken}`
       }
     });
-
+    console.log("return")
     console.log(response)
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -181,11 +195,133 @@ ipcMain.handle('get-toReturn', async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error en get-books:', error);
+    console.error('Error en get-toReturn:', error);
     openLog()
     throw error;
   }
 });
+
+
+
+//---------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------ADD TO DATABASE---------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------------//
+
+//----------------------------------------------------ADD FAVORITE-----------------------------------------------------//
+
+ipcMain.handle('add-favorite', async (event, id) => {
+  try {
+    const url = apiUrl +"api/favoritos/" + id;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return "marked as favorite complete";
+  } catch (error) {
+    console.error('Error en add-favorite:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//---------------------------------------------------ADD TO READ---------------------------------------------------//
+
+ipcMain.handle('add-toRead', async (event, id) => {
+  try {
+    const url = apiUrl +"api/porLeer/" + id;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+
+    //console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en add-toRead:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//---------------------------------------------------ADD TO RETURN---------------------------------------------------//
+
+ipcMain.handle('add-toReturn', async (event, id) => {
+  try {
+    const url = apiUrl +"api/prestamos";
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log("return")
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en add-toReturn:', error);
+    openLog()
+    throw error;
+  }
+});
+
+//-----------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------UPDATE/REMOVE FROMDATABASE------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
+
+//----------------------------------------------------REMOVE FAVORITE-----------------------------------------------------//
+
+ipcMain.handle('remove-favorite', async (event, id) => {
+  try {
+    const url = apiUrl +"api/favoritos/" + id;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return "unmarked as favorite complete";
+  } catch (error) {
+    console.error('Error en add-favorite:', error);
+    openLog()
+    throw error;
+  }
+});
+
+
+//-----------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------USER MANAGER------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
+
 
   ipcMain.handle('verify-user', async (event, email, password, state) => {
   try {
@@ -198,6 +334,7 @@ ipcMain.handle('get-toReturn', async () => {
         'Authorization': 'Basic ' + btoa(email + ":" + password)
       }
     })
+    console.log("log in")
     console.log(response)
 
     if (!response.ok) {
@@ -205,15 +342,51 @@ ipcMain.handle('get-toReturn', async () => {
     }
     let token = await response.text();
     myToken = token
-    //console.log(myToken)
+    console.log("Tocken recibido por el usuario al conectarse:" +myToken)
     saveUser(email, password, state, token);
     openApp();
-    appwindow.webContents.send('load')
+    appwindow.webContents.send('load', email, password, state)
     return "Usuario iniciado con Éxito"
 
 
   } catch (error) {
-    console.error('Error en get-books:', error);
+    console.error('Error en log-in:', error);
+    throw error;
+  }
+});
+
+ipcMain.handle('add-user', async (event, email, password) => {
+  try {
+    let url = apiUrl +"api/usuarios";
+
+    console.log("email: " + email)
+    console.log("password: " + password)
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        correo: email,
+        contrasena: password,
+        role: "USER"
+      })
+    });
+    console.log("Sign in")
+    console.log(response)
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    let user = await response.text()
+    console.log(user)
+    //console.log(myToken)
+    return "Usuario iniciado con Éxito"
+
+
+  } catch (error) {
+    console.error('Error en sign-in:', error);
     throw error;
   }
 });

@@ -56,6 +56,18 @@
             background-color: #fcdcaf;
         }
 
+        .btn-beige {
+            background-color: #fcdcaf;
+            color: #5c483a;
+            font-weight: 600;
+        }
+
+        .btn-beige:hover {
+            background-color: #84240c;
+            color: #f8d5a5;
+            transition: 0.2s ease;
+        }
+
         .sidebar {
             width: 275px;
             background-color: #fce8cc;
@@ -116,6 +128,7 @@
 
         .icon {
             max-height: 45px;
+            align-content: center;
         }
 
         .minibutton {
@@ -157,7 +170,26 @@
 
 <body>
     <div id="right-popup" class="popup right-popup d-none">
-        <p>Este es el pop-up pegado a la izquierda</p>
+        <div class="d-grid mb-3">
+            <button id="filterTitle" class="btn btn-beige">
+                Filter by title
+            </button>
+        </div>
+        <div class="d-grid mb-3">
+            <button id="filterAuthor" class="btn btn-beige">
+                Filter by author
+            </button>
+        </div>
+        <div class="d-grid mb-3">
+            <button id="filterPublisher" class="btn btn-beige">
+                Filter by publisher
+            </button>
+        </div>
+        <div class="d-grid mb-3">
+            <button id="filterCategories" class="btn btn-beige">
+                Filter by categories
+            </button>
+        </div>
     </div>
 
     <div id="center-popup" class="popup center-popup d-flex d-none">
@@ -204,16 +236,16 @@
 
     <aside class="sidebar">
         <nav>
-            <h3 class="d-flex flex-wrap gap-1"><img src="./images/star-bold.png" class="icon"><a
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/star.png" class="icon"><a
                     href="#best-sellers-list">Best sellers</a></h3>
             <p>Most pupular</p>
-            <h3 class="d-flex flex-wrap gap-1"><img src="./images/heart-bold.png" class="icon"><a
-                    href="#favourites-list">Favourites</a></h3>
-            <p>Your favourite books</p>
-            <h3 class="d-flex flex-wrap gap-1"><img src="./images/bookmark-bold.png" class="icon"><a
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/heart.png" class="icon"><a
+                    href="#favorites-list">Favorites</a></h3>
+            <p>Your favorite books</p>
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/bookmark.png" class="icon"><a
                     href="#to-read-list">Yet to read</a></h3>
             <p>Your books marked to read</p>
-            <h3 class="d-flex flex-wrap gap-1"><img src="./images/notification-bold.png" class="icon"><a
+            <h3 class="d-flex flex-wrap gap-1"><img src="./images/notification.png" class="icon"><a
                     href="#to-return-list">To return</a></h3>
             <p>Your books to return</p>
         </nav>
@@ -221,7 +253,8 @@
 
     <main class="main-content">
         <section class="mb-4">
-            <h2 class="gap-4 d-flex"><img src="./images/star-bold.png" class="icon">
+            <h2 class="gap-4 d-flex">
+                <img src="./images/star-bold.png" class="icon">
                 <p>Best sellers:</p>
             </h2>
             <div class="d-flex flex-wrap gap-4" id="best-sellers-list">
@@ -230,16 +263,18 @@
         </section>
 
         <section class="mb-4">
-            <h2 class="gap-4 d-flex"><img src="./images/heart-bold.png" class="icon">
-                <p>Favourites:</p>
+            <h2 class="gap-4 d-flex">
+                <img src="./images/heart-bold.png" class="icon">
+                <p>Favorites:</p>
             </h2>
-            <div class="d-flex flex-wrap gap-4" id="favourites-list">
+            <div class="d-flex flex-wrap gap-4" id="favorites-list">
                 
             </div>
         </section>
 
         <section class="mb-4">
-            <h2 class="gap-4 d-flex"><img src="./images/bookmark-bold.png" class="icon">
+            <h2 class="gap-4 d-flex">
+                <img src="./images/bookmark-bold.png" class="icon">
                 <p>Yet to read:</p>
             </h2>
             <div class="d-flex flex-wrap gap-4" id="to-read-list">
@@ -247,7 +282,8 @@
             </div>
         </section>
         <section class="mb-4">
-            <h2 class="gap-4 d-flex"><img src="./images/notification-bold.png" class="icon">
+            <h2 class="gap-4 d-flex">
+                <img src="./images/notification-bold.png" class="icon">
                 <p>To return:</p>
             </h2>
             <div class="d-flex flex-wrap gap-4" id="to-return-list">
