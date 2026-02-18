@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.example.pmdm.archivebook.auth.usecase.LogOut
 import com.example.pmdm.archivebook.presentation.screens.BookDetailScreen
 import com.example.pmdm.archivebook.presentation.screens.LibraryScreen
 import com.example.pmdm.archivebook.presentation.screens.LoginScreen
@@ -13,6 +14,7 @@ import com.example.pmdm.archivebook.presentation.BookDetailViewModel
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
 import com.example.pmdm.archivebook.presentation.LoginViewModel
 import com.example.pmdm.archivebook.presentation.RegisterViewModel
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -55,10 +57,12 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
             entry<LibraryScreenKey> { 
                 val libraryViewModel: LibraryViewModel = koinViewModel()
                 val loginViewModel: LoginViewModel = koinViewModel()
+                val logOut: LogOut = koinInject()
                 LibraryScreen(
                     viewModel = libraryViewModel,
                     onLogout = {
-                        libraryViewModel.clearFields()
+                        logOut()
+                        libraryViewModel.clearFilters()
                         loginViewModel.clearFields()
                         backStack.clear()
                         backStack.add(LoginScreenKey)
@@ -70,6 +74,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
             entry<BookDetailScreenKey> { entry ->
                 val id = entry.bookId
                 val viewModel: BookDetailViewModel = koinViewModel(
+                    key = "book_detail_$id", // Clave única para cada ViewModel
                     parameters = { parametersOf(id) }
                 )
                 BookDetailScreen(

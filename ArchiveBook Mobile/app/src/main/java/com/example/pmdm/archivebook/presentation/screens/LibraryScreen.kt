@@ -63,6 +63,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -89,25 +90,25 @@ import kotlinx.coroutines.launch
 fun LibraryScreen(
     onLogout: () -> Unit,
     onBookClick: (Int) -> Unit,
-    viewModel: LibraryViewModel // Recibe el VM ya inyectado
+    viewModel: LibraryViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    // Estos estados de UI para mostrar/ocultar menús se quedan aquí
     var showMenu by remember { mutableStateOf(false) }
     var showGenreMenu by remember { mutableStateOf(false) }
 
     val contentColor = if (isDarkTheme) Color(0xFFF5E6CC) else Color(0xFF7B241C)
     val selectedBg = if (isDarkTheme) Color(0xFF390A02) else Color(0xFFF8F2E4)
 
-    // Accedemos a las variables del ViewModel directamente
     val booksToShow = viewModel.filteredBooks
     val isLoading = viewModel.isLoading
     val errorMessage = viewModel.errorMessage
 
-
+    if (viewModel.forceLogout) {
+        LaunchedEffect(Unit) { onLogout() }
+    }
 
     val textFieldContentColor = if (isDarkTheme) DarkOnPrimary else LightOnPrimary
 
@@ -141,13 +142,13 @@ fun LibraryScreen(
 
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     item {
-                        // --- SECCIÓN GENERAL ---
+                        // --- ALL LIBRARY (Reset total) ---
                         NavigationDrawerItem(
                             label = { Text("All Library") },
-                            selected = viewModel.selectedFilter == "All",
+                            selected = viewModel.selectedCategory == "All",
                             icon = { Icon(Icons.Default.Menu, null) },
                             onClick = {
-                                viewModel.clearFilters()
+                                viewModel.resetToAll() // Limpia búsqueda y vuelve a 'All'
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
@@ -157,9 +158,10 @@ fun LibraryScreen(
                         // --- BESTSELLERS ---
                         NavigationDrawerItem(
                             label = { Text("Bestsellers") },
-                            selected = viewModel.selectedFilter == "Bestsellers",
+                            selected = viewModel.selectedCategory == "Bestsellers",
                             icon = { Icon(Icons.Default.Star, null) },
                             onClick = {
+                                viewModel.selectedCategory = "Bestsellers"
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
@@ -169,28 +171,30 @@ fun LibraryScreen(
                         // --- FAVORITES ---
                         NavigationDrawerItem(
                             label = { Text("Favorites") },
-                            selected = viewModel.selectedFilter == "Favorites",
+                            selected = viewModel.selectedCategory == "Favorites",
                             icon = { Icon(Icons.Default.Favorite, null) },
                             onClick = {
+                                viewModel.selectedCategory = "Favorites"
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
 
-                        // --- YET TO READ (Bookmarks) ---
+                        // --- YET TO READ ---
                         NavigationDrawerItem(
                             label = { Text("Yet to read") },
-                            selected = viewModel.selectedFilter == "YetToRead",
+                            selected = viewModel.selectedCategory == "YetToRead",
                             icon = { Icon(Icons.Default.Bookmark, null) },
                             onClick = {
+                                viewModel.selectedCategory = "YetToRead"
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
 
-                        // --- TO RETURN ---
+                        // --- LOG OUT ---
                         NavigationDrawerItem(
                             label = { Text("Log Out") },
                             selected = false,
@@ -224,30 +228,13 @@ fun LibraryScreen(
                             Icon(Icons.Default.Menu, "Abrir menú", tint = contentColor)
                         }
 
-                        // --- TEXTFIELD CONECTADO AL VIEWMODEL ---
                         TextField(
-                            value = if (viewModel.selectedFilter == "Genre") {
-                                viewModel.selectedGenres.joinToString(", ")
-                            } else {
-                                viewModel.searchText // Lee del VM
-                            },
-                            onValueChange = {
-                                if (viewModel.selectedFilter != "Genre") viewModel.searchText = it // Escribe en el VM
-                            },
-                            readOnly = viewModel.selectedFilter == "Genre",
+                            value = if (viewModel.selectedFilter == "Genre") viewModel.selectedGenres.joinToString(", ") else viewModel.searchText,
+                            onValueChange = { if (viewModel.selectedFilter != "Genre") viewModel.searchText = it },
+                            readOnly = (viewModel.selectedFilter == "Genre"),
                             placeholder = {
-                                if (viewModel.selectedFilter != "Genre") {
-                                    Text(
-                                        text = "Search by ${viewModel.selectedFilter}",
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = textFieldContentColor,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                } else if (viewModel.selectedGenres.isEmpty()) {
-                                    Text("Select genres...", fontSize = 14.sp)
-                                }
+                                val label = if (viewModel.selectedFilter == "Genre") "Select genres..." else "Search by ${viewModel.selectedFilter}"
+                                Text(text = label, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = textFieldContentColor)
                             },
                             modifier = Modifier.weight(1f).height(54.dp).padding(horizontal = 4.dp),
                             shape = RoundedCornerShape(12.dp),
@@ -268,19 +255,15 @@ fun LibraryScreen(
                                 }
                             },
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = if (isDarkTheme) DarkPrimary else LightPrimary, // El buscador ahora es granate
+                                focusedContainerColor = if (isDarkTheme) DarkPrimary else LightPrimary,
                                 unfocusedContainerColor = if (isDarkTheme) DarkPrimary else LightPrimary,
-                                focusedTextColor = textFieldContentColor, // El texto que escribes es crema
+                                focusedTextColor = textFieldContentColor,
                                 unfocusedTextColor = textFieldContentColor,
-                                cursorColor = textFieldContentColor,
                                 focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                focusedPlaceholderColor = textFieldContentColor,
-                                unfocusedPlaceholderColor = textFieldContentColor
+                                unfocusedIndicatorColor = Color.Transparent
                             )
                         )
 
-                        // --- DROPDOWN MENUS ---
                         Box {
                             IconButton(onClick = { showMenu = true }) {
                                 Icon(Icons.Default.MoreVert, "filters", tint = contentColor)
@@ -288,7 +271,14 @@ fun LibraryScreen(
 
                             DropdownMenu(
                                 expanded = showMenu,
-                                onDismissRequest = { showMenu = false },
+                                onDismissRequest = {
+                                    showGenreMenu = false
+                                    showMenu = false
+
+                                    if (viewModel.selectedGenres.isEmpty()) {
+                                        viewModel.selectedFilter = "Title"
+                                    }
+                                },
                                 containerColor = if (isDarkTheme) DarkPrimary else LightPrimary
                             ) {
                                 val filters = listOf(
@@ -299,69 +289,46 @@ fun LibraryScreen(
                                 )
 
                                 filters.forEach { (name, icon) ->
-                                    val isSelected = viewModel.selectedFilter == name
                                     DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                text = name,
-                                                color = textFieldContentColor, // TEXTO CREMA
-                                                fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Normal
-                                            )
-                                        },
+                                        text = { Text(text = name, color = textFieldContentColor) },
                                         onClick = {
+                                            viewModel.selectedFilter = name
                                             if (name == "Genre") {
-                                                viewModel.selectedFilter = "Genre"
+                                                showMenu = false
                                                 showGenreMenu = true
                                             } else {
-                                                viewModel.selectedFilter = name
                                                 viewModel.clearFilters()
                                                 showMenu = false
                                             }
                                         },
-                                        leadingIcon = {
-                                            Icon(
-                                                imageVector = icon,
-                                                contentDescription = null,
-                                                tint = textFieldContentColor
-                                            )
-                                        }
+                                        leadingIcon = { Icon(icon, null, tint = textFieldContentColor) }
                                     )
                                 }
                             }
 
-                            // --- DROPDOWN MENU DE GÉNEROS ---
                             DropdownMenu(
                                 expanded = showGenreMenu,
-                                onDismissRequest = { showGenreMenu = false; showMenu = false },
+                                onDismissRequest = {
+                                    showGenreMenu = false
+                                    // Si no seleccionó nada, volvemos a Title para no bloquear el teclado
+                                    if (viewModel.selectedGenres.isEmpty()) viewModel.selectedFilter = "Title"
+                                },
                                 containerColor = if (isDarkTheme) DarkPrimary else LightPrimary
                             ) {
                                 val genres = listOf("Fantasy", "Terror", "Sci-Fi", "Romance", "History", "Clásico", "Distopía")
                                 genres.forEach { genre ->
                                     val isChecked = viewModel.selectedGenres.contains(genre)
                                     DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                text = genre,
-                                                color = if (isDarkTheme) LightPrimary else DarkPrimary
-                                            )
-                                        },
-                                        onClick = {
-                                            // 1. Alternamos el género
-                                            viewModel.toggleGenre(genre)
-
-                                            // 2. Si después de alternar, la lista está vacía, volvemos a "Title"
-                                            if (viewModel.selectedGenres.isEmpty()) {
-                                                viewModel.selectedFilter = "Title"
-                                            }
-                                        },
+                                        text = { Text(text = genre, color = if (isDarkTheme) LightPrimary else DarkPrimary) },
+                                        onClick = { viewModel.toggleGenre(genre) },
                                         leadingIcon = {
                                             Checkbox(
                                                 checked = isChecked,
                                                 onCheckedChange = null,
                                                 colors = CheckboxDefaults.colors(
                                                     checkedColor = if (isDarkTheme) LightPrimary else DarkPrimary,
-                                                    uncheckedColor = if (isDarkTheme) LightPrimary else DarkPrimary,
-                                                    checkmarkColor = if (isDarkTheme) DarkPrimary else LightPrimary
+                                                    checkmarkColor = if (isDarkTheme) DarkPrimary else LightPrimary,
+                                                    uncheckedColor = if (isDarkTheme) LightPrimary else DarkPrimary
                                                 )
                                             )
                                         }
@@ -397,11 +364,9 @@ fun LibraryScreen(
                         BookCard(
                             book = book,
                             modifier = Modifier.clickable { onBookClick(book.id) },
-                            // Nota: Asegúrate de descomentar toggleFavorite y toggleBookmark en tu ViewModel
-                            onFavoriteClick = { /* viewModel.toggleFavorite(book.id) */ },
-                            onBookmarkClick = { /* viewModel.toggleBookmark(book.id) */ },
-                            onReturnClick = { viewModel.toggleReturn(book.id) },
-                            onBestsellerClick = { viewModel.toggleBestseller(book.id) }
+                            onFavoriteClick = { viewModel.toggleFavorite(book.id) },
+                            onBookmarkClick = { viewModel.toggleBookmark(book.id) },
+                            onReturnClick = { viewModel.toggleReturn(book.id) }
                         )
                     }
                 }
@@ -410,15 +375,13 @@ fun LibraryScreen(
     }
 }
 
-// He actualizado ligeramente la BookCard para incluir el click en Bestseller
 @Composable
 fun BookCard(
     book: Book,
     modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    onReturnClick: () -> Unit,
-    onBestsellerClick: () -> Unit
+    onReturnClick: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
     val titleColor = if (isDark) Color(0xFFF5E6CC) else Color(0xFF84240C)
@@ -479,13 +442,11 @@ fun BookCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = onBestsellerClick) {
-                        Icon(
-                            imageVector = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
-                            contentDescription = "Bestseller",
-                            tint = if (book.isBestseller) Color(0xFFFFB700) else titleColor
-                        )
-                    }
+                    Icon(
+                        imageVector = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
+                        contentDescription = "Bestseller",
+                        tint = if (book.isBestseller) Color(0xFFFFB700) else titleColor
+                    )
                     IconButton(onClick = onFavoriteClick) {
                         Icon(
                             imageVector = if (book.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -504,7 +465,7 @@ fun BookCard(
                         Icon(
                             imageVector = if (book.isToReturn) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
                             contentDescription = "Return",
-                            tint = if (book.isToReturn) Color(0xFF0FDC0F) else titleColor
+                            tint = if (book.isToReturn) Color(0xFF00D400) else titleColor
                         )
                     }
                 }
