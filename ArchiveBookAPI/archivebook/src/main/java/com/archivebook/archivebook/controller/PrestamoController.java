@@ -68,7 +68,7 @@ public class PrestamoController {
                 .orElse(ResponseEntity.status(401).build());
     }
 
-    @PostMapping("/api/prestamos")
+    /*@PostMapping("/api/prestamos")
     public ResponseEntity<?> crearPrestamo(@RequestBody Prestamo prestamo) {
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authenticationToken.getCredentials();
@@ -100,9 +100,48 @@ public class PrestamoController {
         prestamo.setUsuario(usuarioOpt.get()); // Asignamos el usuario del token
         prestamo.setDevuelto(false);
         return ResponseEntity.ok(repository.save(prestamo));
-    }
+    }*/
+    
+   @PostMapping("/api/prestamos/{idLibro}")
+    public ResponseEntity<?> crearPrestamo(@PathVariable Long idLibro) {
+        // 1. Extraer el usuario desde el token JWT
+        JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authenticationToken.getCredentials();
+        String correo = (String) jwt.getSubject();
 
-    @PatchMapping("/api/prestamos/devolver-libro/{idLibro}")
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        // 2. Buscar el libro por el ID de la URL
+        Optional<Libro> libroOpt = libroRepository.findById(idLibro);
+        if (libroOpt.isEmpty()) {
+            return ResponseEntity.status(404).body("El libro con ID " + idLibro + " no existe.");
+        }
+
+        Libro libro = libroOpt.get();
+
+        // 3. Validar disponibilidad
+        if (libro.isPrestado()) {
+            return ResponseEntity.badRequest().body("El libro '" + libro.getTitulo() + "' ya está prestado.");
+        }
+
+        // 4. Actualizar estado del libro
+        libro.setPrestado(true);
+        libroRepository.save(libro);
+
+        // 5. Crear y configurar el objeto Prestamo desde cero
+        Prestamo nuevoPrestamo = new Prestamo();
+        nuevoPrestamo.setLibro(libro);
+        nuevoPrestamo.setUsuario(usuarioOpt.get());
+        nuevoPrestamo.setFechaPrestamo(LocalDate.now()); // Fecha de hoy automática
+        nuevoPrestamo.setDevuelto(false);
+
+        return ResponseEntity.ok(repository.save(nuevoPrestamo));
+    }
+    
+    @PatchMapping("/api/prestamos/devolver/{idLibro}")
     public ResponseEntity<?> devolverPorLibro(@PathVariable Long idLibro) {
         // 1. Obtener información del usuario autenticado desde el Token
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();

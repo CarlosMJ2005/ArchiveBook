@@ -38,7 +38,7 @@ public class ArchivebookApplication {
         PasswordEncoder encoder = context.getBean(PasswordEncoder.class);
 
         // CONDICIÓN: Solo cargamos datos si no hay usuarios registrados
-        if (usuarioRepository.count() == 0) {
+        if (libroRepository.count() == 0) {
             System.out.println(">>> Base de datos vacía. Cargando datos iniciales...");
 
             Usuario admin = usuarioRepository.save(new Usuario(null, "admin", encoder.encode("admin123"), "ADMIN"));
@@ -106,7 +106,7 @@ public class ArchivebookApplication {
             porLeer1.setLibro(libro2);
             porLeer1.setUsuario(juan_lector);
             porLeerRepository.save(porLeer1);
-            
+
             PorLeer porLeer2 = new PorLeer();
             porLeer2.setLibro(libro2);
             porLeer2.setUsuario(maria_libros);
@@ -118,8 +118,7 @@ public class ArchivebookApplication {
             prestamoActivo.setFechaPrestamo(LocalDate.now().minusDays(3));
             prestamoActivo.setDevuelto(false);
             prestamoRepository.save(prestamoActivo);
-            
-            
+
             Prestamo prestamoActivo2 = new Prestamo();
             prestamoActivo2.setLibro(libro4);
             prestamoActivo2.setUsuario(maria_libros);
