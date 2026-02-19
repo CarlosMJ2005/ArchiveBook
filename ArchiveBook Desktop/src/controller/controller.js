@@ -14,6 +14,8 @@ import { loginView } from '../view/loginView.js';
 
 import { appView } from '../view/appView.js';
 
+
+
 export class Controller {
 
     // Access to view and model classes as private fields
@@ -30,17 +32,15 @@ export class Controller {
         this.#appView = new appView();
         this.#library = new Library()
 
-
-        window.app.load().then(({ email, password, state }) => {
-            console.log('backflip');
-            this.#usuarioActivo = new User(email, password, state)
-            //console.log(this.#usuarioActivo)
-            this.startLoad();
-        });
     }
 
     // Initializing classes
     init() {
+
+    }
+
+    setUsuarioActivo(usuario) {
+         this.#usuarioActivo = usuario;   
     }
 
     // Controller methods...
@@ -93,32 +93,64 @@ export class Controller {
     async tapFavorite(button, idLibro) { //añadir funcionalidad con api
         console.log(idLibro)
         if (button.querySelector('img').src.endsWith('heart.png')) { // cuando se marca como fav
-            console.log(await app.addFavorite(idLibro))
-            this.startLoad()
-            //this.#appView.tapFavorite(button, false)
+            try {
+                console.log(await app.addFavorite(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         else {// cuando se desmarca como fav
-            console.log(await app.removeFavorite(idLibro))
-            this.startLoad()
+            try {
+                console.log(await app.removeFavorite(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
     }
-    tapToReturn(button, idLibro) { //añadir funcionalidad con api
+    async tapToReturn(button, idLibro) { //añadir funcionalidad con api
         console.log(idLibro)
         if (button.querySelector('img').src.endsWith('notification.png')) {
-            this.#appView.tapToReturn(button, false)
+            try {
+                console.log(await app.addToReturn(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         else {
-            this.#appView.tapToReturn(button, true)
+            try {
+                console.log(await app.removeToReturn(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
     }
     async tapToRead(button, idLibro) { //añadir funcionalidad con api
         console.log(idLibro)
         if (button.querySelector('img').src.endsWith('bookmark.png')) {
-            console.log(await app.addToRead(idLibro))
-            this.startLoad()
+            try {
+                console.log(await app.addToRead(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         else {
-            this.#appView.tapToRead(button, true)
+            try {
+                console.log(await app.removeToRead(idLibro))
+                this.startLoad()
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
     }
 
@@ -148,7 +180,7 @@ export class Controller {
 
     async startLoad() {
         
-        const [favs, reads, returns] = await Promise.all([
+        const [favs,returns, reads, ] = await Promise.all([
         app.getFavorites(),
         app.getToReturn(),
         app.getToRead()
@@ -195,6 +227,7 @@ export class Controller {
                         }
                     });
                     toReturn = returns.some(returnEntry => {
+                        console.log("papapapapappapapapapapa " + !returnEntry.devuelto)
                         if (bookEntry.idLibro === returnEntry.libro.idLibro && !returnEntry.devuelto) {
                             console.log("Bua, israel, eres un fiera 3")
                             return true;

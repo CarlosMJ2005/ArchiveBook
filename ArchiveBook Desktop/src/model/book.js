@@ -30,8 +30,8 @@ export class Book {
 
         this.#bestBool = book.bestSeller
         this.#favBool = favourite
-        this.#returnBool = toRead
-        this.#readBool = toReturn
+        this.#returnBool = toReturn
+        this.#readBool =  toRead
     }
 
     init() {

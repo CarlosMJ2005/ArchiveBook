@@ -1,5 +1,7 @@
 import { Controller } from './src/controller/controller.js';
 
+import { User } from './src/model/user.js';
+
 const controller = new Controller();
 
 window.onload = () => {
@@ -24,3 +26,10 @@ window.onload = () => {
   
   controller.init();
 }
+
+        window.app.load().then(({ email, password, state }) => {
+            console.log('backflip');
+            controller.setUsuarioActivo(new User(email, password, state))
+            //console.log(this.#usuarioActivo)
+            controller.startLoad();
+        });
