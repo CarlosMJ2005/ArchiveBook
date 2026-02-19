@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 
 class BookDetailViewModel(
     private val bookId: Int,
-    private val repository: LibraryRepository
+    private val libraryRepository: LibraryRepository
 ) : ViewModel() {
 
     var book by mutableStateOf<Book?>(null)
         private set
 
-    var isLoading by mutableStateOf(true)
+    var isLoading by mutableStateOf(false)
         private set
 
     var errorMessage by mutableStateOf<String?>(null)
@@ -27,24 +27,22 @@ class BookDetailViewModel(
         loadBook()
     }
 
-    private fun loadBook() {
+    fun loadBook() {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
-
-            repository.getBooks()
-                .onSuccess { allBooks ->
-                    // Find the specific book in the list returned by your repository
-                    book = allBooks.find { it.id == bookId }
-                    if (book == null) {
-                        errorMessage = "Book not found"
-                    }
+            try {
+                val result = libraryRepository.getBookById(bookId)
+                result.onSuccess { fetchedBook ->
+                    book = fetchedBook
+                }.onFailure { error ->
+                    errorMessage = error.message
                 }
-                .onFailure {
-                    errorMessage = it.message ?: "Error loading book"
-                }
-
-            isLoading = false
+            } catch (e: Exception) {
+                errorMessage = e.message
+            } finally {
+                isLoading = false
+            }
         }
     }
 }

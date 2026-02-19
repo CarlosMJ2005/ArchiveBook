@@ -2,6 +2,8 @@ package com.example.pmdm.archivebook.presentation.navigationroot
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -20,68 +22,76 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack = rememberNavBackStack(LoginScreenKey)
+    val backStack: NavBackStack<NavKey> = rememberNavBackStack(LoginScreenKey)
 
-    NavDisplay(
-        backStack = backStack,
-        modifier = modifier,
-        entryProvider = entryProvider {
+    if (backStack.isNotEmpty()) {
+        NavDisplay(
+            backStack = backStack,
+            modifier = modifier,
+            entryProvider = entryProvider {
 
-            entry<LoginScreenKey> {
-                val viewModel: LoginViewModel = koinViewModel()
-                LoginScreen(
-                    viewModel = viewModel, // Pasamos el VM de Koin
-                    onLoginSuccess = {
-                        backStack.clear()
-                        backStack.add(LibraryScreenKey)
-                    },
-                    onRegisterClick = { backStack.add(RegisterScreenKey) }
-                )
+                entry<LoginScreenKey> {
+                    val viewModel: LoginViewModel = koinViewModel()
+                    val libraryViewModel: LibraryViewModel = koinViewModel()
+                    LoginScreen(
+                        viewModel = viewModel, // Pasamos el VM de Koin
+                        onLoginSuccess = {
+                            libraryViewModel.loadBooks()
+                            backStack.clear()
+                            backStack.add(LibraryScreenKey)
+                        },
+                        onRegisterClick = { backStack.add(RegisterScreenKey) }
+                    )
+                }
+
+                entry<RegisterScreenKey> {
+                    val viewModel: RegisterViewModel = koinViewModel()
+                    val libraryViewModel: LibraryViewModel = koinViewModel()
+                    RegisterScreen(
+                        viewModel = viewModel,
+                        onRegisterSuccess = {
+                            libraryViewModel.loadBooks()
+                            backStack.clear()
+                            backStack.add(LibraryScreenKey)
+                        },
+                        onNavigateToLogin = {
+                            backStack.clear()
+                            backStack.add(LoginScreenKey)
+                        }
+                    )
+                }
+
+                entry<LibraryScreenKey> {
+                    val libraryViewModel: LibraryViewModel = koinViewModel()
+                    val loginViewModel: LoginViewModel = koinViewModel()
+                    val logOut: LogOut = koinInject()
+                    LibraryScreen(
+                        viewModel = libraryViewModel,
+                        onLogout = {
+                            logOut()
+                            libraryViewModel.clearFilters()
+                            loginViewModel.clearFields()
+                            backStack.clear()
+                            backStack.add(LoginScreenKey)
+                        },
+                        onBookClick = { book -> backStack.add(BookDetailScreenKey(book = book)) }
+                    )
+                }
+
+                entry<BookDetailScreenKey> { entry ->
+                    val book = entry.book
+                    val viewModel: BookDetailViewModel = koinViewModel(
+                        key = "book_detail_${book.id}", // Clave única para cada ViewModel
+                        parameters = { parametersOf(book.id) }
+                    )
+                    BookDetailScreen(
+                        viewModel = viewModel,
+                        onBack = fun() {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
             }
-
-            entry<RegisterScreenKey> {
-                val viewModel: RegisterViewModel = koinViewModel()
-                RegisterScreen(
-                    viewModel = viewModel, // Pasamos el VM de Koin
-                    onRegisterSuccess = {
-                        backStack.clear()
-                        backStack.add(LibraryScreenKey)
-                    },
-                    onNavigateToLogin = {
-                        backStack.clear()
-                        backStack.add(LoginScreenKey)
-                    }
-                )
-            }
-
-            entry<LibraryScreenKey> { 
-                val libraryViewModel: LibraryViewModel = koinViewModel()
-                val loginViewModel: LoginViewModel = koinViewModel()
-                val logOut: LogOut = koinInject()
-                LibraryScreen(
-                    viewModel = libraryViewModel,
-                    onLogout = {
-                        logOut()
-                        libraryViewModel.clearFilters()
-                        loginViewModel.clearFields()
-                        backStack.clear()
-                        backStack.add(LoginScreenKey)
-                    },
-                    onBookClick = { id -> backStack.add(BookDetailScreenKey(bookId = id)) }
-                )
-            }
-
-            entry<BookDetailScreenKey> { entry ->
-                val id = entry.bookId
-                val viewModel: BookDetailViewModel = koinViewModel(
-                    key = "book_detail_$id", // Clave única para cada ViewModel
-                    parameters = { parametersOf(id) }
-                )
-                BookDetailScreen(
-                    viewModel = viewModel,
-                    onBack = { backStack.removeLastOrNull() }
-                )
-            }
-        }
-    )
+        )
+    }
 }

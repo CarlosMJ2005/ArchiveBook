@@ -15,16 +15,14 @@ class AuthApiService(private val client: HttpClient) {
 
     suspend fun getToken(request: LoginRequest): String {
         val response = client.post("token") {
-            contentType(ContentType.Application.Json)
+            // The server expects Basic Auth, so we send the plain-text credentials
+            // in the header and do NOT send a body.
             basicAuth(username = request.email, password = request.password)
-            setBody(request)
         }
 
         return when (response.status) {
             HttpStatusCode.OK -> {
-                // Leemos la respuesta como texto plano, no como JSON
-                val plainToken = response.bodyAsText()
-                plainToken
+                response.bodyAsText()
             }
             HttpStatusCode.Unauthorized -> throw Exception("401: Credenciales incorrectas.")
             else -> throw Exception("Error ${response.status.value}: ${response.bodyAsText()}")

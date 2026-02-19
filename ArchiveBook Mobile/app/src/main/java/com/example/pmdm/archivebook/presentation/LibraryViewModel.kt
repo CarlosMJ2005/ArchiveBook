@@ -44,6 +44,7 @@ class LibraryViewModel(
                     "Bestsellers" -> book.isBestseller
                     "Favorites"   -> book.isFavorite
                     "YetToRead"   -> book.isBookmarked
+                    "ToReturn"    -> book.isToReturn
                     else          -> true // "All"
                 }
 
@@ -126,8 +127,13 @@ class LibraryViewModel(
 
     fun toggleReturn(bookId: Int) {
         val book = allBooks.find { it.id == bookId } ?: return
+        val newStatus = !book.isToReturn
         viewModelScope.launch {
-            repository.toggleReturn(bookId, book.isToReturn).onFailure { handleFailure(it) }
+            repository.toggleReturn(bookId, book.isToReturn)
+                .onSuccess {
+                    updateBookLocal(bookId) { it.copy(isToReturn = newStatus) }
+                }
+                .onFailure { handleFailure(it) }
         }
     }
 

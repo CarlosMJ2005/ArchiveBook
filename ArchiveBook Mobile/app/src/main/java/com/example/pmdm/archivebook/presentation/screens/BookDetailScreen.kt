@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +36,10 @@ fun BookDetailScreen(
 
     val isDark = isSystemInDarkTheme()
     val contentColor = if (isDark) Color(0xFFF5E6CC) else Color(0xFF7B241C)
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.loadBook()
+    }
 
     when {
         isLoading -> {

@@ -28,6 +28,7 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
         viewModelScope.launch {
             isLoading = true
             try {
+                // The plain-text password is sent for Basic Auth
                 val result = repository.login(User(email = email, password = password))
 
                 android.util.Log.d("DEBUG_TOKEN", "Respuesta del servidor: $result")

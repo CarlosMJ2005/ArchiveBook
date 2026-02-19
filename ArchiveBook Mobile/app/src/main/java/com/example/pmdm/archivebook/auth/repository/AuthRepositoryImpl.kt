@@ -19,7 +19,7 @@ class AuthRepositoryImpl(
             val request = LoginRequest(user.email, user.password)
             val token = apiService.getToken(request)
 
-            authManager.saveToken(token)
+            authManager.saveToken(token, user.email)
             Result.success(token)
         } catch (e: Exception) {
             Result.failure(e)

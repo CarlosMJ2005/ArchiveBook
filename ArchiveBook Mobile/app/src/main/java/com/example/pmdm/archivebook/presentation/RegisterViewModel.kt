@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
-import com.example.pmdm.archivebook.utils.PasswordHasher
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
@@ -31,9 +30,7 @@ class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
 
         viewModelScope.launch {
             isLoading = true
-            // Hasheamos la contraseña antes de crear el usuario
-            val hashedPassword = PasswordHasher.hashPassword(password)
-            val user = User(email = email, password = hashedPassword)
+            val user = User(email = email, password = password)
 
             // El repositorio ahora se encarga de crear el UserDto con el rol 'USER'
             val result = repository.register(user)
