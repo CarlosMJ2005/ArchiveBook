@@ -23,6 +23,7 @@ export class Controller {
     #appView
     #library
     #usuarioActivo
+    #searchMode = 'title';
 
 
     // Instantiating classes
@@ -91,7 +92,7 @@ export class Controller {
     //book buttons
 
     async tapFavorite(button, idLibro) { //añadir funcionalidad con api
-        console.log(idLibro)
+        //console.log(idLibro)
         if (button.querySelector('img').src.endsWith('heart.png')) { // cuando se marca como fav
             try {
                 console.log(await app.addFavorite(idLibro))
@@ -198,11 +199,7 @@ export class Controller {
         app.getAllBooks()
             .then((datos) => {
                 //console.log(new Date())
-                this.#appView.eraseAllList()
-                this.#appView.eraseBestList()
-                this.#appView.eraseFavList()
-                this.#appView.eraseReadList()
-                this.#appView.eraseReturnList()
+                this.#appView.clearAllLists()
 
                 this.#library.eraseAll()
 
@@ -215,28 +212,28 @@ export class Controller {
                     
                     favorite = favs.some(favEntry => {
                         if (bookEntry.idLibro === favEntry.libro.idLibro) {
-                            console.log("Bua, israel, eres un fiera")
+                            //console.log("Bua, israel, eres un fiera")
                             return true;
                         }
                     });
                     
                     toRead = reads.some(readEntry => {
                         if (bookEntry.idLibro === readEntry.libro.idLibro) {
-                            console.log("Bua, israel, eres un fiera 2")
+                            //console.log("Bua, israel, eres un fiera 2")
                             return true;
                         }
                     });
                     toReturn = returns.some(returnEntry => {
-                        console.log("papapapapappapapapapapa " + !returnEntry.devuelto)
+                        //console.log("papapapapappapapapapapa " + !returnEntry.devuelto)
                         if (bookEntry.idLibro === returnEntry.libro.idLibro && !returnEntry.devuelto) {
-                            console.log("Bua, israel, eres un fiera 3")
+                            //console.log("Bua, israel, eres un fiera 3")
                             return true;
                         }
                     });
                     
 
                     let actualBook = new Book(bookEntry, favorite, toRead, toReturn)
-                    console.log(actualBook)
+                    //console.log(actualBook)
 
                     if (actualBook.getBestBool()){
                         this.#library.pushBestList(actualBook)
@@ -250,6 +247,7 @@ export class Controller {
                     if (actualBook.getReadBool()){
                         this.#library.pushReadList(actualBook)
                     }
+                    this.#library.pushAllList(actualBook)
                     
 
                     this.#appView.createBook(
@@ -273,6 +271,7 @@ export class Controller {
                 console.log("Get-all-books " + error.message.substring(error.message.lastIndexOf("Error")))
 
             })
+            /*
         console.log("Favorites:")
         console.log(this.#library.getFavList())
         console.log("Best Sellers:")
@@ -281,6 +280,7 @@ export class Controller {
         console.log(this.#library.getReturnList())
         console.log("To Read:")
         console.log(this.#library.getReadList())
+        */
     }
 
     //apply user data
@@ -302,4 +302,54 @@ export class Controller {
                 console.log("no hay un usuario guardado")
             })
     }
+    //Steven
+    setSearchMode(mode) {
+        this.#searchMode = mode;
+        let placeholder = "Nombre del libro...";
+        if (mode === 'author') placeholder = "Nombre del autor...";
+        else if (mode === 'publisher') placeholder = "Nombre de la editorial...";
+        else if (mode === 'category') placeholder = "Categoría...";
+
+        this.#appView.updateSearchInterface(placeholder);
+        this.#appView.openFilterPopUp(); 
+    }
+
+    executeSearch() {
+    const query = this.#appView.getSearchValue();
+    const allBooks = this.#library.getAllList();
+
+    if (!query) {
+        this.startLoad(); // restaura lista completa
+        return;
+    }
+
+    const filtered = allBooks.filter(book => {
+        let targetValue = "";
+
+        switch(this.#searchMode) {
+            case 'author': targetValue = book.getAuthor(); break;
+            case 'publisher': targetValue = book.getPublisher(); break;
+            case 'category': targetValue = book.getCategory(); break;
+            default: targetValue = book.getTitle();
+        }
+
+        return (targetValue ?? "")
+            .toString()
+            .toLowerCase()
+            .includes(query);
+    });
+
+    this.#appView.clearAllLists();
+
+    filtered.forEach(book => {
+        this.#appView.createBook(
+            book.getId(), book.getCover(), book.getTitle(), 
+            book.getAuthor(), book.getPublisher(), book.getSynopsis(),
+            book.getCategory(), book.getYear(), book.getIsbn(),
+            book.getBestBool(), book.getFavBool(), book.getReturnBool(),
+            book.getReadBool(), this
+        );
+    });
+}
+
 }

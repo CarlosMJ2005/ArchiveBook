@@ -19,7 +19,14 @@ window.onload = () => {
   if (document.getElementById("close-center-popup") != null) document.getElementById("close-center-popup").addEventListener('click', () => controller.closePopUp());
   if (document.getElementById("menuButon") != null) document.getElementById("menuButon").addEventListener('click', () => controller.openFilterPopUp());
 
-  
+  if (document.getElementById("filterTitle")) document.getElementById("filterTitle").addEventListener('click', () => controller.setSearchMode('title'));
+  if (document.getElementById("filterAuthor")) document.getElementById("filterAuthor").addEventListener('click', () => controller.setSearchMode('author'));
+  if (document.getElementById("filterPublisher")) document.getElementById("filterPublisher").addEventListener('click', () => controller.setSearchMode('publisher'));
+  if (document.getElementById("filterCategories")) document.getElementById("filterCategories").addEventListener('click', () => controller.setSearchMode('category'));
+
+
+  if (document.getElementById("search")) document.getElementById("search").addEventListener('click', () => controller.executeSearch());
+
 
 
   controller.loadUser(); 
