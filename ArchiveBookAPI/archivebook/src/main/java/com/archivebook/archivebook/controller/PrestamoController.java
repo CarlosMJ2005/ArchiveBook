@@ -68,7 +68,7 @@ public class PrestamoController {
                 .orElse(ResponseEntity.status(401).build());
     }
 
-    /*@PostMapping("/api/prestamos")
+    @PostMapping("/api/prestamos")
     public ResponseEntity<?> crearPrestamo(@RequestBody Prestamo prestamo) {
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authenticationToken.getCredentials();
@@ -100,7 +100,7 @@ public class PrestamoController {
         prestamo.setUsuario(usuarioOpt.get()); // Asignamos el usuario del token
         prestamo.setDevuelto(false);
         return ResponseEntity.ok(repository.save(prestamo));
-    }*/
+    }
     
    @PostMapping("/api/prestamos/{idLibro}")
     public ResponseEntity<?> crearPrestamo(@PathVariable Long idLibro) {
