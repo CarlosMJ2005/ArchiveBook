@@ -7,7 +7,7 @@ const path = require('path');
 const ficheroUsuario = "./usuario.json"
 let myToken
 
-const apiUrl = "http://192.168.207.83:8080/" // Israel "http://192.168.207.76:8080/" //Steven "http://192.168.207.38:8080/" //Carlos   
+const apiUrl = "http://192.168.207.76:8080/" //Steven "http://192.168.207.83:8080/" // Israel  "http://192.168.207.38:8080/" //Carlos   
 // portatil
 
 // 2.

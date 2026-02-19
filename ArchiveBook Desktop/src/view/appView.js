@@ -10,6 +10,7 @@ export class appView {
     #detailIsbn
     #detailPublisher
     #detailCategories
+    #searcherInput
 
     #baseFav
     #baseAll
@@ -20,6 +21,7 @@ export class appView {
     constructor() {
         this.#filters = document.getElementById("right-popup")
         this.#detail = document.getElementById("center-popup")
+        this.#searcherInput = document.getElementById("searcher")
 
         this.#detailCover = document.getElementById("detailCover")
         this.#detailTitle = document.getElementById("detailTittle")
@@ -302,21 +304,6 @@ export class appView {
 
 
     }
-    eraseAllList() {
-        this.#baseAll.innerHTML = ""
-    }
-    eraseBestList() {
-        this.#baseBest.innerHTML = ""
-    }
-    eraseFavList() {
-        this.#baseFav.innerHTML = ""
-    }
-    eraseReadList() {
-        this.#baseRead.innerHTML = ""
-    }
-    eraseReturnList() {
-        this.#baseReturn.innerHTML = ""
-    }
 
     openDescriptionPopUp(cover, title, author, synopsis, isbn, year, categories, publisher) {
         console.log("abro detalle")
@@ -357,5 +344,22 @@ export class appView {
         else {
             button.querySelector('img').src = './images/bookmark.png'
         }
+    }
+    //Steven
+    updateSearchInterface(placeholderText) {
+        this.#searcherInput.placeholder = placeholderText;
+        this.#searcherInput.value = "";
+    }
+
+    getSearchValue() {
+        return this.#searcherInput.value.toLowerCase().trim();
+    }
+
+    clearAllLists() {
+        this.#baseAll.innerHTML = "";
+        this.#baseFav.innerHTML = "";
+        this.#baseBest.innerHTML = "";
+        this.#baseRead.innerHTML = "";
+        this.#baseReturn.innerHTML = "";
     }
 }
