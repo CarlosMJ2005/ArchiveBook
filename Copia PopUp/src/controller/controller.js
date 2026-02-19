@@ -14,8 +14,6 @@ import { loginView } from '../view/loginView.js';
 
 import { appView } from '../view/appView.js';
 
-
-
 export class Controller {
 
     // Access to view and model classes as private fields
@@ -33,15 +31,17 @@ export class Controller {
         this.#appView = new appView();
         this.#library = new Library()
 
+
+        window.app.load().then(({ email, password, state }) => {
+            console.log('backflip');
+            this.#usuarioActivo = new User(email, password, state)
+            //console.log(this.#usuarioActivo)
+            this.startLoad();
+        });
     }
 
     // Initializing classes
     init() {
-
-    }
-
-    setUsuarioActivo(usuario) {
-         this.#usuarioActivo = usuario;   
     }
 
     // Controller methods...
@@ -91,68 +91,17 @@ export class Controller {
 
     //book buttons
 
-    async tapFavorite(button, idLibro) { //añadir funcionalidad con api
-        //console.log(idLibro)
-        if (button.querySelector('img').src.endsWith('heart.png')) { // cuando se marca como fav
-            try {
-                console.log(await app.addFavorite(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
-        else {// cuando se desmarca como fav
-            try {
-                console.log(await app.removeFavorite(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
-    }
-    async tapToReturn(button, idLibro) { //añadir funcionalidad con api
+    tapFavourite(button, idLibro) { //añadir funcionalidad con api
+        this.#appView.tapFavourite(button)
         console.log(idLibro)
-        if (button.querySelector('img').src.endsWith('notification.png')) {
-            try {
-                console.log(await app.addToReturn(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
-        else {
-            try {
-                console.log(await app.removeToReturn(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
     }
-    async tapToRead(button, idLibro) { //añadir funcionalidad con api
+    tapToReturn(button, idLibro) { //añadir funcionalidad con api
+        this.#appView.tapToReturn(button)
         console.log(idLibro)
-        if (button.querySelector('img').src.endsWith('bookmark.png')) {
-            try {
-                console.log(await app.addToRead(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
-        else {
-            try {
-                console.log(await app.removeToRead(idLibro))
-                this.startLoad()
-            } catch (error) {
-                console.log(error)
-            }
-            
-        }
+    }
+    tapToRead(button, idLibro) { //añadir funcionalidad con api
+        this.#appView.tapToRead(button)
+        console.log(idLibro)
     }
 
     //log-sign switch
@@ -181,8 +130,8 @@ export class Controller {
 
     async startLoad() {
         
-        const [favs,returns, reads, ] = await Promise.all([
-        app.getFavorites(),
+        const [favs, returns, reads] = await Promise.all([
+        app.getFavourites(),
         app.getToReturn(),
         app.getToRead()
         ]);
@@ -190,7 +139,7 @@ export class Controller {
         
         //console.log(returns)
         
-        this.loadAll(favs, returns, reads)
+        this.loadAll(favs , returns, reads)
     }
     
     loadAll(favs,returns,reads) {
@@ -199,41 +148,44 @@ export class Controller {
         app.getAllBooks()
             .then((datos) => {
                 //console.log(new Date())
-                this.#appView.clearAllLists()
-
-                this.#library.eraseAll()
-
+                this.#appView.eraseAllList()
+                this.#appView.eraseBestList()
+                this.#appView.eraseFavList()
+                this.#appView.eraseReadList()
+                this.#appView.eraseReturnList()
                 JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
                     //console.log(bookEntry)
                     
-                    let favorite = false
+                    let favourite = false
                     let toRead = false
                     let toReturn = false
                     
-                    favorite = favs.some(favEntry => {
+                    favourite = favs.some(favEntry => {
                         if (bookEntry.idLibro === favEntry.libro.idLibro) {
-                            //console.log("Bua, israel, eres un fiera")
+                            console.log("Bua, israel, eres un fiera")
                             return true;
                         }
                     });
                     
                     toRead = reads.some(readEntry => {
                         if (bookEntry.idLibro === readEntry.libro.idLibro) {
-                            //console.log("Bua, israel, eres un fiera 2")
+                            console.log("Bua, israel, eres un fiera 2")
                             return true;
                         }
                     });
                     toReturn = returns.some(returnEntry => {
-                        //console.log("papapapapappapapapapapa " + !returnEntry.devuelto)
                         if (bookEntry.idLibro === returnEntry.libro.idLibro && !returnEntry.devuelto) {
-                            //console.log("Bua, israel, eres un fiera 3")
+                            console.log("Bua, israel, eres un fiera 3")
                             return true;
                         }
                     });
                     
-
-                    let actualBook = new Book(bookEntry, favorite, toRead, toReturn)
-                    //console.log(actualBook)
+                    //sT this.#library.pushAllList(new Book(bookEntry, favourite, toRead, toReturn));
+                    //sT this.#library.pushAllList(actualBook);
+                    let actualBook = new Book(bookEntry, favourite, toRead, toReturn)
+                    this.#library.pushAllList(actualBook);
+                    
+                    console.log(actualBook)
 
                     if (actualBook.getBestBool()){
                         this.#library.pushBestList(actualBook)
@@ -247,7 +199,6 @@ export class Controller {
                     if (actualBook.getReadBool()){
                         this.#library.pushReadList(actualBook)
                     }
-                    this.#library.pushAllList(actualBook)
                     
 
                     this.#appView.createBook(
@@ -271,7 +222,6 @@ export class Controller {
                 console.log("Get-all-books " + error.message.substring(error.message.lastIndexOf("Error")))
 
             })
-            /*
         console.log("Favorites:")
         console.log(this.#library.getFavList())
         console.log("Best Sellers:")
@@ -280,7 +230,6 @@ export class Controller {
         console.log(this.#library.getReturnList())
         console.log("To Read:")
         console.log(this.#library.getReadList())
-        */
     }
 
     //apply user data
@@ -315,41 +264,29 @@ export class Controller {
     }
 
     executeSearch() {
-    const query = this.#appView.getSearchValue();
-    const allBooks = this.#library.getAllList();
+        const query = this.#appView.getSearchValue();
+        const allBooks = this.#library.getAllList();
+        
+        const filtered = allBooks.filter(book => {
+            let targetValue = "";
+            switch(this.#searchMode) {
+                case 'author': targetValue = book.getAuthor(); break;
+                case 'publisher': targetValue = book.getPublisher(); break;
+                case 'category': targetValue = book.getCategory(); break;
+                default: targetValue = book.getTitle();
+            }
+            return targetValue.toLowerCase().includes(query);
+        });
 
-    if (!query) {
-        this.startLoad(); // restaura lista completa
-        return;
+        this.#appView.clearAllLists();
+        filtered.forEach(book => {
+            this.#appView.createBook(
+                book.getId(), book.getCover(), book.getTitle(), 
+                book.getAuthor(), book.getPublisher(), book.getSynopsis(),
+                book.getCategory(), book.getYear(), book.getIsbn(),
+                book.getBestBool(), book.getFavBool(), book.getReturnBool(),
+                book.getReadBool(), this
+            );
+        });
     }
-
-    const filtered = allBooks.filter(book => {
-        let targetValue = "";
-
-        switch(this.#searchMode) {
-            case 'author': targetValue = book.getAuthor(); break;
-            case 'publisher': targetValue = book.getPublisher(); break;
-            case 'category': targetValue = book.getCategory(); break;
-            default: targetValue = book.getTitle();
-        }
-
-        return (targetValue ?? "")
-            .toString()
-            .toLowerCase()
-            .includes(query);
-    });
-
-    this.#appView.clearAllLists();
-
-    filtered.forEach(book => {
-        this.#appView.createBook(
-            book.getId(), book.getCover(), book.getTitle(), 
-            book.getAuthor(), book.getPublisher(), book.getSynopsis(),
-            book.getCategory(), book.getYear(), book.getIsbn(),
-            book.getBestBool(), book.getFavBool(), book.getReturnBool(),
-            book.getReadBool(), this
-        );
-    });
-}
-
 }

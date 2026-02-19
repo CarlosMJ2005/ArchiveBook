@@ -33,7 +33,7 @@ export class appView {
         this.#detailIsbn = document.getElementById("detailIsbn")
 
         this.#baseAll = document.getElementById("all-list")
-        this.#baseFav = document.getElementById("favorites-list")
+        this.#baseFav = document.getElementById("favourites-list")
         this.#baseBest = document.getElementById("best-sellers-list")
         this.#baseRead = document.getElementById("to-read-list")
         this.#baseReturn = document.getElementById("to-return-list")
@@ -118,7 +118,7 @@ export class appView {
 
         let favButton = document.createElement('button');
         favButton.classList.add('icon-btn');
-        favButton.addEventListener('click', () => that.tapFavorite(favButton,idGet));
+        favButton.addEventListener('click', () => that.tapFavourite(favButton,idGet));
 
         let favIcon = document.createElement('img');
         favIcon.src = "./images/heart.png"
@@ -199,7 +199,7 @@ export class appView {
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavorite(cloneFavButton,idGet));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
             cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
             cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
@@ -230,7 +230,7 @@ export class appView {
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavorite(cloneFavButton,idGet));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
             cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
             cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
@@ -261,7 +261,7 @@ export class appView {
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavorite(cloneFavButton,idGet));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
             cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
             cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
@@ -292,7 +292,7 @@ export class appView {
                 )
             );
 
-            cloneFavButton.addEventListener('click', () => that.tapFavorite(cloneFavButton,idGet));
+            cloneFavButton.addEventListener('click', () => that.tapFavourite(cloneFavButton,idGet));
             cloneReadButton.addEventListener('click', () => that.tapToRead(cloneReadButton,idGet));
             cloneReturnButton.addEventListener('click', () => that.tapToReturn(cloneReturnButton,idGet));
 
@@ -303,6 +303,21 @@ export class appView {
         this.#baseAll.appendChild(div);
 
 
+    }
+    eraseAllList() {
+        this.#baseAll.innerHTML = ""
+    }
+    eraseBestList() {
+        this.#baseBest.innerHTML = ""
+    }
+    eraseFavList() {
+        this.#baseFav.innerHTML = ""
+    }
+    eraseReadList() {
+        this.#baseRead.innerHTML = ""
+    }
+    eraseReturnList() {
+        this.#baseReturn.innerHTML = ""
     }
 
     openDescriptionPopUp(cover, title, author, synopsis, isbn, year, categories, publisher) {
@@ -319,8 +334,8 @@ export class appView {
         this.#detailYear.textContent = year
     }
 
-    tapFavorite(button, bool) {
-        if (!bool) {
+    tapFavourite(button) {
+        if (button.querySelector('img').src.endsWith('heart.png')) {
             button.querySelector('img').src = './images/heart-bold.png';
         }
         else {
@@ -328,8 +343,8 @@ export class appView {
         }
     }
 
-    tapToReturn(button, bool) {
-        if (!bool) {
+    tapToReturn(button) {
+        if (button.querySelector('img').src.endsWith('notification.png')) {
             button.querySelector('img').src = './images/notification-bold.png';
         }
         else {
@@ -337,8 +352,8 @@ export class appView {
         }
     }
     
-    tapToRead(button, bool) {
-        if (!bool) {
+    tapToRead(button) {
+        if (button.querySelector('img').src.endsWith('bookmark.png')) {
             button.querySelector('img').src = './images/bookmark-bold.png';
         }
         else {

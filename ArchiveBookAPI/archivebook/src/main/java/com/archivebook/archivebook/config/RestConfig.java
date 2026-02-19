@@ -44,7 +44,7 @@ public class RestConfig {
                 // Permitir acceso público para crear un nuevo usuario
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                 // Otras rutas configuradas
-                .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
+               // .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/usuarios/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
         )

@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld('app', { //app se puede llamar como quieras
 
     load: () => {
         return new Promise(resolve => {
-            ipcRenderer.once('load', (event, email, password, state) => resolve({ email, password, state }));
+            ipcRenderer.on('load', (event, email, password, state) => resolve({ email, password, state }));
         });
     }
 });

@@ -7,7 +7,7 @@ const path = require('path');
 const ficheroUsuario = "./usuario.json"
 let myToken
 
-const apiUrl = "http://192.168.207.83:8080/" // Israel "http://192.168.207.76:8080/" //Steven "http://192.168.207.38:8080/" //Carlos   
+const apiUrl = "http://192.168.207.76:8080/" //Steven "http://192.168.207.83:8080/" // Israel  "http://192.168.207.38:8080/" //Carlos   
 // portatil
 
 // 2.
@@ -109,7 +109,7 @@ app.on('ready', () => {
     return data;
   } catch (error) {
     console.error('Error en get-books:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -138,7 +138,7 @@ app.on('ready', () => {
     return data;
   } catch (error) {
     console.error('Error en get-favorite:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -166,7 +166,7 @@ ipcMain.handle('get-toRead', async () => {
     return data;
   } catch (error) {
     console.error('Error en get-toRead:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -196,7 +196,7 @@ ipcMain.handle('get-toReturn', async () => {
     return data;
   } catch (error) {
     console.error('Error en get-toReturn:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -227,7 +227,7 @@ ipcMain.handle('add-favorite', async (event, id) => {
     return "marked as favorite complete";
   } catch (error) {
     console.error('Error en add-favorite:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -255,7 +255,7 @@ ipcMain.handle('add-toRead', async (event, id) => {
     return data;
   } catch (error) {
     console.error('Error en add-toRead:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -264,7 +264,7 @@ ipcMain.handle('add-toRead', async (event, id) => {
 
 ipcMain.handle('add-toReturn', async (event, id) => {
   try {
-    const url = apiUrl +"api/prestamos";
+    const url = apiUrl +"api/prestamos/" + id;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -283,7 +283,7 @@ ipcMain.handle('add-toReturn', async (event, id) => {
     return data;
   } catch (error) {
     console.error('Error en add-toReturn:', error);
-    openLog()
+    appwindow.close();
     throw error;
   }
 });
@@ -311,8 +311,62 @@ ipcMain.handle('remove-favorite', async (event, id) => {
     }
     return "unmarked as favorite complete";
   } catch (error) {
-    console.error('Error en add-favorite:', error);
-    openLog()
+    console.error('Error en remove-favorite:', error);
+    appwindow.close();
+    throw error;
+  }
+});
+
+//---------------------------------------------------REMOVE TO READ---------------------------------------------------//
+
+ipcMain.handle('remove-toRead', async (event, id) => {
+  try {
+    const url = apiUrl +"api/porLeer/" + id;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return "unmarked as toRead complete";
+  } catch (error) {
+    console.error('Error en remove-toRead:', error);
+    appwindow.close();
+    throw error;
+  }
+});
+
+
+//---------------------------------------------------REMOVE TO RETURN---------------------------------------------------//
+
+ipcMain.handle('remove-toReturn', async (event, id) => {
+  try {
+    const url = apiUrl +"api/prestamos/devolver/" + id;
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${myToken}`
+      }
+    });
+    console.log("return")
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.text();
+    return data;
+  } catch (error) {
+    console.error('Error en remove-toReturn:', error);
+    appwindow.close();
     throw error;
   }
 });
@@ -345,7 +399,9 @@ ipcMain.handle('remove-favorite', async (event, id) => {
     console.log("Tocken recibido por el usuario al conectarse:" +myToken)
     saveUser(email, password, state, token);
     openApp();
+    console.log("inicia")
     appwindow.webContents.send('load', email, password, state)
+    console.log("acaba")
     return "Usuario iniciado con Éxito"
 
 
