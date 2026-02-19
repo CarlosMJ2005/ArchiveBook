@@ -36,7 +36,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                     LoginScreen(
                         viewModel = viewModel, // Pasamos el VM de Koin
                         onLoginSuccess = {
-                            libraryViewModel.loadBooks()
+                            libraryViewModel.fetchAllBooks()
                             backStack.clear()
                             backStack.add(LibraryScreenKey)
                         },
@@ -50,7 +50,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                     RegisterScreen(
                         viewModel = viewModel,
                         onRegisterSuccess = {
-                            libraryViewModel.loadBooks()
+                            libraryViewModel.fetchAllBooks()
                             backStack.clear()
                             backStack.add(LibraryScreenKey)
                         },

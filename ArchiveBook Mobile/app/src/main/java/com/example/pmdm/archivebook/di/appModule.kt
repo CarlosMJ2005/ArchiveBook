@@ -22,16 +22,16 @@ val appModule = module {
 
     // 1. Auth & HTTP
     single { AuthManager(androidContext()) }
-    single { HttpClientProvider(get()) }
+    single { HttpClientProvider(authManager = get()) }
     single<HttpClient> { get<HttpClientProvider>().get() }
 
     // 2. Servicios de API
     single { AuthApiService(get()) }
-    single { LibraryApiService(get(), get()) }
+    single { LibraryApiService(client = get(), authManager = get()) }
 
     // 3. Repositorios
     single<AuthRepository> { AuthRepositoryImpl(apiService = get(), authManager = get()) }
-    single<LibraryRepository> { LibraryRepositoryImpl(get(), get()) }
+    single<LibraryRepository> { LibraryRepositoryImpl(apiService = get(), authManager = get()) }
 
     // 4. Casos de Uso
     single { LogOut(authRepository = get(), libraryRepository = get(), httpClientProvider = get()) }
@@ -41,6 +41,11 @@ val appModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::LibraryViewModel)
 
-    // ViewModel with parameters - use 'it' or 'params' for the ParametersHolder
-    viewModel { params -> BookDetailViewModel(bookId = params.get(), libraryRepository = get()) }
+    // ViewModel with parameters
+    viewModel { params ->
+        BookDetailViewModel(
+            bookId = params.get<Int>(), // Especificamos <Int> para que no haya dudas
+            libraryRepository = get()    // get() busca el repositorio automáticamente
+        )
+    }
 }

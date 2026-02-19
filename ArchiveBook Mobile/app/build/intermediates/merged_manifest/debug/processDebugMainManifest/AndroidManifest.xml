@@ -17,7 +17,7 @@
     <uses-permission android:name="com.example.pmdm.archivebook.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
-        android:name="com.example.pmdm.archivebook.MyApplication"
+        android:name="com.example.pmdm.archivebook.ArchiveBookApp"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -34,7 +34,6 @@
         <activity
             android:name="com.example.pmdm.archivebook.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ArchiveBook" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

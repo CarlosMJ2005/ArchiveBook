@@ -19,13 +19,11 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import kotlin.text.isNullOrBlank
 
 class HttpClientProvider(private val authManager: AuthManager) {
 
     private var client: HttpClient? = null
 
-    // Make create public to allow for re-creation of the client
     fun create(): HttpClient {
         return HttpClient(Android) {
             install(ContentNegotiation) {
@@ -44,20 +42,21 @@ class HttpClientProvider(private val authManager: AuthManager) {
             }
             install(Auth) {
                 bearer {
-                    loadTokens {                        
+                    loadTokens {
                         val token = authManager.getToken()
                         if (!token.isNullOrBlank()) {
-                            BearerTokens(token, "") // The second parameter is a refresh token, which we're not using.
+                            BearerTokens(token, "")
                         } else {
                             null
                         }
                     }
+                    // Solo devuelve TRUE para las rutas que NO requieren token
                     sendWithoutRequest { request ->
-                        val urlString = request.url.buildString()
-                        // Do not send the Bearer token for login or user creation requests.
-                        val isTokenRequest = urlString.endsWith("/token")
-                        val isUserCreationRequest = urlString.contains("/usuarios") && request.method == HttpMethod.Post
-                        isTokenRequest || isUserCreationRequest
+                        val path = request.url.buildString()
+                        val isLogin = path.endsWith("/api/login")
+                        val isRegister = path.endsWith("/api/usuarios") && request.method == HttpMethod.Post
+
+                        isLogin || isRegister
                     }
                 }
             }

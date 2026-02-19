@@ -50,7 +50,8 @@ fun BookDto.toDomain(): Book {
         isBestseller = this.isBestseller,
         isFavorite = this.isFavorite,
         isBookmarked = this.isBookmarked,
-        isToReturn = this.isToReturn
+        isToReturn = this.isToReturn,
+        isLoaned = this.isLoaned // Pass the isLoaned value
     )
 }
 
@@ -69,6 +70,7 @@ fun Book.toDto(): BookDto {
         isBestseller = this.isBestseller,
         isFavorite = this.isFavorite,
         isBookmarked = this.isBookmarked,
-        isToReturn = this.isToReturn
+        isToReturn = this.isToReturn,
+        isLoaned = this.isLoaned
     )
 }
