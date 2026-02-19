@@ -3,6 +3,8 @@ package com.archivebook.archivebook.controller;
 import com.archivebook.archivebook.dao.LibroDAO;
 import com.archivebook.archivebook.entities.CategoriaLibro;
 import com.archivebook.archivebook.entities.Libro;
+import com.archivebook.archivebook.repository.AutorRepository;
+import com.archivebook.archivebook.repository.EditorialRepository;
 import com.archivebook.archivebook.repository.LibroRepository;
 import com.archivebook.archivebook.service.FileSystemStorageService;
 import java.nio.file.Path;
@@ -25,12 +27,18 @@ public class LibroController {
     private LibroRepository repository;
     private final LibroDAO libroDAO;
     private final FileSystemStorageService storageService;
+    private AutorRepository autorRepository;
+    private EditorialRepository editorialRepository;
 
     public LibroController(LibroRepository repository, LibroDAO libroDAO,
-            FileSystemStorageService storageService) {
+            FileSystemStorageService storageService,
+            AutorRepository autorRepository,
+            EditorialRepository editorialRepository) {
         this.repository = repository;
         this.libroDAO = libroDAO;
         this.storageService = storageService;
+        this.autorRepository = autorRepository;
+        this.editorialRepository = editorialRepository;
     }
 
     @GetMapping("/api/libros")
@@ -136,6 +144,28 @@ public class LibroController {
             // Capturamos el error que detiene la compilación
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PutMapping("/api/libros/{idLibro}/autor/{idAutor}")
+    public ResponseEntity<?> asignarAutor(@PathVariable Long idLibro, @PathVariable Long idAutor) {
+        return repository.findById(idLibro).map(libro -> {
+            return autorRepository.findById(idAutor).map(autor -> {
+                libro.setAutor(autor);
+                repository.save(libro);
+                return ResponseEntity.ok("Autor '" + autor.getNombre() + "' asociado al libro '" + libro.getTitulo() + "'");
+            }).orElse(ResponseEntity.status(404).body("Autor no encontrado con ID: " + idAutor));
+        }).orElse(ResponseEntity.status(404).body("Libro no encontrado con ID: " + idLibro));
+    }
+
+    @PutMapping("/api/libros/{idLibro}/editorial/{idEditorial}")
+    public ResponseEntity<?> asignarEditorial(@PathVariable Long idLibro, @PathVariable Long idEditorial) {
+        return repository.findById(idLibro).map(libro -> {
+            return editorialRepository.findById(idEditorial).map(editorial -> {
+                libro.setEditorial(editorial);
+                repository.save(libro);
+                return ResponseEntity.ok("Editorial '" + editorial.getNombre() + "' asociada al libro '" + libro.getTitulo() + "'");
+            }).orElse(ResponseEntity.status(404).body("Editorial no encontrada con ID: " + idEditorial));
+        }).orElse(ResponseEntity.status(404).body("Libro no encontrado con ID: " + idLibro));
     }
 
     @GetMapping("/api/libros/buscar/titulo/{titulo}")

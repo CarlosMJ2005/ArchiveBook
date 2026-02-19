@@ -89,12 +89,12 @@ public class PrestamoController {
         }
 
         Libro libro = libroOpt.get();
-        if (libro.isPrestado()) {
+        /*if (libro.isPrestado()) {
             return ResponseEntity.badRequest().body("El libro '" + libro.getTitulo() + "' ya está prestado.");
-        }
+        }*/
 
         // Configuración automática del préstamo
-        libro.setPrestado(true);
+        //libro.setPrestado(true);
         libroRepository.save(libro);
 
         prestamo.setUsuario(usuarioOpt.get()); // Asignamos el usuario del token
@@ -123,12 +123,12 @@ public class PrestamoController {
         Libro libro = libroOpt.get();
 
         // 3. Validar disponibilidad
-        if (libro.isPrestado()) {
+        /*if (libro.isPrestado()) {
             return ResponseEntity.badRequest().body("El libro '" + libro.getTitulo() + "' ya está prestado.");
-        }
+        }*/
 
         // 4. Actualizar estado del libro
-        libro.setPrestado(true);
+        //libro.setPrestado(true);
         libroRepository.save(libro);
 
         // 5. Crear y configurar el objeto Prestamo desde cero
