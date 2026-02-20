@@ -7,7 +7,7 @@ const path = require('path');
 const ficheroUsuario = "./usuario.json"
 let myToken
 
-const apiUrl = "http://192.168.1.15:8080/"  // portatil "http://192.168.207.76:8080/" //Steven "http://192.168.207.83:8080/" // Israel  "http://192.168.207.38:8080/" //Carlos  
+const apiUrl = "http://192.168.207.76:8080/" //Steven "http://192.168.207.12:8080/"  // portatil    "http://192.168.207.83:8080/" // Israel  "http://192.168.207.38:8080/" //Carlos  
 
 // 2.
 let logwindow;
@@ -206,27 +206,27 @@ ipcMain.handle('get-toReturn', async () => {
 
 ipcMain.handle('get-image', async (event, id) => {
   try {
-    let url = apiUrl +"api/libros/" + id +"/portada";
+    let url = apiUrl + "api/libros/" + id + "/portada";
 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Content-Type': 'image/jpeg',
         'Authorization': `Bearer ${myToken}`
       }
-    })
-    console.log("image getter")
-    console.log(response)
+    });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    let blob = await response.blob();
-    let imgURL = URL.createObjectURL(blob);
-    return imgURL
+
+    const contentType = response.headers.get("content-type");
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    return `data:${contentType};base64,${buffer.toString("base64")}`;
 
   } catch (error) {
-    console.error('Error en log-in:', error);
+    console.error("Error get-image:", error);
     throw error;
   }
 });

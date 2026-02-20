@@ -81,7 +81,7 @@
             transition: 0.2s ease;
             font-family: serif;
         }
-        #errorLabel{
+        .errorLabel{
             color: red;
             font-family: serif;
         }
@@ -112,7 +112,7 @@
                         <input type="checkbox" id="state"> Remember Me
                     </p>
                 </div>
-                <label id="error-label-login" class="d-none"></label>
+                <label id="error-label-login" class="d-none errorLabel"></label>
                 <div class="d-grid mb-3">
                     <button id="login" type="button" class="btn btn-beige">
                         Log in
@@ -161,6 +161,7 @@
                 </div>
 
                 </br>
+                <label id="error-label-signin" class="d-none errorLabel"></label>
 
                 <div class="d-grid mb-3">
                     <button id="signin" type="button" class="btn btn-beige">

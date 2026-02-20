@@ -13,6 +13,7 @@ import { Library } from '../model/library.js';
 import { loginView } from '../view/loginView.js';
 
 import { appView } from '../view/appView.js';
+//import { app } from 'electron';
 
 
 
@@ -59,7 +60,7 @@ export class Controller {
             })
             .catch((error) => {
                 console.log(error.message.substring(error.message.lastIndexOf("Error")))
-                this.#loginView.showError("Fallo en el usuario o contraseña")
+                this.#loginView.showErrorLog("Username or password error")
             })
     }
     async signin() {
@@ -69,8 +70,7 @@ export class Controller {
         const confirmation = this.#loginView.getConfirmationSign()
 
         if (password != confirmation) {
-            this.#loginView.showError()
-            this.#loginView.showError()
+            this.#loginView.showErrorSign("Passwords don't match")
         }
         else {
             app.addUser(email, password)
@@ -83,6 +83,7 @@ export class Controller {
                 })
                 .catch((error) => {
                     console.log(error.message.substring(error.message.lastIndexOf("Error")))
+                    this.#loginView.showErrorSign("That user already exists, try to log in")
                 })
         }
 
@@ -193,110 +194,94 @@ export class Controller {
         this.loadAll(favs, returns, reads)
     }
     
-    loadAll(favs,returns,reads) {
-        //console.log(new Date())
+    async loadAll(favs, returns, reads) {
 
-        app.getAllBooks()
-            .then((datos) => {
-                //console.log(new Date())
-                this.#appView.clearAllLists()
+    try {
 
-                this.#library.eraseAll()
+        const datos = await app.getAllBooks()
 
-                JSON.parse(JSON.stringify(datos)).forEach(bookEntry => {
-                    //console.log(bookEntry)
-                    
-                    let favorite = false
-                    let toRead = false
-                    let toReturn = false
-                    let cover = ""
-                    let actualBook
-                    
-                    favorite = favs.some(favEntry => {
-                        if (bookEntry.idLibro === favEntry.libro.idLibro) {
-                            //console.log("Bua, israel, eres un fiera")
-                            return true;
-                        }
-                    });
-                    
-                    toRead = reads.some(readEntry => {
-                        if (bookEntry.idLibro === readEntry.libro.idLibro) {
-                            //console.log("Bua, israel, eres un fiera 2")
-                            return true;
-                        }
-                    });
-                    toReturn = returns.some(returnEntry => {
-                        //console.log("papapapapappapapapapapa " + !returnEntry.devuelto)
-                        if (bookEntry.idLibro === returnEntry.libro.idLibro && !returnEntry.devuelto) {
-                            //console.log("Bua, israel, eres un fiera 3")
-                            return true;
-                        }
-                    });
+        this.#appView.clearAllLists()
+        this.#library.eraseAll()
 
-                    app.getCover(bookEntry.idLibro)
-                    .then((image) => {
-                        cover = image
-                    })
-                    .catch((error) => {
-                        console.log("Get-image " + error.message.substring(error.message.lastIndexOf("Error")))
-                    })
-                    
-                    if(cover != ""){
-                        actualBook = new Book(bookEntry, favorite, toRead, toReturn, cover)
-                    }
-                    else{
-                        actualBook = new Book(bookEntry, favorite, toRead, toReturn)
-                    }
-                    
-                    //console.log(actualBook)
+        for (const bookEntry of datos) {
 
-                    if (actualBook.getBestBool()){
-                        this.#library.pushBestList(actualBook)
-                    }
-                    if (actualBook.getReturnBool()){
-                        this.#library.pushReturnList(actualBook)
-                    }
-                    if (actualBook.getFavBool()){
-                        this.#library.pushFavList(actualBook)
-                    }
-                    if (actualBook.getReadBool()){
-                        this.#library.pushReadList(actualBook)
-                    }
-                    this.#library.pushAllList(actualBook)
-                    
+            let favorite = favs.some(f => 
+                bookEntry.idLibro === f.libro.idLibro
+            )
 
-                    this.#appView.createBook(
-                        actualBook.getId(),
-                        actualBook.getCover(),
-                        actualBook.getTitle(),
-                        actualBook.getAuthor(),
-                        actualBook.getPublisher(), 
-                        actualBook.getSynopsis(),
-                        actualBook.getCategory(),
-                        actualBook.getYear(),
-                        actualBook.getIsbn(),
-                        actualBook.getBestBool(),
-                        actualBook.getFavBool(),
-                        actualBook.getReturnBool(),
-                        actualBook.getReadBool(),
-                        this)
-                });
-            })
-            .catch((error) => {
-                console.log("Get-all-books " + error.message.substring(error.message.lastIndexOf("Error")))
+            let toRead = reads.some(r => 
+                bookEntry.idLibro === r.libro.idLibro
+            )
 
-            })
-            /*
-        console.log("Favorites:")
-        console.log(this.#library.getFavList())
-        console.log("Best Sellers:")
-        console.log(this.#library.getBestList())
-        console.log("To Retruns:")
-        console.log(this.#library.getReturnList())
-        console.log("To Read:")
-        console.log(this.#library.getReadList())
-        */
+            let toReturn = returns.some(r => 
+                bookEntry.idLibro === r.libro.idLibro && !r.devuelto
+            )
+
+            let cover = null
+
+            let actualBook
+
+            try {
+                cover = await app.getCover(bookEntry.idLibro)
+            } catch (error) {
+                console.log("Sin portada para libro " + bookEntry.idLibro)
+            }
+
+            if (cover) {
+                actualBook = new Book(
+                    bookEntry,
+                    favorite,
+                    toRead,
+                    toReturn,
+                    cover
+                )
+            } else {
+                actualBook = new Book(
+                    bookEntry,
+                    favorite,
+                    toRead,
+                    toReturn
+                )
+            }
+
+
+
+            if (actualBook.getBestBool())
+                this.#library.pushBestList(actualBook)
+
+            if (actualBook.getReturnBool())
+                this.#library.pushReturnList(actualBook)
+
+            if (actualBook.getFavBool())
+                this.#library.pushFavList(actualBook)
+
+            if (actualBook.getReadBool())
+                this.#library.pushReadList(actualBook)
+
+            this.#library.pushAllList(actualBook)
+
+            this.#appView.createBook(
+                actualBook.getId(),
+                actualBook.getCover(),
+                actualBook.getTitle(),
+                actualBook.getAuthor(),
+                actualBook.getPublisher(),
+                actualBook.getSynopsis(),
+                actualBook.getCategory(),
+                actualBook.getYear(),
+                actualBook.getIsbn(),
+                actualBook.getBestBool(),
+                actualBook.getFavBool(),
+                actualBook.getReturnBool(),
+                actualBook.getReadBool(),
+                this
+            )
+        }
+
+    } catch (error) {
+        console.log("Get-all-books " + error.message)
     }
+}
 
     //apply user data
 

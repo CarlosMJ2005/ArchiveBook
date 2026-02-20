@@ -8,6 +8,7 @@ export class loginView {
     #structureSign
     #stateCheckbox
     #errorLabelLogin
+    #errorLabelSignin
 
     constructor() {
         this.#emailLog = document.getElementById("email-log")
@@ -23,13 +24,19 @@ export class loginView {
         this.#stateCheckbox = document.getElementById('state')
 
         this.#errorLabelLogin = document.getElementById('error-label-login')
+        this.#errorLabelSignin = document.getElementById('error-label-signin')
     }
 
     init() {
     }
-    showError(error){
+    showErrorLog(error){
         this.#errorLabelLogin.innerText = error
         this.#errorLabelLogin.classList.remove("d-none")
+        this.reset()
+    }
+    showErrorSign(error){
+        this.#errorLabelSignin.innerText = error
+        this.#errorLabelSignin.classList.remove("d-none")
         this.reset()
     }
     reset(trueReset){
