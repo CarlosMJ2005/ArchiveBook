@@ -23,52 +23,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.Apartment
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Mode
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.NotificationsNone
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -142,20 +99,17 @@ fun LibraryScreen(
 
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     item {
-                        // --- ALL LIBRARY (Reset total) ---
                         NavigationDrawerItem(
                             label = { Text("All Library") },
                             selected = viewModel.selectedCategory == "All",
                             icon = { Icon(Icons.Default.Menu, null) },
                             onClick = {
-                                viewModel.resetToAll() // Limpia búsqueda y vuelve a 'All'
+                                viewModel.resetToAll()
                                 coroutineScope.launch { drawerState.close() }
                             },
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
-
-                        // --- BESTSELLERS ---
                         NavigationDrawerItem(
                             label = { Text("Bestsellers") },
                             selected = viewModel.selectedCategory == "Bestsellers",
@@ -167,8 +121,6 @@ fun LibraryScreen(
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
-
-                        // --- FAVORITES ---
                         NavigationDrawerItem(
                             label = { Text("Favorites") },
                             selected = viewModel.selectedCategory == "Favorites",
@@ -180,8 +132,6 @@ fun LibraryScreen(
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
-
-                        // --- YET TO READ ---
                         NavigationDrawerItem(
                             label = { Text("Yet to read") },
                             selected = viewModel.selectedCategory == "YetToRead",
@@ -193,8 +143,6 @@ fun LibraryScreen(
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
-
-                        // --- TO RETURN ---
                         NavigationDrawerItem(
                             label = { Text("To Return") },
                             selected = viewModel.selectedCategory == "ToReturn",
@@ -206,8 +154,6 @@ fun LibraryScreen(
                             colors = drawerItemColors,
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
-
-                        // --- LOG OUT ---
                         NavigationDrawerItem(
                             label = { Text("Log Out") },
                             selected = false,
@@ -323,7 +269,6 @@ fun LibraryScreen(
                                 expanded = showGenreMenu,
                                 onDismissRequest = {
                                     showGenreMenu = false
-                                    // Si no seleccionó nada, volvemos a Title para no bloquear el teclado
                                     if (viewModel.selectedGenres.isEmpty()) viewModel.selectedFilter = "Title"
                                 },
                                 containerColor = if (isDarkTheme) DarkPrimary else LightPrimary
@@ -353,8 +298,6 @@ fun LibraryScreen(
                 }
             }
         ) { innerPadding ->
-
-            // --- CONTENIDO PRINCIPAL ---
             if (isLoading) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = contentColor)
@@ -379,7 +322,8 @@ fun LibraryScreen(
                             modifier = Modifier.clickable { onBookClick(book) },
                             onFavoriteClick = { viewModel.toggleFavorite(book.id) },
                             onBookmarkClick = { viewModel.toggleBookmark(book.id) },
-                            onReturnClick = { viewModel.toggleReturn(book.id) }
+                            onBorrowClick = { viewModel.borrowBook(book.id) },
+                            onReturnClick = { viewModel.returnBook(book.id) }
                         )
                     }
                 }
@@ -394,6 +338,7 @@ fun BookCard(
     modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
     onBookmarkClick: () -> Unit,
+    onBorrowClick: () -> Unit,
     onReturnClick: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
@@ -411,55 +356,48 @@ fun BookCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth().height(180.dp)) {
-            // Portada (Placeholder)
             Box(
                 modifier = Modifier
                     .weight(0.35f)
                     .fillMaxHeight()
                     .background(Color(0xFFD32F2F))
-            ) {
-                // Aquí podrías poner una AsyncImage de Coil si tu API devuelve URLs
-            }
+            ) {}
 
             Column(
                 modifier = Modifier
                     .weight(0.65f)
                     .fillMaxHeight()
-                    .padding(12.dp)
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = book.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = titleColor,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = book.author,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = authorColor,
-                    fontStyle = FontStyle.Italic
-                )
-                Text(
-                    text = book.publisher,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = titleColor
-                )
+                Column {
+                    Text(
+                        text = book.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = titleColor,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(book.author, style = MaterialTheme.typography.bodyMedium, color = authorColor, fontStyle = FontStyle.Italic)
+                    Text(book.publisher, style = MaterialTheme.typography.labelSmall, color = titleColor)
+                }
 
-                Spacer(modifier = Modifier.weight(1f))
 
-                // Fila de acciones
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
+                        // Si es bestseller usa la estrella rellena, si no, la estrella de borde (outlined)
                         imageVector = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
                         contentDescription = "Bestseller",
-                        tint = if (book.isBestseller) Color(0xFFFFB700) else titleColor
+                        // Si es bestseller es amarilla, si no, usa el color actual del contenido (texto)
+                        tint = if (book.isBestseller) Color.Yellow else titleColor,
+                        modifier = Modifier.padding(end = 4.dp)
                     )
+
                     IconButton(onClick = onFavoriteClick) {
                         Icon(
                             imageVector = if (book.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -467,18 +405,33 @@ fun BookCard(
                             tint = if (book.isFavorite) Color(0xFFFF0000) else titleColor
                         )
                     }
+
                     IconButton(onClick = onBookmarkClick) {
                         Icon(
                             imageVector = if (book.isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                            contentDescription = "Bookmark",
+                            contentDescription = "Read later",
                             tint = if (book.isBookmarked) Color(0xFF008CFF) else titleColor
                         )
                     }
-                    IconButton(onClick = onReturnClick) {
+
+                    IconButton(
+                        onClick = {
+                            if (book.isToReturn) {
+                                onReturnClick()
+                            } else {
+                                onBorrowClick()
+                            }
+                        },
+                        enabled = true
+                    ) {
                         Icon(
                             imageVector = if (book.isToReturn) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
-                            contentDescription = "Return",
-                            tint = if (book.isToReturn) Color(0xFF00D400) else titleColor
+                            contentDescription = "Return/Borrow book",
+                            tint = when {
+                                book.isToReturn -> Color(0xFF00D400)
+                                !book.isLoaned -> titleColor
+                                else -> Color.Gray.copy(alpha = 0.5f)
+                            }
                         )
                     }
                 }

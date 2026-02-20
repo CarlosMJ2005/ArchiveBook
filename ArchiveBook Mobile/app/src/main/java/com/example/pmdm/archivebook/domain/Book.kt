@@ -13,5 +13,6 @@ data class Book(
     val isBestseller: Boolean = false,
     val isFavorite: Boolean = false,
     val isBookmarked: Boolean = false,
-    val isToReturn: Boolean = false
+    val isToReturn: Boolean = false,
+    val isLoaned: Boolean = false
 )

@@ -9,208 +9,206 @@
 9        android:targetSdkVersion="36" />
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:5:5-67
-11-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:5:22-64
+11-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:4:5-67
+11-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:4:22-64
 12
 13    <permission
-13-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:22:5-24:47
+13-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:22:5-24:47
 14        android:name="com.example.pmdm.archivebook.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-14-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:23:9-81
+14-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:23:9-81
 15        android:protectionLevel="signature" />
-15-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:24:9-44
+15-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:24:9-44
 16
 17    <uses-permission android:name="com.example.pmdm.archivebook.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-17-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:26:5-97
-17-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:26:22-94
+17-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:26:5-97
+17-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:26:22-94
 18
 19    <application
-19-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:7:5-29:19
-20        android:name="com.example.pmdm.archivebook.MyApplication"
-20-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:8:9-38
+19-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:6:5-27:19
+20        android:name="com.example.pmdm.archivebook.ArchiveBookApp"
+20-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:7:9-39
 21        android:allowBackup="true"
-21-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:9:9-35
+21-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:8:9-35
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-22-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\aa24247c4d162c37b382a1b3884ebf11\workspace\transformed\core-1.17.0\AndroidManifest.xml:28:18-86
+22-->[androidx.core:core:1.17.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\7f9e5df548141dfb7cbefb34e0926f5d\workspace\transformed\core-1.17.0\AndroidManifest.xml:28:18-86
 23        android:dataExtractionRules="@xml/data_extraction_rules"
-23-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:10:9-65
+23-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:9:9-65
 24        android:debuggable="true"
 25        android:extractNativeLibs="false"
 26        android:fullBackupContent="@xml/backup_rules"
-26-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:11:9-54
+26-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:10:9-54
 27        android:icon="@mipmap/ic_launcher"
-27-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:12:9-43
+27-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:11:9-43
 28        android:label="@string/app_name"
-28-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:13:9-41
+28-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:12:9-41
 29        android:roundIcon="@mipmap/ic_launcher_round"
-29-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:14:9-54
+29-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:13:9-54
 30        android:supportsRtl="true"
-30-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:15:9-35
+30-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:14:9-35
 31        android:testOnly="true"
 32        android:theme="@style/Theme.ArchiveBook"
-32-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:16:9-49
+32-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:15:9-49
 33        android:usesCleartextTraffic="true" >
-33-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:17:9-44
+33-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:16:9-44
 34        <activity
-34-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:18:9-28:20
+34-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:17:9-26:20
 35            android:name="com.example.pmdm.archivebook.MainActivity"
-35-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:19:13-41
+35-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:18:13-41
 36            android:exported="true"
-36-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:20:13-36
-37            android:label="@string/app_name"
-37-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:21:13-45
-38            android:theme="@style/Theme.ArchiveBook" >
-38-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:22:13-53
-39            <intent-filter>
-39-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:23:13-27:29
-40                <action android:name="android.intent.action.MAIN" />
-40-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:24:17-69
-40-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:24:25-66
-41
-42                <category android:name="android.intent.category.LAUNCHER" />
-42-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:26:17-77
-42-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:26:27-74
-43            </intent-filter>
-44        </activity>
-45        <activity
-45-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\e84c9cdf8480bda4fae226165872c3a8\workspace\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
-46            android:name="androidx.compose.ui.tooling.PreviewActivity"
-46-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\e84c9cdf8480bda4fae226165872c3a8\workspace\transformed\ui-tooling\AndroidManifest.xml:24:13-71
-47            android:exported="true" />
-47-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\e84c9cdf8480bda4fae226165872c3a8\workspace\transformed\ui-tooling\AndroidManifest.xml:25:13-36
-48        <activity
-48-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:23:9-27:75
-49            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
-49-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:24:13-93
-50            android:excludeFromRecents="true"
-50-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:25:13-46
-51            android:exported="false"
-51-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:26:13-37
-52            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-52-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:27:13-72
-53        <!--
-54            Service handling Google Sign-In user revocation. For apps that do not integrate with
-55            Google Sign-In, this service will never be started.
-56        -->
-57        <service
-57-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:33:9-37:51
-58            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
-58-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:34:13-89
-59            android:exported="true"
-59-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:35:13-36
-60            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
-60-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:36:13-107
-61            android:visibleToInstantApps="true" />
-61-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\2c89cae0267a700aa530f88e08024696\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:37:13-48
-62
-63        <activity
-63-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\819e1ea9ac57f8ee0b7c1ee4b17fea70\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
-64            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-64-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\819e1ea9ac57f8ee0b7c1ee4b17fea70\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
-65            android:exported="false"
-65-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\819e1ea9ac57f8ee0b7c1ee4b17fea70\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
-66            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-66-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\819e1ea9ac57f8ee0b7c1ee4b17fea70\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
-67
-68        <meta-data
-68-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\583d8d7b47fbebf14f0d6c486271fe40\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:21:9-23:69
-69            android:name="com.google.android.gms.version"
-69-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\583d8d7b47fbebf14f0d6c486271fe40\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:22:13-58
-70            android:value="@integer/google_play_services_version" />
-70-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\583d8d7b47fbebf14f0d6c486271fe40\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:23:13-66
-71
-72        <provider
-72-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
-73            android:name="androidx.startup.InitializationProvider"
-73-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
-74            android:authorities="com.example.pmdm.archivebook.androidx-startup"
-74-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
-75            android:exported="false" >
-75-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
-76            <meta-data
-76-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
-77                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-77-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
-78                android:value="androidx.startup" />
-78-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\73da974e21045e9442974760a0168d1b\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
-79            <meta-data
-79-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\b59d0dd191a9a07117a6fa5e38baa3df\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:29:13-31:52
-80                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-80-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\b59d0dd191a9a07117a6fa5e38baa3df\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:30:17-78
-81                android:value="androidx.startup" />
-81-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\b59d0dd191a9a07117a6fa5e38baa3df\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:31:17-49
-82            <meta-data
-82-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ef81cb222125f29b095d28e191d0b1e8\workspace\transformed\okhttp-release\AndroidManifest.xml:16:13-18:52
-83                android:name="okhttp3.internal.platform.PlatformInitializer"
-83-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ef81cb222125f29b095d28e191d0b1e8\workspace\transformed\okhttp-release\AndroidManifest.xml:17:17-77
-84                android:value="androidx.startup" />
-84-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ef81cb222125f29b095d28e191d0b1e8\workspace\transformed\okhttp-release\AndroidManifest.xml:18:17-49
-85            <meta-data
-85-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
-86                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-86-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
-87                android:value="androidx.startup" />
-87-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
-88        </provider>
-89
-90        <uses-library
-90-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:23:9-25:40
-91            android:name="androidx.window.extensions"
-91-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:24:13-54
-92            android:required="false" />
-92-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:25:13-37
-93        <uses-library
-93-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:26:9-28:40
-94            android:name="androidx.window.sidecar"
-94-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:27:13-51
-95            android:required="false" />
-95-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\fa2567661697a9c580e60c2ea8ef27ff\workspace\transformed\window-1.5.0\AndroidManifest.xml:28:13-37
-96
-97        <activity
-97-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\03c28872fce21e251b7644c95eab9c91\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:23:9-26:79
-98            android:name="androidx.activity.ComponentActivity"
-98-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\03c28872fce21e251b7644c95eab9c91\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:24:13-63
-99            android:exported="true"
-99-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\03c28872fce21e251b7644c95eab9c91\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:25:13-36
-100            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
-100-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\03c28872fce21e251b7644c95eab9c91\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:26:13-76
-101
-102        <receiver
-102-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
-103            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-103-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
-104            android:directBootAware="false"
-104-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
-105            android:enabled="true"
-105-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
-106            android:exported="true"
-106-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
-107            android:permission="android.permission.DUMP" >
-107-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
-108            <intent-filter>
-108-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
-109                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-109-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
-109-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
-110            </intent-filter>
-111            <intent-filter>
-111-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
-112                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-112-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
-112-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
-113            </intent-filter>
-114            <intent-filter>
-114-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
-115                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-115-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
-115-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
-116            </intent-filter>
-117            <intent-filter>
-117-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
-118                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-118-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
-118-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\4939fd5a5d00cbf7148676c6f1a687e1\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
-119            </intent-filter>
-120        </receiver>
-121    </application>
-122
-123</manifest>
+36-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:19:13-36
+37            android:theme="@style/Theme.ArchiveBook" >
+37-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:20:13-53
+38            <intent-filter>
+38-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:21:13-25:29
+39                <action android:name="android.intent.action.MAIN" />
+39-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:22:17-69
+39-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:22:25-66
+40
+41                <category android:name="android.intent.category.LAUNCHER" />
+41-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:24:17-77
+41-->D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\app\src\main\AndroidManifest.xml:24:27-74
+42            </intent-filter>
+43        </activity>
+44        <activity
+44-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\bc0e5b5ccf067db3066ec266b6fd53ca\workspace\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
+45            android:name="androidx.compose.ui.tooling.PreviewActivity"
+45-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\bc0e5b5ccf067db3066ec266b6fd53ca\workspace\transformed\ui-tooling\AndroidManifest.xml:24:13-71
+46            android:exported="true" />
+46-->[androidx.compose.ui:ui-tooling-android:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\bc0e5b5ccf067db3066ec266b6fd53ca\workspace\transformed\ui-tooling\AndroidManifest.xml:25:13-36
+47        <activity
+47-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:23:9-27:75
+48            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+48-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:24:13-93
+49            android:excludeFromRecents="true"
+49-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:25:13-46
+50            android:exported="false"
+50-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:26:13-37
+51            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+51-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:27:13-72
+52        <!--
+53            Service handling Google Sign-In user revocation. For apps that do not integrate with
+54            Google Sign-In, this service will never be started.
+55        -->
+56        <service
+56-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:33:9-37:51
+57            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+57-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:34:13-89
+58            android:exported="true"
+58-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:35:13-36
+59            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+59-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:36:13-107
+60            android:visibleToInstantApps="true" />
+60-->[com.google.android.gms:play-services-auth:21.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\a60b05c5486d076a5f2439c00dd4f51b\workspace\transformed\play-services-auth-21.5.0\AndroidManifest.xml:37:13-48
+61
+62        <activity
+62-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\8d8b31c16f737c1ee50e3f9d17b66459\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+63            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+63-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\8d8b31c16f737c1ee50e3f9d17b66459\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+64            android:exported="false"
+64-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\8d8b31c16f737c1ee50e3f9d17b66459\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+65            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+65-->[com.google.android.gms:play-services-base:18.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\8d8b31c16f737c1ee50e3f9d17b66459\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+66
+67        <meta-data
+67-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ccd125dddb7d371037df70b0f3f06984\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:21:9-23:69
+68            android:name="com.google.android.gms.version"
+68-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ccd125dddb7d371037df70b0f3f06984\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:22:13-58
+69            android:value="@integer/google_play_services_version" />
+69-->[com.google.android.gms:play-services-basement:18.9.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\ccd125dddb7d371037df70b0f3f06984\workspace\transformed\play-services-basement-18.9.0\AndroidManifest.xml:23:13-66
+70
+71        <provider
+71-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+72            android:name="androidx.startup.InitializationProvider"
+72-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+73            android:authorities="com.example.pmdm.archivebook.androidx-startup"
+73-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+74            android:exported="false" >
+74-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+75            <meta-data
+75-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+76                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+76-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+77                android:value="androidx.startup" />
+77-->[androidx.emoji2:emoji2:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\21829542b7339d3e3819e33dce7da2d8\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+78            <meta-data
+78-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\d187fdfa5c8f3b176512efcbb328d211\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:29:13-31:52
+79                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+79-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\d187fdfa5c8f3b176512efcbb328d211\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:30:17-78
+80                android:value="androidx.startup" />
+80-->[androidx.lifecycle:lifecycle-process:2.10.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\d187fdfa5c8f3b176512efcbb328d211\workspace\transformed\lifecycle-process-2.10.0\AndroidManifest.xml:31:17-49
+81            <meta-data
+81-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\537041867ae4a017cbd6a07d69a268a7\workspace\transformed\okhttp-release\AndroidManifest.xml:16:13-18:52
+82                android:name="okhttp3.internal.platform.PlatformInitializer"
+82-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\537041867ae4a017cbd6a07d69a268a7\workspace\transformed\okhttp-release\AndroidManifest.xml:17:17-77
+83                android:value="androidx.startup" />
+83-->[com.squareup.okhttp3:okhttp-android:5.3.2] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\537041867ae4a017cbd6a07d69a268a7\workspace\transformed\okhttp-release\AndroidManifest.xml:18:17-49
+84            <meta-data
+84-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+85                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+85-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+86                android:value="androidx.startup" />
+86-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+87        </provider>
+88
+89        <uses-library
+89-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:23:9-25:40
+90            android:name="androidx.window.extensions"
+90-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:24:13-54
+91            android:required="false" />
+91-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:25:13-37
+92        <uses-library
+92-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:26:9-28:40
+93            android:name="androidx.window.sidecar"
+93-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:27:13-51
+94            android:required="false" />
+94-->[androidx.window:window:1.5.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\10c4dcb2b4c3affa6e7de4317cf4c957\workspace\transformed\window-1.5.0\AndroidManifest.xml:28:13-37
+95
+96        <activity
+96-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\758813ca413477110b0c3eab02d3a13a\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:23:9-26:79
+97            android:name="androidx.activity.ComponentActivity"
+97-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\758813ca413477110b0c3eab02d3a13a\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:24:13-63
+98            android:exported="true"
+98-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\758813ca413477110b0c3eab02d3a13a\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:25:13-36
+99            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+99-->[androidx.compose.ui:ui-test-manifest:1.10.3] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\758813ca413477110b0c3eab02d3a13a\workspace\transformed\ui-test-manifest-1.10.3\AndroidManifest.xml:26:13-76
+100
+101        <receiver
+101-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+102            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+102-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+103            android:directBootAware="false"
+103-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+104            android:enabled="true"
+104-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+105            android:exported="true"
+105-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+106            android:permission="android.permission.DUMP" >
+106-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+107            <intent-filter>
+107-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+108                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+108-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+108-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+109            </intent-filter>
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+111                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+111-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+111-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+112            </intent-filter>
+113            <intent-filter>
+113-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+114                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+114-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+114-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+115            </intent-filter>
+116            <intent-filter>
+116-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+117                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+117-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+117-->[androidx.profileinstaller:profileinstaller:1.4.0] D:\git ArchiveBook\ArchiveBook\ArchiveBook Mobile\.gradle\caches\9.3.0\transforms\1182620169b0593c4b3eb3f5ef077e6c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+118            </intent-filter>
+119        </receiver>
+120    </application>
+121
+122</manifest>
