@@ -23,7 +23,8 @@ class AuthApiService(private val client: HttpClient) {
 
     // Cambiamos la URL a una constante para no repetirla
     private val BASE_URL = "http://192.168.0.12:8080"
-
+    //192.168.0.12
+    //10.75.204.184
     suspend fun getToken(request: LoginRequest): String {
         val tempClient = HttpClient(Android) {
             install(ContentNegotiation) {
