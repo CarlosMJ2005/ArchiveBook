@@ -120,8 +120,11 @@ public class LibroController {
 // 3) Endpoint para servir la imagen
     @GetMapping("/api/libros/{id}/portada")
     public ResponseEntity<org.springframework.core.io.Resource> cargarPortada(@PathVariable Long id) {
-        Libro libro = repository.findById(id).orElseThrow();
-
+         Libro libro = repository.findById(id)
+            .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.NOT_FOUND, "Israel, no apareece la id"
+            ));
+    
         // Si no hay foto asignada, devolvemos 404
         if (libro.getPortadaLibro() == null) {
             return ResponseEntity.notFound().build();
