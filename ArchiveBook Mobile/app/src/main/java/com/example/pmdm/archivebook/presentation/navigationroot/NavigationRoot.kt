@@ -8,6 +8,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.pmdm.archivebook.auth.usecase.LogOut
+import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.presentation.screens.BookDetailScreen
 import com.example.pmdm.archivebook.presentation.screens.LibraryScreen
 import com.example.pmdm.archivebook.presentation.screens.LoginScreen
@@ -22,7 +23,18 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier) {
-    val backStack: NavBackStack<NavKey> = rememberNavBackStack(LoginScreenKey)
+    // 1. Inyectamos el AuthManager al principio para decidir dónde empezar
+    val authManager: AuthManager = koinInject()
+
+    // 2. Lógica de Auto-Login: si hay token y marcó "keepSession", vamos a la librería
+    val startDestination = if (authManager.shouldKeepSession() && !authManager.getToken().isNullOrBlank()) {
+        LibraryScreenKey
+    } else {
+        LoginScreenKey
+    }
+
+    // Usamos el startDestination dinámico
+    val backStack: NavBackStack<NavKey> = rememberNavBackStack(startDestination)
 
     if (backStack.isNotEmpty()) {
         NavDisplay(
@@ -34,7 +46,7 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                     val viewModel: LoginViewModel = koinViewModel()
                     val libraryViewModel: LibraryViewModel = koinViewModel()
                     LoginScreen(
-                        viewModel = viewModel, // Pasamos el VM de Koin
+                        viewModel = viewModel,
                         onLoginSuccess = {
                             libraryViewModel.fetchAllBooks()
                             backStack.clear()
@@ -65,9 +77,12 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
                     val libraryViewModel: LibraryViewModel = koinViewModel()
                     val loginViewModel: LoginViewModel = koinViewModel()
                     val logOut: LogOut = koinInject()
+
                     LibraryScreen(
                         viewModel = libraryViewModel,
                         onLogout = {
+                            // IMPORTANTE: Limpiar el AuthManager al cerrar sesión
+                            authManager.clearToken()
                             logOut()
                             libraryViewModel.clearFilters()
                             loginViewModel.clearFields()
@@ -80,13 +95,20 @@ fun NavigationRoot(modifier: Modifier = Modifier) {
 
                 entry<BookDetailScreenKey> { entry ->
                     val book = entry.book
+                    // Inyectamos el manager para obtener el token necesario para las imágenes
+                    val currentAuthManager: AuthManager = koinInject()
+                    val sessionToken = currentAuthManager.getToken() ?: ""
+
                     val viewModel: BookDetailViewModel = koinViewModel(
-                        key = "book_detail_${book.id}", // Clave única para cada ViewModel
-                        parameters = { parametersOf(book.id) }
+                        key = "book_detail_${book.id}",
+                        parameters = {
+                            parametersOf(book.id, sessionToken)
+                        }
                     )
+
                     BookDetailScreen(
                         viewModel = viewModel,
-                        onBack = fun() {
+                        onBack = {
                             backStack.removeLastOrNull()
                         }
                     )

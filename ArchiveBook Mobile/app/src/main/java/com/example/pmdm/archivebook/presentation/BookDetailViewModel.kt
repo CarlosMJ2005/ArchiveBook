@@ -13,17 +13,18 @@ import kotlinx.coroutines.launch
 data class BookDetailUiState(
     val book: Book? = null,
     val isLoading: Boolean = true,
-    val error: String? = null
+    val error: String? = null,
+    val token: String? = null
 )
 
 class BookDetailViewModel(
     private val bookId: Int,
-    private val libraryRepository: LibraryRepository
+    private val libraryRepository: LibraryRepository,
+    private val token: String
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow(BookDetailUiState())
+    private val _uiState = MutableStateFlow(BookDetailUiState(token = token))
     val uiState: StateFlow<BookDetailUiState> = _uiState.asStateFlow()
-
     init {
         loadAndObserveBook()
     }

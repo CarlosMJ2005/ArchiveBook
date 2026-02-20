@@ -1,8 +1,8 @@
 package com.example.pmdm.archivebook.di
 
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
+import com.example.pmdm.archivebook.auth.repository.AuthRepositoryImpl
 import com.example.pmdm.archivebook.auth.usecase.LogOut
-import com.example.pmdm.archivebook.data.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.LibraryRepositoryImpl
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
@@ -22,15 +22,21 @@ val appModule = module {
 
     // 1. Auth & HTTP
     single { AuthManager(androidContext()) }
+
+    // Definimos el Provider una sola vez
     single { HttpClientProvider(authManager = get()) }
-    single<HttpClient> { get<HttpClientProvider>().get() }
+
+    // ESTA LÍNEA ES VITAL: Extrae el HttpClient del Provider para que otros servicios lo usen
+    factory<HttpClient> { get<HttpClientProvider>().get() }
 
     // 2. Servicios de API
-    single { AuthApiService(get()) }
+    single { AuthApiService(client = get()) } // Asegúrate de que AuthApiService reciba el cliente
     single { LibraryApiService(client = get(), authManager = get()) }
 
     // 3. Repositorios
-    single<AuthRepository> { AuthRepositoryImpl(apiService = get(), authManager = get()) }
+    single<AuthRepository> {
+        AuthRepositoryImpl(apiService = get(), authManager = get())
+    }
     single<LibraryRepository> { LibraryRepositoryImpl(apiService = get(), authManager = get()) }
 
     // 4. Casos de Uso
@@ -41,11 +47,11 @@ val appModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::LibraryViewModel)
 
-    // ViewModel with parameters
     viewModel { params ->
         BookDetailViewModel(
-            bookId = params.get<Int>(), // Especificamos <Int> para que no haya dudas
-            libraryRepository = get()    // get() busca el repositorio automáticamente
+            bookId = params.get<Int>(),
+            libraryRepository = get(),
+            token = params.get<String>()
         )
     }
 }

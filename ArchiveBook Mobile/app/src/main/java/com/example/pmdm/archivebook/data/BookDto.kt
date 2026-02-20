@@ -27,7 +27,7 @@ data class BookDto(
     @SerialName("titulo") val title: String,
     @SerialName("isbn") val isbn: String? = null,
     @SerialName("agnoPublicacion") val publicationYear: Int? = null,
-    @SerialName("portadaLibro") val cover: String? = null,
+    @SerialName("portada_libro") val cover: String? = null,
     @SerialName("sinopsis") val synopsis: String?,
     @SerialName("autor") val authorObj: AuthorDto,
     @SerialName("editorial") val publisherObj: EditorialDto,
@@ -51,7 +51,8 @@ fun BookDto.toDomain(): Book {
         isFavorite = this.isFavorite,
         isBookmarked = this.isBookmarked,
         isToReturn = this.isToReturn,
-        isLoaned = this.isLoaned // Pass the isLoaned value
+        isLoaned = this.isLoaned,
+        coverUrl = this.cover
     )
 }
 
@@ -71,6 +72,7 @@ fun Book.toDto(): BookDto {
         isFavorite = this.isFavorite,
         isBookmarked = this.isBookmarked,
         isToReturn = this.isToReturn,
-        isLoaned = this.isLoaned
+        isLoaned = this.isLoaned,
+        cover = this.coverUrl
     )
 }

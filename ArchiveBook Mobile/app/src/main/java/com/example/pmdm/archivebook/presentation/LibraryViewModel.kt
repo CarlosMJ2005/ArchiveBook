@@ -6,25 +6,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.domain.errors.TokenExpiredException
 import com.example.pmdm.archivebook.domain.repositories.LibraryRepository
 import kotlinx.coroutines.launch
 
 class LibraryViewModel(
-    private val repository: LibraryRepository
-) : ViewModel() {
+    private val repository: LibraryRepository,
+    private val authManager: AuthManager // Añadimos esto
+): ViewModel() {
 
     // Cambiado: Ahora allBooks se actualiza automáticamente desde el Repositorio
     private var allBooks by mutableStateOf<List<Book>>(emptyList())
-
+    val token: String get() = authManager.getToken() ?: ""
     // --- ESTADOS DE UI ---
     var selectedCategory by mutableStateOf("All")
     var selectedFilter by mutableStateOf("Title")
     var searchText by mutableStateOf("")
     var selectedGenres = mutableStateListOf<String>()
         private set
-
+    var userToken by mutableStateOf("")
+        private set
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
         private set
@@ -54,16 +57,19 @@ class LibraryViewModel(
         }
 
     init {
-        // 1. Empezamos a escuchar al repositorio desde que nace el ViewModel
+        // Empezamos a escuchar al repositorio desde que nace el ViewModel
         observeRepository()
-        // 2. Cargamos los datos iniciales
+        // Cargamos los datos iniciales
         fetchAllBooks()
+        loadToken()
     }
 
-    /**
-     * Esta función es el corazón del cambio. Escucha el Flow de libros
-     * y actualiza allBooks cada vez que algo cambie en el Repo.
-     */
+    private fun loadToken() {
+        viewModelScope.launch {
+            userToken = authManager.getToken() ?: ""
+        }
+    }
+
     private fun observeRepository() {
         viewModelScope.launch {
             repository.books.collect { updatedList ->

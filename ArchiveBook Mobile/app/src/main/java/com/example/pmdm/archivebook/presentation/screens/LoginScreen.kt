@@ -45,11 +45,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pmdm.archivebook.data.AuthRepositoryImpl
 import com.example.pmdm.archivebook.data.LoginRepositoryImpl
 import com.example.pmdm.archivebook.data.local.AuthManager
 import com.example.pmdm.archivebook.data.remote.AuthApiService
-import com.example.pmdm.archivebook.di.LoginViewModelFactory
 import com.example.pmdm.archivebook.presentation.LoginViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 import io.ktor.client.HttpClient
@@ -191,7 +189,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- KEEP SESSION SWITCH ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

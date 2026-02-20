@@ -13,9 +13,11 @@ class AuthRepositoryImpl(
     private val authManager: AuthManager
 ) : AuthRepository {
 
-    // LOGIN FUNCTION
     override suspend fun login(user: User): Result<String> {
         return try {
+            // Limpieza previa para asegurar una sesión limpia
+            authManager.clearToken()
+
             val request = LoginRequest(user.email, user.password)
             val token = apiService.getToken(request)
 
@@ -26,23 +28,20 @@ class AuthRepositoryImpl(
         }
     }
 
-    // REGISTER FUNCTION
     override suspend fun register(user: User): Result<Boolean> {
         return try {
-            // Convertimos User (dominio) a UserDto (red)
-            val userDto = UserDto(
-                email = user.email,
-                contrasena = user.password,
-                rol = "USER" // Aquí inyectas el rol fijo
-            )
+            // 1. Usamos el apiService en lugar de httpClient.post directamente
+            // Debes asegurarte de que tu apiService tenga una función 'register'
+            val success = apiService.register(user)
 
-            // Enviamos el DTO al servicio de API
-            val success = apiService.registerUser(userDto)
-
-            if (success) Result.success(true)
-            else Result.failure(Exception("Error en el registro"))
-
+            if (success) {
+                Result.success(true)
+            } else {
+                Result.failure(Exception("El registro no fue exitoso"))
+            }
         } catch (e: Exception) {
+            // 2. Aquí caerán los errores 409 (Conflict) o 400 (Bad Request)
+            // Ktor suele lanzar excepciones si el status no es 2xx
             Result.failure(e)
         }
     }

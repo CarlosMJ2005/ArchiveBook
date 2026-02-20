@@ -43,9 +43,11 @@ public class RestConfig {
         http.authorizeHttpRequests((authorize) -> authorize
                 // Permitir acceso público para crear un nuevo usuario
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                .requestMatchers("/token").authenticated()
                 // Otras rutas configuradas
                // .requestMatchers("/welcome", "/api/editoriales").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/usuarios/admin").hasRole("ADMIN")
+                
                 .anyRequest().authenticated()
         )
                 // Es vital deshabilitar CSRF para el endpoint de registro si usas herramientas como Postman

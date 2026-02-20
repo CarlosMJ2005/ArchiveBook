@@ -7,9 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pmdm.archivebook.auth.domain.model.User
 import com.example.pmdm.archivebook.auth.repository.AuthRepository
+import com.example.pmdm.archivebook.data.local.AuthManager
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
+class RegisterViewModel(
+    private val repository: AuthRepository,
+    private val authManager: AuthManager
+) : ViewModel() {
     var email by mutableStateOf("")
     var password by mutableStateOf("")
     var confirmPassword by mutableStateOf("")
@@ -17,7 +21,6 @@ class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
     var isLoading by mutableStateOf(false)
 
     fun onRegisterClicked(onSuccess: () -> Unit, onError: (String) -> Unit) {
-        // 1. Validación local básica
         if (email.isBlank() || password.isBlank()) {
             onError("Por favor, rellena todos los campos")
             return
@@ -32,21 +35,35 @@ class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
             isLoading = true
             val user = User(email = email, password = password)
 
-            // El repositorio ahora se encarga de crear el UserDto con el rol 'USER'
             val result = repository.register(user)
 
             result.fold(
                 onSuccess = {
-                    // Registro OK, ahora intentamos login para obtener el token
+                    // 2. Registro OK, intentamos login automático
                     val loginResult = repository.login(user)
                     loginResult.fold(
-                        onSuccess = { onSuccess() },
-                        onFailure = { onError("Cuenta creada, pero hubo un error al iniciar sesión automáticamente") }
+                        onSuccess = { token ->
+                            // 3. ¡ESTA ES LA CLAVE!
+                            // Guardamos la preferencia del switch antes de navegar
+                            authManager.saveKeepSession(keepSession)
+
+                            // El token se guarda dentro del login del repositorio,
+                            // pero nos aseguramos de que el switch se guarde aquí.
+                            onSuccess()
+                        },
+                        onFailure = {
+                            onError("Cuenta creada, pero hubo un error al iniciar sesión automáticamente")
+                        }
                     )
                 },
                 onFailure = { error ->
-                    // Aquí verás el error real en el Logcat
-                    onError("Error en el registro: ${error.message ?: "Error desconocido"}")
+                    // error.message suele traer lo que el servidor responde (ej: "Email already in use")
+                    val friendlyMessage = when {
+                        error.message?.contains("409") == true -> "This email is already registered."
+                        error.message?.contains("400") == true -> "Invalid data. Please check your email format."
+                        else -> "Registration failed: ${error.message ?: "Unknown error"}"
+                    }
+                    onError(friendlyMessage)
                 }
             )
             isLoading = false

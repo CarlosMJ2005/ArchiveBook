@@ -47,8 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pmdm.archivebook.data.LoginRepositoryImpl
 import com.example.pmdm.archivebook.data.remote.AuthApiService
-import com.example.pmdm.archivebook.di.LoginViewModelFactory
-import com.example.pmdm.archivebook.di.RegisterViewModelFactory
 import com.example.pmdm.archivebook.presentation.RegisterViewModel
 import com.example.pmdm.archivebook.ui.theme.ArchiveBookTheme
 import io.ktor.client.HttpClient

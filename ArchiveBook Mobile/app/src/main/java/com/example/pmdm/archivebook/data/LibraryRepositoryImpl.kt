@@ -19,7 +19,6 @@ class LibraryRepositoryImpl(
     private val authManager: AuthManager
 ) : LibraryRepository {
 
-    // Cambiamos la lista simple por un StateFlow para que sea reactivo
     private val _booksFlow = MutableStateFlow<List<Book>>(emptyList())
     override val books: Flow<List<Book>> = _booksFlow.asStateFlow()
 
@@ -40,6 +39,7 @@ class LibraryRepositoryImpl(
     override suspend fun getBooks(): Result<List<Book>> {
         return safeApiCall {
             coroutineScope {
+                // 1. Lanzamos todas las peticiones en paralelo
                 val booksDef = async { apiService.fetchBooks() }
                 val loansDef = async { apiService.getLoans() }
                 val favsDef = async { apiService.getFavorites() }
@@ -47,73 +47,38 @@ class LibraryRepositoryImpl(
 
                 val booksRes = booksDef.await()
                 val loansRes = loansDef.await()
+                val favRes = favsDef.await()
+                val markRes = marksDef.await()
 
-                val favoriteIds = favsDef.await().map { it.libro.id }.toSet()
-                val bookmarkIds = marksDef.await().map { it.libro.id }.toSet()
+                // 2. Procesamos Sets para búsqueda rápida O(1)
+                val favoriteIds = favRes.map { it.libro.id }.toSet()
+                val bookmarkIds = markRes.map { it.libro.id }.toSet()
 
                 val userEmail = authManager.getEmail()
-                val pendingReturnIds = loansRes.filter { it.usuario?.email == userEmail && !it.devuelto }
+
+                // Identificamos qué libros tienes TÚ pendientes de devolver
+                val myActiveLoans = loansRes
+                    .filter { it.usuario?.email == userEmail && !it.devuelto }
                     .map { it.libro.id }.toSet()
-                val loanedBookIds = loansRes.filter { !it.devuelto }.map { it.libro.id }.toSet()
+
+                // Identificamos qué libros están prestados por OTROS (no disponibles)
+                val loanedByOthers = loansRes
+                    .filter { it.usuario?.email != userEmail && !it.devuelto }
+                    .map { it.libro.id }.toSet()
 
                 val mappedBooks = booksRes.map { dto ->
                     dto.toDomain().copy(
-                        isToReturn = pendingReturnIds.contains(dto.id),
-                        //isLoaned = loanedBookIds.contains(dto.id),
                         isFavorite = favoriteIds.contains(dto.id),
-                        isBookmarked = bookmarkIds.contains(dto.id)
+                        isBookmarked = bookmarkIds.contains(dto.id),
+                        isToReturn = myActiveLoans.contains(dto.id),
+                        // Si lo tiene otro, 'isLoaned' será true para deshabilitar el préstamo
+                        isLoaned = loanedByOthers.contains(dto.id)
                     )
                 }
 
-                // Actualizamos el StateFlow. Esto notificará a todos los observadores.
                 _booksFlow.value = mappedBooks
-
                 mappedBooks
             }
-        }
-    }
-
-    override suspend fun getBookById(id: Int): Result<Book?> {
-        // Buscamos en el valor actual del Flow
-        val book = _booksFlow.value.find { it.id == id }
-
-        return if (book != null) {
-            Result.success(book)
-        } else {
-            // Si no está, forzamos una recarga
-            val refreshResult = getBooks()
-            if (refreshResult.isSuccess) {
-                Result.success(_booksFlow.value.find { it.id == id })
-            } else {
-                Result.success(null)
-            }
-        }
-    }
-
-    // Método para observar un libro específico como Flow (ideal para la pantalla detalle)
-    override fun observeBookById(id: Int): Flow<Book?> {
-        return books.map { list -> list.find { it.id == id } }
-    }
-
-    override suspend fun getCachedBookById(id: Int): Result<Book?> {
-        return Result.success(_booksFlow.value.find { it.id == id })
-    }
-
-    override suspend fun toggleFavorite(bookId: Int, isCurrentlyFavorite: Boolean): Result<Unit> {
-        return safeApiCall {
-            if (isCurrentlyFavorite) apiService.removeFromFavorites(bookId)
-            else apiService.addToFavorites(bookId)
-
-            updateCachedBook(bookId) { it.copy(isFavorite = !isCurrentlyFavorite) }
-        }
-    }
-
-    override suspend fun toggleBookmark(bookId: Int, isCurrentlyBookmarked: Boolean): Result<Unit> {
-        return safeApiCall {
-            if (isCurrentlyBookmarked) apiService.removeBookmark(bookId)
-            else apiService.addBookmark(bookId)
-
-            updateCachedBook(bookId) { it.copy(isBookmarked = !isCurrentlyBookmarked) }
         }
     }
 
@@ -121,9 +86,10 @@ class LibraryRepositoryImpl(
         return safeApiCall {
             val success = apiService.borrowBook(bookId)
             if (success) {
+                // Actualizamos localmente: ahora es un libro a devolver
                 updateCachedBook(bookId) { it.copy(isToReturn = true) }
             } else {
-                throw Exception("Error al prestar el libro.")
+                throw Exception("No se pudo realizar el préstamo.")
             }
         }
     }
@@ -132,21 +98,40 @@ class LibraryRepositoryImpl(
         return safeApiCall {
             val success = apiService.returnBook(bookId)
             if (success) {
+                // Actualizamos localmente: ya no está pendiente de devolución
                 updateCachedBook(bookId) { it.copy(isToReturn = false) }
             } else {
-                throw Exception("Error al devolver el libro.")
+                throw Exception("No se pudo devolver el libro.")
             }
         }
     }
 
-    override suspend fun deleteLoan(bookId: Int): Result<Unit> {
+    // --- MÉTODOS DE SOPORTE Y CACHÉ ---
+
+    override suspend fun getBookById(id: Int): Result<Book?> {
+        val book = _booksFlow.value.find { it.id == id }
+        return if (book != null) Result.success(book)
+        else getBooks().map { list -> list.find { it.id == id } }
+    }
+
+    override fun observeBookById(id: Int): Flow<Book?> =
+        books.map { list -> list.find { it.id == id } }
+
+    override suspend fun toggleFavorite(bookId: Int, isCurrentlyFavorite: Boolean): Result<Unit> {
         return safeApiCall {
-            val success = apiService.deleteLoan(bookId)
-            if (success) {
-                updateCachedBook(bookId) { it.copy(isToReturn = false) }
-            } else {
-                throw Exception("Error al eliminar el préstamo.")
-            }
+            val success = if (isCurrentlyFavorite) apiService.removeFromFavorites(bookId)
+            else apiService.addToFavorites(bookId)
+
+            if (success) updateCachedBook(bookId) { it.copy(isFavorite = !isCurrentlyFavorite) }
+        }
+    }
+
+    override suspend fun toggleBookmark(bookId: Int, isCurrentlyBookmarked: Boolean): Result<Unit> {
+        return safeApiCall {
+            val success = if (isCurrentlyBookmarked) apiService.removeBookmark(bookId)
+            else apiService.addBookmark(bookId)
+
+            if (success) updateCachedBook(bookId) { it.copy(isBookmarked = !isCurrentlyBookmarked) }
         }
     }
 
@@ -155,12 +140,11 @@ class LibraryRepositoryImpl(
         val index = currentList.indexOfFirst { it.id == bookId }
         if (index != -1) {
             currentList[index] = updateAction(currentList[index])
-            // Emitimos la nueva lista completa
             _booksFlow.value = currentList
         }
     }
 
-    override fun clearCache() {
-        _booksFlow.value = emptyList()
-    }
+    override fun clearCache() { _booksFlow.value = emptyList() }
+
+    // Eliminado deleteLoan por petición del usuario
 }

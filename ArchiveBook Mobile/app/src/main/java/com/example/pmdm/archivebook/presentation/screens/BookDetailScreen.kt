@@ -18,14 +18,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.presentation.BookDetailViewModel
+import com.example.pmdm.archivebook.utils.ApiConstants
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +55,7 @@ fun BookDetailScreen(
         BookDetailContent(
             book = uiState.book!!,
             onBack = onBack,
+            token = uiState.token ?: "",
             onFavoriteClick = { viewModel.toggleFavorite() },
             onBookmarkClick = { viewModel.toggleBookmark() },
             onBorrowClick = { viewModel.borrowBook() },
@@ -63,6 +69,7 @@ fun BookDetailScreen(
 fun BookDetailContent(
     book: Book,
     onBack: () -> Unit,
+    token: String,
     onFavoriteClick: () -> Unit,
     onBookmarkClick: () -> Unit,
     onBorrowClick: () -> Unit,
@@ -99,16 +106,28 @@ fun BookDetailContent(
         ) {
             // PORTADA DEL LIBRO
             Card(
-                modifier = Modifier.size(width = 180.dp, height = 270.dp),
-                shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(12.dp)
+                modifier = Modifier.size(width = 200.dp, height = 300.dp),
+                shape = RoundedCornerShape(12.dp),
+                elevation = CardDefaults.cardElevation(16.dp)
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize().background(Color(0xFFD32F2F)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(Icons.Default.Book, null, modifier = Modifier.size(80.dp), tint = Color.White)
-                }
+                val context = androidx.compose.ui.platform.LocalContext.current
+
+                val token = token
+
+                val imageRequest = coil.request.ImageRequest.Builder(context)
+                    .data(ApiConstants.getCoverUrl(book.id))
+                    .addHeader("Authorization", "Bearer $token") // Esto autoriza la descarga
+                    .crossfade(true)
+                    .build()
+
+                AsyncImage(
+                    model = imageRequest,
+                    contentDescription = "Portada de ${book.title}",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    error = rememberVectorPainter(Icons.Default.Book),
+                    placeholder = rememberVectorPainter(Icons.Default.CloudDownload)
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -126,11 +145,12 @@ fun BookDetailContent(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Informativo (No hace nada al clicar)
+                // Informativo
                 StatusBadge(
                     icon = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
                     label = "Bestseller",
                     activeColor = Color(0xFFFFB700),
+                    inactiveColor = contentColor, // <--- CAMBIO AQUÍ
                     isActive = book.isBestseller
                 )
 
@@ -139,6 +159,7 @@ fun BookDetailContent(
                     icon = if (book.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     label = "Favorite",
                     activeColor = Color(0xFFFF0000),
+                    inactiveColor = contentColor, // <--- CAMBIO AQUÍ
                     isActive = book.isFavorite,
                     onClick = onFavoriteClick
                 )
@@ -148,6 +169,7 @@ fun BookDetailContent(
                     icon = if (book.isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                     label = "Reading",
                     activeColor = Color(0xFF008CFF),
+                    inactiveColor = contentColor, // <--- CAMBIO AQUÍ
                     isActive = book.isBookmarked,
                     onClick = onBookmarkClick
                 )
@@ -157,6 +179,7 @@ fun BookDetailContent(
                     icon = if (book.isToReturn) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
                     label = if (book.isToReturn) "Return" else "Borrow",
                     activeColor = Color(0xFF0FDC0F),
+                    inactiveColor = contentColor, // <--- CAMBIO AQUÍ
                     isActive = book.isToReturn,
                     onClick = {
                         if (book.isToReturn) onReturnClick() else onBorrowClick()
@@ -187,12 +210,13 @@ fun ClickableStatusBadge(
     icon: ImageVector,
     label: String,
     activeColor: Color,
+    inactiveColor: Color, // <--- NUEVO PARÁMETRO
     isActive: Boolean,
     onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .width(75.dp) // Forzamos un ancho fijo para que todos ocupen lo mismo
+            .width(75.dp)
             .clickable(onClick = onClick)
             .padding(vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -200,18 +224,18 @@ fun ClickableStatusBadge(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f),
-            modifier = Modifier.size(28.dp) // Reducimos ligeramente el icono (de 32 a 28)
+            // Si no está activo, usa el color del título con un poco de transparencia
+            tint = if (isActive) activeColor else inactiveColor.copy(alpha = 0.6f),
+            modifier = Modifier.size(28.dp)
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall.copy(
-                fontSize = 10.sp, // Reducimos un punto la fuente
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Medium
             ),
-            color = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f),
-            maxLines = 1, // <--- ESTO EVITA LAS DOS LÍNEAS
-            overflow = TextOverflow.Visible, // O Clip si prefieres que se corte
+            color = if (isActive) activeColor else inactiveColor.copy(alpha = 0.6f),
+            maxLines = 1,
             textAlign = TextAlign.Center
         )
     }
@@ -222,19 +246,23 @@ fun StatusBadge(
     icon: ImageVector,
     label: String,
     activeColor: Color,
+    inactiveColor: Color,
     isActive: Boolean
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier.width(75.dp), // Añadido para consistencia
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f),
-            modifier = Modifier.size(32.dp)
+            tint = if (isActive) activeColor else inactiveColor.copy(alpha = 0.6f),
+            modifier = Modifier.size(28.dp)
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = if (isActive) activeColor else Color.Gray.copy(alpha = 0.4f)
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+            color = if (isActive) activeColor else inactiveColor.copy(alpha = 0.6f)
         )
     }
 }

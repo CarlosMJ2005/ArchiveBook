@@ -15,13 +15,20 @@ class AuthManager(context: Context) {
             .apply()
     }
 
+    fun saveKeepSession(keep: Boolean) {
+        prefs.edit().putBoolean("keep_session", keep).apply()
+    }
+
+
     fun getToken(): String? = prefs.getString("jwt_token", null)
     fun getEmail(): String? = prefs.getString("user_email", null)
+    fun shouldKeepSession(): Boolean = prefs.getBoolean("keep_session", false)
 
     fun clearToken() {
         prefs.edit()
             .remove("jwt_token")
             .remove("user_email")
+            .remove("keep_session") // Importante
             .apply()
     }
 }

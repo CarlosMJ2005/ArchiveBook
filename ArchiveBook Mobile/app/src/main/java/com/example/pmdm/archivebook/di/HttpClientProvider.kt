@@ -12,19 +12,21 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.header
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.URLProtocol
+import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.AttributeKey
 import kotlinx.serialization.json.Json
+
+
+val AuthFree = AttributeKey<Boolean>("AuthFree")
 
 class HttpClientProvider(private val authManager: AuthManager) {
 
     private var client: HttpClient? = null
+    private val lock = Any()
 
-    fun create(): HttpClient {
+    private fun create(): HttpClient {
         return HttpClient(Android) {
             install(ContentNegotiation) {
                 json(Json {
@@ -32,6 +34,7 @@ class HttpClientProvider(private val authManager: AuthManager) {
                     encodeDefaults = true
                 })
             }
+
             install(Logging) {
                 level = LogLevel.ALL
                 logger = object : Logger {
@@ -40,6 +43,7 @@ class HttpClientProvider(private val authManager: AuthManager) {
                     }
                 }
             }
+
             install(Auth) {
                 bearer {
                     loadTokens {
@@ -50,21 +54,19 @@ class HttpClientProvider(private val authManager: AuthManager) {
                             null
                         }
                     }
-                    // Solo devuelve TRUE para las rutas que NO requieren token
-                    sendWithoutRequest { request ->
-                        val path = request.url.buildString()
-                        val isLogin = path.endsWith("/api/login")
-                        val isRegister = path.endsWith("/api/usuarios") && request.method == HttpMethod.Post
 
-                        isLogin || isRegister
+                    sendWithoutRequest { request ->
+                        val path = request.url.encodedPath
+                        // Si la URL contiene "token", NO enviar nunca el Bearer token automáticamente
+                        path.contains("token") || request.attributes.getOrNull(AuthFree) ?: false
                     }
                 }
             }
+
             defaultRequest {
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
                 url {
                     protocol = URLProtocol.HTTP
-                    host = "10.75.204.184"
+                    host = "192.168.0.12"
                     port = 8080
                 }
             }
@@ -72,14 +74,16 @@ class HttpClientProvider(private val authManager: AuthManager) {
     }
 
     fun get(): HttpClient {
-        if (client == null) {
-            client = create()
+        return synchronized(lock) {
+            client ?: create().also { client = it }
         }
-        return client!!
     }
 
+    // Asegúrate de que esta función esté DENTRO de la clase y sea pública
     fun reset() {
-        client = null
-        client = create()
+        synchronized(lock) {
+            Log.d("HTTP_KTOR", "Reseteando cliente...")
+            client = null
+        }
     }
 }

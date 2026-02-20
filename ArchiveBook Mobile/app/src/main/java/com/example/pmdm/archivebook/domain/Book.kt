@@ -10,6 +10,7 @@ data class Book(
     val author: String,
     val publisher: String,
     val genres: List<String>,
+    val coverUrl: String?,
     val isBestseller: Boolean = false,
     val isFavorite: Boolean = false,
     val isBookmarked: Boolean = false,

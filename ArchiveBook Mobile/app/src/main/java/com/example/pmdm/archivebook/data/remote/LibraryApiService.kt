@@ -14,7 +14,9 @@ import io.ktor.client.request.header
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -101,13 +103,12 @@ class LibraryApiService(
             returnDate = LocalDate.now().plusMonths(1).format(DateTimeFormatter.ISO_DATE)
         )
 
-        Log.d(TAG, "Reserva -> POST: api/prestamos | Token: ${token?.take(10)}...")
-
         val response = client.post("api/prestamos") {
-            // Inyectamos el token manualmente para asegurar que no falle por el plugin Auth
             header(HttpHeaders.Authorization, "Bearer $token")
 
-            // Enviamos el objeto serializado
+            // --- ESTO ES LO QUE SOLUCIONA EL ERROR ---
+            contentType(ContentType.Application.Json)
+
             setBody(requestBody)
         }
 
@@ -115,24 +116,14 @@ class LibraryApiService(
     }
 
     suspend fun returnBook(bookId: Int): Boolean {
-        // Usamos 'authManager' (la instancia del constructor), no 'AuthManager' (la clase)
         val token = authManager.getToken()
-
-        Log.d(TAG, "Inyección MANUAL de token: $token")
-
         val response = client.patch("api/prestamos/devolver/$bookId") {
-            // Añadimos el header manualmente
             header(HttpHeaders.Authorization, "Bearer $token")
-            // Enviamos un cuerpo vacío para evitar que el backend rechace la petición PATCH
+
+            // También aquí, si mandas un cuerpo "{}"
+            contentType(ContentType.Application.Json)
             setBody("{}")
         }
-
-        return response.status.value in 200..299
-    }
-
-    suspend fun deleteLoan(bookId: Int): Boolean { // Formerly cancelReturn
-        Log.d(TAG, "Préstamo -> DELETE: api/prestamos/$bookId")
-        val response = client.delete("api/prestamos/$bookId")
         return response.status.value in 200..299
     }
 }

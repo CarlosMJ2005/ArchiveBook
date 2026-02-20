@@ -1,6 +1,6 @@
 package com.example.pmdm.archivebook.presentation.screens
 
-import androidx.compose.foundation.background
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -29,17 +29,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pmdm.archivebook.domain.Book
 import com.example.pmdm.archivebook.presentation.LibraryViewModel
 import com.example.pmdm.archivebook.ui.theme.DarkOnPrimary
 import com.example.pmdm.archivebook.ui.theme.DarkPrimary
 import com.example.pmdm.archivebook.ui.theme.LightOnPrimary
 import com.example.pmdm.archivebook.ui.theme.LightPrimary
+import com.example.pmdm.archivebook.utils.ApiConstants
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,6 +57,9 @@ fun LibraryScreen(
     val coroutineScope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    // Usamos el token que expone el ViewModel
+    val token = viewModel.userToken
 
     var showMenu by remember { mutableStateOf(false) }
     var showGenreMenu by remember { mutableStateOf(false) }
@@ -319,6 +327,7 @@ fun LibraryScreen(
                     items(booksToShow, key = { it.id }) { book ->
                         BookCard(
                             book = book,
+                            token = token, // Pasamos el token del ViewModel a la Card
                             modifier = Modifier.clickable { onBookClick(book) },
                             onFavoriteClick = { viewModel.toggleFavorite(book.id) },
                             onBookmarkClick = { viewModel.toggleBookmark(book.id) },
@@ -335,6 +344,7 @@ fun LibraryScreen(
 @Composable
 fun BookCard(
     book: Book,
+    token: String, // Recibimos el token aquí
     modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
     onBookmarkClick: () -> Unit,
@@ -356,12 +366,26 @@ fun BookCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth().height(180.dp)) {
-            Box(
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(ApiConstants.getCoverUrl(book.id))
+                    // USAMOS EL TOKEN QUE RECIBIMOS POR PARÁMETRO
+                    .setHeader("Authorization", "Bearer $token")
+                    .crossfade(true)
+                    .listener(
+                        onStart = { Log.d("COIL", "Empezando carga para el libro: ${book.id}") },
+                        onError = { _, result ->
+                            Log.e("COIL", "Error cargando imagen: ${result.throwable.message}")
+                        },
+                        onSuccess = { _, _ -> Log.d("COIL", "Imagen cargada con éxito") }
+                    )
+                    .build(),
+                contentDescription = "Portada de ${book.title}",
                 modifier = Modifier
                     .weight(0.35f)
-                    .fillMaxHeight()
-                    .background(Color(0xFFD32F2F))
-            ) {}
+                    .fillMaxHeight(),
+                contentScale = ContentScale.Crop,
+            )
 
             Column(
                 modifier = Modifier
@@ -383,18 +407,15 @@ fun BookCard(
                     Text(book.publisher, style = MaterialTheme.typography.labelSmall, color = titleColor)
                 }
 
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        // Si es bestseller usa la estrella rellena, si no, la estrella de borde (outlined)
                         imageVector = if (book.isBestseller) Icons.Default.Star else Icons.Default.StarBorder,
                         contentDescription = "Bestseller",
-                        // Si es bestseller es amarilla, si no, usa el color actual del contenido (texto)
-                        tint = if (book.isBestseller) Color.Yellow else titleColor,
+                        tint = if (book.isBestseller) Color(0xFFFFB700)else titleColor,
                         modifier = Modifier.padding(end = 4.dp)
                     )
 
@@ -416,22 +437,14 @@ fun BookCard(
 
                     IconButton(
                         onClick = {
-                            if (book.isToReturn) {
-                                onReturnClick()
-                            } else {
-                                onBorrowClick()
-                            }
+                            if (book.isToReturn) onReturnClick() else onBorrowClick()
                         },
                         enabled = true
                     ) {
                         Icon(
                             imageVector = if (book.isToReturn) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
-                            contentDescription = "Return/Borrow book",
-                            tint = when {
-                                book.isToReturn -> Color(0xFF00D400)
-                                !book.isLoaned -> titleColor
-                                else -> Color.Gray.copy(alpha = 0.5f)
-                            }
+                            contentDescription = "Borrow/Return",
+                            tint = if (book.isToReturn) Color(0xFF00D400) else titleColor
                         )
                     }
                 }
