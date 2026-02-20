@@ -167,7 +167,7 @@ fun BookDetailContent(
                 // Botón Marcador
                 ClickableStatusBadge(
                     icon = if (book.isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                    label = "Reading",
+                    label = "To Read",
                     activeColor = Color(0xFF008CFF),
                     inactiveColor = contentColor, // <--- CAMBIO AQUÍ
                     isActive = book.isBookmarked,
