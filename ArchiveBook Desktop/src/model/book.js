@@ -17,7 +17,7 @@ export class Book {
     #readBool
 
 
-    constructor(book, favourite, toRead, toReturn, image = "./images/easter.jpg") {
+    constructor(book, favourite, toRead, toReturn, image = "./images/easter.png") {
         this.#Cover = image
         this.#Id = book.idLibro
         this.#Title = book.titulo

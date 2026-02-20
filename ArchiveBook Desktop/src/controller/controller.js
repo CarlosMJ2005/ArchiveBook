@@ -209,6 +209,8 @@ export class Controller {
                     let favorite = false
                     let toRead = false
                     let toReturn = false
+                    let cover = ""
+                    let actualBook
                     
                     favorite = favs.some(favEntry => {
                         if (bookEntry.idLibro === favEntry.libro.idLibro) {
@@ -230,9 +232,22 @@ export class Controller {
                             return true;
                         }
                     });
-                    
 
-                    let actualBook = new Book(bookEntry, favorite, toRead, toReturn)
+                    app.getCover(bookEntry.idLibro)
+                    .then((image) => {
+                        cover = image
+                    })
+                    .catch((error) => {
+                        console.log("Get-image " + error.message.substring(error.message.lastIndexOf("Error")))
+                    })
+                    
+                    if(cover != ""){
+                        actualBook = new Book(bookEntry, favorite, toRead, toReturn, cover)
+                    }
+                    else{
+                        actualBook = new Book(bookEntry, favorite, toRead, toReturn)
+                    }
+                    
                     //console.log(actualBook)
 
                     if (actualBook.getBestBool()){

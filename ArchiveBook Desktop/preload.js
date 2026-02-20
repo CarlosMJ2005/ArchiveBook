@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('app', { //app se puede llamar como quieras
     getFavorites: () => ipcRenderer.invoke('get-favorites'),
     getToRead: () => ipcRenderer.invoke('get-toRead'),
     getToReturn: () => ipcRenderer.invoke('get-toReturn'),
+    getCover: (id) => ipcRenderer.invoke('get-image',id),
 
     addFavorite: (id) => ipcRenderer.invoke('add-favorite', id),
     addToRead: (id) => ipcRenderer.invoke('add-toRead', id),
